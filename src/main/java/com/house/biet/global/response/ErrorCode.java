@@ -1,0 +1,38 @@
+package com.house.biet.global.response;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+@Getter
+@RequiredArgsConstructor
+public enum ErrorCode {
+
+    // 400 Bad Request
+    INVALID_EMAIL_FORMAT(40101, HttpStatus.BAD_REQUEST, "잘못된 이메일 형식입니다,"),
+    BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
+
+    // 401 Unauthorized
+
+    UNAUTHORIZED(40100, HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
+
+    // 403 Forbidden
+
+    FORBIDDEN(40300, HttpStatus.FORBIDDEN, "권한이 없습니다."),
+
+    // 404 Not Found
+
+    NOT_FOUND(40400, HttpStatus.NOT_FOUND, "찾을 수 없습니다."),
+
+    // 409 Conflict
+
+    DUPLICATE_USER(40901, HttpStatus.CONFLICT, "이미 존재하는 유저입니다."),
+
+    // 500 Internal Server Error
+
+    INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러가 발생하였습니다.");
+
+    private final int code;
+    private final HttpStatus httpStatus;
+    private final String message;
+}
