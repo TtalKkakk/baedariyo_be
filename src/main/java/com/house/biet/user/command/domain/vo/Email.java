@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class Email {
 
-    @Column(nullable = false, unique = true)
     private String value;
 
     public Email(String value) {

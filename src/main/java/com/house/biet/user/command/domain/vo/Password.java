@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EqualsAndHashCode
 public class Password {
 
-    @Column(nullable = false)
     private String value;
 
     private Password(String value) {
