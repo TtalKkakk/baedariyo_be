@@ -1,0 +1,54 @@
+package com.house.biet.auth.command.domain.entity;
+
+import com.house.biet.user.command.domain.vo.Email;
+import com.house.biet.user.command.domain.vo.Password;
+import com.house.biet.user.command.domain.vo.UserRole;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.apache.kafka.common.protocol.types.Field;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "accounts")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Account {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Embedded
+    private Email email;
+
+    @Enumerated
+    private Password password;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    private LocalDateTime createdAt;
+
+    private Account(Email email, Password password, UserRole role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public static Account signUp(Email email, Password encryptedPassword) {
+        return new Account(email, encryptedPassword, UserRole.USER);
+    }
+
+    public boolean matchedPassword(String rawPassword, PasswordEncoder encoder) {
+        return password.matches(rawPassword, encoder);
+    }
+
+    public void changePassword(Password newEncryptedPassword) {
+        this.password = newEncryptedPassword;
+    }
+}
