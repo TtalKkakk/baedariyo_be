@@ -18,9 +18,17 @@ public class User {
     private Long id;
 
     @Embedded
+    @AttributeOverride(
+            name = "value",
+            column = @Column(name = "email", nullable = false, unique = true)
+    )
     private Email email;
 
     @Embedded
+    @AttributeOverride(
+            name = "value",
+            column = @Column(name = "password", nullable = false)
+    )
     private Password password;
 
     @Enumerated(EnumType.STRING)
