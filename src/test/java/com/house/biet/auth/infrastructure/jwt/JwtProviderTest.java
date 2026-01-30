@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,19 @@ import java.security.Key;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 class JwtProviderTest {
 
-    @Autowired
     JwtProvider jwtProvider;
+
+    @BeforeEach
+    void setup() {
+        JwtProperties jwtProperties = new JwtProperties();
+        jwtProperties.setSecretKey("test-secret-key-test-secret-key-test");
+        jwtProperties.setAccessTokenValiditySeconds(8640000);
+        jwtProperties.setRefreshTokenValiditySeconds(8640000);
+
+        jwtProvider = new JwtProvider(jwtProperties);
+    }
 
     @Test
     @DisplayName("성공 - access token 생성 성공")
