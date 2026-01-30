@@ -2,6 +2,7 @@ package com.house.biet.user.command.infrastructure;
 
 import com.house.biet.user.command.AccountRepository;
 import com.house.biet.user.command.domain.entity.Account;
+import com.house.biet.user.command.domain.vo.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +20,12 @@ public class AccountRepositoryJpaAdapter implements AccountRepository {
     }
 
     @Override
-    public Optional<Account> findByEmail(String value) {
-        return accountRepositoryJpa.findByEmail_value(value);
+    public boolean existsByEmail(Email email) {
+        return accountRepositoryJpa.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<Account> findByEmail(Email email) {
+        return accountRepositoryJpa.findByEmail(email);
     }
 }
