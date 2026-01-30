@@ -3,6 +3,8 @@ package com.house.biet.api;
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.domain.dto.LoginRequestDto;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
+import com.house.biet.global.response.CustomApiResponse;
+import com.house.biet.global.response.SuccessCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +21,16 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResultDto> login(
-            @RequestBody @Valid LoginRequestDto request
+    public  ResponseEntity<CustomApiResponse<LoginResultDto>> login(
+            @RequestBody @Valid LoginRequestDto requestDto
     ) {
-        LoginResultDto result = authService.login(
-                request.email(),
-                request.password()
+        LoginResultDto resultDto = authService.login(
+                requestDto.email(),
+                requestDto.password()
         );
 
         return ResponseEntity.ok(
-                new LoginResultDto(result.accessToken(), result.refreshToken()
-                )
+                CustomApiResponse.success(SuccessCode.LOGIN_SUCCESS, resultDto)
         );
     }
 }
