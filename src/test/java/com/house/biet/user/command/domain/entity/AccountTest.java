@@ -1,4 +1,4 @@
-package com.house.biet.auth.command.domain.entity;
+package com.house.biet.user.command.domain.entity;
 
 import com.house.biet.user.command.domain.vo.Email;
 import com.house.biet.user.command.domain.vo.Password;
