@@ -12,6 +12,7 @@ public enum ErrorCode {
     INVALID_EMAIL_FORMAT(40101, HttpStatus.BAD_REQUEST, "잘못된 이메일 형식입니다,"),
     INVALID_PASSWORD_FORMAT(40102, HttpStatus.BAD_REQUEST, "잘못된 비밀번호 형식입니다."),
     NOT_CORRECT_PASSWORD(40103, HttpStatus.BAD_REQUEST, "비밀번호가 올바르지 않습니다."),
+    ALREADY_EXIST_EMAIL(40104, HttpStatus.BAD_REQUEST, "이미 존재하는 이메일입니다"),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
