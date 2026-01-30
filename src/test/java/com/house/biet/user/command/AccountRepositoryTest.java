@@ -4,10 +4,13 @@ package com.house.biet.user.command;
 import com.house.biet.user.command.domain.entity.Account;
 import com.house.biet.user.command.domain.vo.Email;
 import com.house.biet.user.command.domain.vo.Password;
+import com.house.biet.user.command.infrastructure.AccountRepositoryJpaAdapter;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
+@Import(AccountRepositoryJpaAdapter.class)
 @ActiveProfiles("test")
 class AccountRepositoryTest {
 
@@ -27,11 +31,25 @@ class AccountRepositoryTest {
 
     private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
+    String givenEmailValue = "abc@xyz.com";
+    String givenPasswordValue = "MdxN@t6UnLNCRh!py1FjREm!CvC8KNVjhxu";
+
+    Email givenEmail;
+    Password givenPassword;
+    Account account;
+
+    @BeforeEach
+    void setup() {
+        givenEmail = new Email(givenEmailValue);
+        givenPassword = Password.encrypt(givenPasswordValue, ENCODER);
+
+        account = Account.signUp(givenEmail, givenPassword);
+    }
+
     @Test
     @DisplayName("에러 - 이메일 중복 저장 에러")
     void saveEmail_Error_EmailRedundantStorage() {
         // given
-        String givenEmailValue = "abc@xyz.com";
 
         Email email1 = new Email(givenEmailValue);
         Email email2 = new Email(givenEmailValue);
@@ -57,23 +75,26 @@ class AccountRepositoryTest {
     @DisplayName("성공 - 이메일로 계정을 조회")
     void findByEmail__Success() {
         // given
-        String givenEmailValue = "abc@xyz.com";
-        Email givenEmail = new Email(givenEmailValue);
-
-        String givenPasswordValue = "MdxN@t6UnLNCRh!py1FjREm!CvC8KNVjhxu";
-        Password givenPassword = Password.encrypt(givenPasswordValue, ENCODER);
-
-        Account account = Account.signUp(givenEmail, givenPassword);
-
         accountRepository.save(account);
 
         // when
-        Optional<Account> result = accountRepository.findByEmail(givenEmailValue);
+        Optional<Account> result = accountRepository.findByEmail(givenEmail);
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.get().getEmail()).isEqualTo(givenEmail);
     }
 
+    @Test
+    @DisplayName("성공 - 이메일 계정이 저장되었는지 확인")
+    void existsByEmail__Success() {
+        // given
+        accountRepository.save(account);
 
+        // when
+        boolean isSaved = accountRepository.existsByEmail(givenEmail);
+
+        // then
+        assertThat(isSaved).isTrue();
+    }
 }
