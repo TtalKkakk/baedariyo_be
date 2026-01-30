@@ -70,8 +70,8 @@ class AuthServiceTest {
         LoginResultDto result = authService.login(givenEmailValue, givenPasswordValue);
 
         // then
-        assertThat(result.getAccessToken()).isEqualTo("access-token");
-        assertThat(result.getRefreshToken()).isEqualTo("refresh-token");
+        assertThat(result.accessToken()).isEqualTo("access-token");
+        assertThat(result.refreshToken()).isEqualTo("refresh-token");
     }
 
     @Test
