@@ -3,6 +3,7 @@ package com.house.biet.api;
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.domain.dto.LoginRequestDto;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
+import com.house.biet.auth.command.domain.dto.SignupRequestDto;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
 import jakarta.validation.Valid;
@@ -19,6 +20,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
+    @PostMapping("/signup")
+    public ResponseEntity<CustomApiResponse<Void>> signup(
+            @RequestBody @Valid SignupRequestDto requestDto
+    ) {
+
+        authService.signup(
+                requestDto.email(),
+                requestDto.password()
+        );
+        
+        // user 정보를 추후에 추가해야함
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.SIGNUP_SUCCESS)
+        );
+    }
 
     @PostMapping("/login")
     public  ResponseEntity<CustomApiResponse<LoginResultDto>> login(
