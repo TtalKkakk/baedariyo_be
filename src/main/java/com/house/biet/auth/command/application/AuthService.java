@@ -6,6 +6,8 @@ import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.user.command.AccountRepository;
 import com.house.biet.user.command.domain.entity.Account;
+import com.house.biet.user.command.domain.vo.Email;
+import com.house.biet.user.command.domain.vo.Password;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,25 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
 
-    public LoginResultDto login(String email, String rawPassword) {
+    public void signup(String emailValue, String rawPasswordValue) {
+        Email email = new Email(emailValue);
+
+        if (accountRepository.existsByEmail(email))
+            throw new CustomException(ErrorCode.ALREADY_EXIST_EMAIL);
+
+        Password password = Password.encrypt(rawPasswordValue, passwordEncoder);
+        Account account = Account.signUp(email, password);
+
+        accountRepository.save(account);
+    }
+
+    public LoginResultDto login(String emailValue, String rawPasswordValue) {
+        Email email = new Email(emailValue);
+
         Account account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        if (!account.matchedPassword(rawPassword, passwordEncoder))
+        if (!account.matchedPassword(rawPasswordValue, passwordEncoder))
             throw new CustomException(ErrorCode.NOT_CORRECT_PASSWORD);
 
         String accessToken = jwtProvider.createAccessToken(account.getId(), account.getRole().name());
