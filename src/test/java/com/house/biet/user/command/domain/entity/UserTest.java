@@ -1,32 +1,26 @@
 package com.house.biet.user.command.domain.entity;
 
-import com.house.biet.global.vo.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UserTest {
 
-    private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
-
     @Test
     @DisplayName("성공 - 유저 생성 성공")
     void CreateUser_Success() {
         // given
-        String givenEmailValue = "abc@xyz.com";
-        String realNameValue = "<REAL_NAME>";
-        String nickNameValue = "<NICK_NAME>";
-        String givenPasswordValue = "a@lkdslkj!slkjxd";
+        String givenRealNameValue = "<REAL_NAME>";
+        String givenNickNameValue = "<NICK_NAME>";
+        String givenPhoneNumberValue = "010-1111-1111";
 
         // when
-        User user = User.create(givenEmailValue, realNameValue, nickNameValue, givenPasswordValue, ENCODER);
+        User user = User.create(givenRealNameValue, givenNickNameValue, givenPhoneNumberValue);
 
         // then
-        assertThat(user.getEmail().getValue()).isEqualTo(givenEmailValue);
-        assertThat(user.getPassword().matches(givenPasswordValue, ENCODER)).isTrue();
-        assertThat(user.getRole()).isEqualTo(UserRole.USER);
+        assertThat(user.getRealName().getValue()).isEqualTo(givenRealNameValue);
+        assertThat(user.getNickname().getValue()).isEqualTo(givenNickNameValue);
+        assertThat(user.getPhoneNumber().getValue()).isEqualTo(givenPhoneNumberValue);
     }
 }
