@@ -1,9 +1,9 @@
 package com.house.biet.api;
 
-import com.house.biet.auth.command.application.AuthService;
-import com.house.biet.auth.command.domain.dto.LoginRequestDto;
+import com.house.biet.auth.command.application.AuthUserService;
+import com.house.biet.auth.command.domain.dto.UserLoginRequestDto;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
-import com.house.biet.auth.command.domain.dto.SignupRequestDto;
+import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
 import jakarta.validation.Valid;
@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthUserService authUserService;
 
     @PostMapping("/signup")
     public ResponseEntity<CustomApiResponse<Void>> signup(
-            @RequestBody @Valid SignupRequestDto requestDto
+            @RequestBody @Valid UserSignupRequestDto requestDto
     ) {
 
-        authService.signup(
+        authUserService.signup(
                 requestDto.email(),
                 requestDto.password()
         );
@@ -40,9 +40,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public  ResponseEntity<CustomApiResponse<LoginResultDto>> login(
-            @RequestBody @Valid LoginRequestDto requestDto
+            @RequestBody @Valid UserLoginRequestDto requestDto
     ) {
-        LoginResultDto resultDto = authService.login(
+        LoginResultDto resultDto = authUserService.login(
                 requestDto.email(),
                 requestDto.password()
         );

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "accounts")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Account {
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,15 +40,15 @@ public class Account {
 
     private LocalDateTime createdAt;
 
-    private Account(Email email, Password password, UserRole role) {
+    private UserAccount(Email email, Password password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
         this.createdAt = LocalDateTime.now();
     }
 
-    public static Account signUp(Email email, Password encryptedPassword) {
-        return new Account(email, encryptedPassword, UserRole.USER);
+    public static UserAccount signUp(Email email, Password encryptedPassword) {
+        return new UserAccount(email, encryptedPassword, UserRole.USER);
     }
 
     public boolean matchedPassword(String rawPassword, PasswordEncoder encoder) {

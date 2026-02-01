@@ -2,11 +2,10 @@ package com.house.biet.auth.command.application;
 
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.auth.infrastructure.jwt.JwtProvider;
-import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.user.command.AccountRepository;
-import com.house.biet.user.command.domain.entity.Account;
+import com.house.biet.user.command.UserAccountRepository;
+import com.house.biet.user.command.domain.entity.UserAccount;
 import com.house.biet.user.command.domain.vo.Email;
 import com.house.biet.user.command.domain.vo.Password;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,13 +29,13 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
-class AuthServiceTest {
+class AuthUserServiceTest {
 
     @InjectMocks
-    private AuthService authService;
+    private AuthUserService authUserService;
 
     @Mock
-    private AccountRepository accountRepository;
+    private UserAccountRepository userAccountRepository;
 
     @Mock
     private JwtProvider jwtProvider;
@@ -51,40 +50,40 @@ class AuthServiceTest {
 
     Email givenEmail;
     Password givenPassword;
-    Account account;
+    UserAccount userAccount;
 
     @BeforeEach
     void setup() {
         givenEmail = new Email(givenEmailValue);
         givenPassword = Password.encrypt(givenPasswordValue, ENCODER);
 
-        account = Account.signUp(givenEmail, givenPassword);
+        userAccount = UserAccount.signUp(givenEmail, givenPassword);
     }
 
     @Test
     @DisplayName("성공 - 회원가입 성공")
     void signup_Success() {
         // when
-        given(accountRepository.existsByEmail(any(Email.class)))
+        given(userAccountRepository.existsByEmail(any(Email.class)))
                 .willReturn(false);
 
         // when
-        authService.signup(givenEmailValue, givenPasswordValue);
+        authUserService.signup(givenEmailValue, givenPasswordValue);
 
         // then
-        verify(accountRepository, times(1))
-                .save(any(Account.class));
+        verify(userAccountRepository, times(1))
+                .save(any(UserAccount.class));
     }
 
     @Test
     @DisplayName("에러 - 이미 존재하는 이메일입니다")
     void signup_Error_ExistEmailValue() {
         // when
-        given(accountRepository.existsByEmail(any(Email.class)))
+        given(userAccountRepository.existsByEmail(any(Email.class)))
                 .willReturn(true);
 
         // when & then
-        assertThatThrownBy(() -> authService.signup(givenEmailValue, givenPasswordValue))
+        assertThatThrownBy(() -> authUserService.signup(givenEmailValue, givenPasswordValue))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ALREADY_EXIST_EMAIL.getMessage());
     }
@@ -93,8 +92,8 @@ class AuthServiceTest {
     @DisplayName("성공 - 로그인 성공")
     void login_success() {
         // given
-        given(accountRepository.findByEmail(any(Email.class)))
-                .willReturn(Optional.of(account));
+        given(userAccountRepository.findByEmail(any(Email.class)))
+                .willReturn(Optional.of(userAccount));
 
         given(passwordEncoder.matches(anyString(), anyString()))
                 .willReturn(true);
@@ -106,7 +105,7 @@ class AuthServiceTest {
                 .willReturn("refresh-token");
 
         // when
-        LoginResultDto result = authService.login(givenEmailValue, givenPasswordValue);
+        LoginResultDto result = authUserService.login(givenEmailValue, givenPasswordValue);
 
         // then
         assertThat(result.accessToken()).isEqualTo("access-token");
@@ -117,11 +116,11 @@ class AuthServiceTest {
     @DisplayName("에러 - 존재하지 않은 이메일로 로그인")
     void login_Error_AccountNotFound() {
         // given
-        given(accountRepository.findByEmail(any(Email.class)))
+        given(userAccountRepository.findByEmail(any(Email.class)))
                 .willReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> authService.login("notInvalidId@xyz.com", "<RANDOM_NOT_SHORT_PASSWORD>"))
+        assertThatThrownBy(() -> authUserService.login("notInvalidId@xyz.com", "<RANDOM_NOT_SHORT_PASSWORD>"))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
     }
@@ -132,14 +131,14 @@ class AuthServiceTest {
         // given
         String notCorrectPasswordValue = "Kwo87x37T3vjSD!20HY@VeAC4#5DNbT6wuY";
 
-        given(accountRepository.findByEmail(givenEmail))
-                .willReturn(Optional.of(account));
+        given(userAccountRepository.findByEmail(givenEmail))
+                .willReturn(Optional.of(userAccount));
 
         given(passwordEncoder.matches(anyString(), anyString()))
                 .willReturn(false);
 
         // when & then
-        assertThatThrownBy(() -> authService.login(givenEmailValue, notCorrectPasswordValue))
+        assertThatThrownBy(() -> authUserService.login(givenEmailValue, notCorrectPasswordValue))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.NOT_CORRECT_PASSWORD.getMessage());
     }

@@ -3,8 +3,8 @@ package com.house.biet.auth.command.application;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.user.command.AccountRepository;
-import com.house.biet.user.command.domain.entity.Account;
+import com.house.biet.user.command.UserAccountRepository;
+import com.house.biet.user.command.domain.entity.UserAccount;
 import com.house.biet.user.command.domain.vo.Email;
 import com.house.biet.user.command.domain.vo.Password;
 import jakarta.transaction.Transactional;
@@ -20,13 +20,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
-public class AuthServiceIntegrationTest {
+public class AuthUserServiceIntegrationTest {
 
     @Autowired
-    AuthService authService;
+    AuthUserService authUserService;
 
     @Autowired
-    AccountRepository accountRepository;
+    UserAccountRepository userAccountRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -42,8 +42,8 @@ public class AuthServiceIntegrationTest {
         email = new Email(emailValue);
         password = Password.encrypt(passwordValue, passwordEncoder);
 
-        Account account = Account.signUp(email, password);
-        accountRepository.save(account);
+        UserAccount userAccount = UserAccount.signUp(email, password);
+        userAccountRepository.save(userAccount);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class AuthServiceIntegrationTest {
     @DisplayName("성공 - 로그인 성공")
     void login_Success() {
         // when
-        LoginResultDto result = authService.login(emailValue, passwordValue);
+        LoginResultDto result = authUserService.login(emailValue, passwordValue);
 
         // then
         assertThat(result.accessToken()).isNotNull();
@@ -72,7 +72,7 @@ public class AuthServiceIntegrationTest {
         String randomPasswordValue = "jIVVjDgldziYWgVMJPkaC@zVx50";
 
         // when & then
-        assertThatThrownBy(() -> authService.login(notExistEmailValue, randomPasswordValue))
+        assertThatThrownBy(() -> authUserService.login(notExistEmailValue, randomPasswordValue))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
     }

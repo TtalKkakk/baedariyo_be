@@ -1,10 +1,10 @@
 package com.house.biet.user.command;
 
 
-import com.house.biet.user.command.domain.entity.Account;
+import com.house.biet.user.command.domain.entity.UserAccount;
 import com.house.biet.user.command.domain.vo.Email;
 import com.house.biet.user.command.domain.vo.Password;
-import com.house.biet.user.command.infrastructure.AccountRepositoryJpaAdapter;
+import com.house.biet.user.command.infrastructure.UserUserAccountRepositoryJpaAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,12 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
-@Import(AccountRepositoryJpaAdapter.class)
+@Import(UserUserAccountRepositoryJpaAdapter.class)
 @ActiveProfiles("test")
-class AccountRepositoryTest {
+class UserUserAccountRepositoryTest {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private UserAccountRepository userAccountRepository;
 
     private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
@@ -36,14 +36,14 @@ class AccountRepositoryTest {
 
     Email givenEmail;
     Password givenPassword;
-    Account account;
+    UserAccount userAccount;
 
     @BeforeEach
     void setup() {
         givenEmail = new Email(givenEmailValue);
         givenPassword = Password.encrypt(givenPasswordValue, ENCODER);
 
-        account = Account.signUp(givenEmail, givenPassword);
+        userAccount = UserAccount.signUp(givenEmail, givenPassword);
     }
 
     @Test
@@ -60,13 +60,13 @@ class AccountRepositoryTest {
         Password givenPassword1 = Password.encrypt(givenPasswordValue1, ENCODER);
         Password givenPassword2 = Password.encrypt(givenPasswordValue2, ENCODER);
 
-        Account account1 = Account.signUp(email1, givenPassword1);
-        Account account2 = Account.signUp(email2, givenPassword2);
+        UserAccount userAccount1 = UserAccount.signUp(email1, givenPassword1);
+        UserAccount userAccount2 = UserAccount.signUp(email2, givenPassword2);
 
-        accountRepository.save(account1);
+        userAccountRepository.save(userAccount1);
 
         // when & then
-        assertThatThrownBy(() -> accountRepository.save(account2))
+        assertThatThrownBy(() -> userAccountRepository.save(userAccount2))
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 
@@ -75,10 +75,10 @@ class AccountRepositoryTest {
     @DisplayName("성공 - 이메일로 계정을 조회")
     void findByEmail__Success() {
         // given
-        accountRepository.save(account);
+        userAccountRepository.save(userAccount);
 
         // when
-        Optional<Account> result = accountRepository.findByEmail(givenEmail);
+        Optional<UserAccount> result = userAccountRepository.findByEmail(givenEmail);
 
         // then
         assertThat(result).isNotEmpty();
@@ -89,10 +89,10 @@ class AccountRepositoryTest {
     @DisplayName("성공 - 이메일 계정이 저장되었는지 확인")
     void existsByEmail__Success() {
         // given
-        accountRepository.save(account);
+        userAccountRepository.save(userAccount);
 
         // when
-        boolean isSaved = accountRepository.existsByEmail(givenEmail);
+        boolean isSaved = userAccountRepository.existsByEmail(givenEmail);
 
         // then
         assertThat(isSaved).isTrue();
