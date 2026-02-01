@@ -1,6 +1,7 @@
 package com.house.biet.auth.command.application;
 
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
+import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.auth.infrastructure.jwt.JwtProvider;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
@@ -21,7 +22,10 @@ public class AuthUserService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
 
-    public void signup(String emailValue, String rawPasswordValue) {
+    public void signup(UserSignupRequestDto requestDto) {
+        String emailValue = requestDto.email();
+        String rawPasswordValue = requestDto.password();
+
         Email email = new Email(emailValue);
 
         if (accountRepository.existsByEmailAndRole(email, UserRole.USER))
@@ -29,8 +33,10 @@ public class AuthUserService {
 
         Password password = Password.encrypt(rawPasswordValue, passwordEncoder);
         Account account = Account.signUp(email, password, UserRole.USER);
-
+        
         accountRepository.save(account);
+        
+        // TODO: user 정보 저장 로직 추가
     }
 
     public LoginResultDto login(String emailValue, String rawPasswordValue) {

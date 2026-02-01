@@ -26,13 +26,8 @@ public class AuthUserController {
             @RequestBody @Valid UserSignupRequestDto requestDto
     ) {
 
-        authUserService.signup(
-                requestDto.email(),
-                requestDto.password()
-        );
+        authUserService.signup(requestDto);
         
-        //TODO: user 정보를 추후에 추가해야함
-
         return ResponseEntity.ok(
                 CustomApiResponse.success(SuccessCode.SIGNUP_SUCCESS)
         );
