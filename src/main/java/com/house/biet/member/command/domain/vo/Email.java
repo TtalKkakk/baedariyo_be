@@ -1,4 +1,4 @@
-package com.house.biet.member.domain.vo;
+package com.house.biet.member.command.domain.vo;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
@@ -12,16 +12,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
-public class RealName {
+public class Email {
 
     private String value;
 
-    public RealName(String value) {
-        if (value == null || value.isBlank())
-            throw new CustomException(ErrorCode.INVALID_REAL_NAME_FORMAT);
-        
-        // TODO: 실제 사용자 인증 가능할 시 추가할 것
-        
+    public Email(String value) {
+        if (!value.contains("@") || !value.contains("."))
+            throw new CustomException(ErrorCode.INVALID_EMAIL_FORMAT);
+
         this.value = value;
     }
 }

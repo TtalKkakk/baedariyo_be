@@ -1,10 +1,10 @@
 package com.house.biet.user.command.domain.entity;
 
-import com.house.biet.member.domain.vo.Email;
-import com.house.biet.member.domain.vo.Nickname;
-import com.house.biet.member.domain.vo.Password;
+import com.house.biet.member.command.domain.vo.Email;
+import com.house.biet.member.command.domain.vo.Nickname;
+import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.global.vo.UserRole;
-import com.house.biet.member.domain.vo.RealName;
+import com.house.biet.member.command.domain.vo.RealName;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;

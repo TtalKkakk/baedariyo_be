@@ -1,4 +1,4 @@
-package com.house.biet.member.domain.vo;
+package com.house.biet.member.command.domain.vo;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;

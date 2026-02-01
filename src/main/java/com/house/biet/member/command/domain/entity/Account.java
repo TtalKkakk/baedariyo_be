@@ -1,7 +1,7 @@
-package com.house.biet.user.command.domain.entity;
+package com.house.biet.member.command.domain.entity;
 
-import com.house.biet.member.domain.vo.Email;
-import com.house.biet.member.domain.vo.Password;
+import com.house.biet.member.command.domain.vo.Email;
+import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.global.vo.UserRole;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,10 +12,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_accounts")
+@Table(
+        name = "accounts",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"email", "role"})  // 복합 유니크 설정
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserAccount {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +29,7 @@ public class UserAccount {
     @Embedded
     @AttributeOverride(
             name = "value",
-            column = @Column(name = "email", nullable = false, unique = true)
+            column = @Column(name = "email", nullable = false)
     )
     private Email email;
 
@@ -36,19 +41,20 @@ public class UserAccount {
     private Password password;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserRole role;
 
     private LocalDateTime createdAt;
 
-    private UserAccount(Email email, Password password, UserRole role) {
+    private Account(Email email, Password password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
         this.createdAt = LocalDateTime.now();
     }
 
-    public static UserAccount signUp(Email email, Password encryptedPassword) {
-        return new UserAccount(email, encryptedPassword, UserRole.USER);
+    public static Account signUp(Email email, Password encryptedPassword, UserRole role) {
+        return new Account(email, encryptedPassword, role);
     }
 
     public boolean matchedPassword(String rawPassword, PasswordEncoder encoder) {
