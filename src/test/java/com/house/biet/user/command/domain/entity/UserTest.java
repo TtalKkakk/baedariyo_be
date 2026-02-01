@@ -18,9 +18,11 @@ class UserTest {
         // given
         String givenEmailValue = "abc@xyz.com";
         String givenPasswordValue = "a@lkdslkj!slkjxd";
+        String realNameValue = "<REAL_NAME>";
+        String nickNameValue = "<NICK_NAME>";
 
         // when
-        User user = User.create(givenEmailValue, givenPasswordValue, ENCODER);
+        User user = User.create(givenEmailValue, givenPasswordValue, realNameValue, nickNameValue, ENCODER);
 
         // then
         assertThat(user.getEmail().getValue()).isEqualTo(givenEmailValue);
