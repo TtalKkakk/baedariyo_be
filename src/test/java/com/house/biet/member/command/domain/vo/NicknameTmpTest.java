@@ -22,8 +22,8 @@ class NicknameTmpTest {
         Nickname nickname15 = new Nickname(value15);
 
         // then
-        assertThat(nickname5).isNotNull();
-        assertThat(nickname15).isInstanceOf(Nickname.class);
+        assertThat(nickname5.getValue()).isEqualTo(value5);
+        assertThat(nickname15.getValue()).isEqualTo(value15);
     }
 
     @Test
