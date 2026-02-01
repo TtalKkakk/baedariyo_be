@@ -3,10 +3,11 @@ package com.house.biet.auth.command.application;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.user.command.UserAccountRepository;
-import com.house.biet.user.command.domain.entity.UserAccount;
-import com.house.biet.member.domain.vo.Email;
-import com.house.biet.member.domain.vo.Password;
+import com.house.biet.global.vo.UserRole;
+import com.house.biet.member.command.AccountRepository;
+import com.house.biet.member.command.domain.entity.Account;
+import com.house.biet.member.command.domain.vo.Email;
+import com.house.biet.member.command.domain.vo.Password;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +27,7 @@ public class AuthUserServiceIntegrationTest {
     AuthUserService authUserService;
 
     @Autowired
-    UserAccountRepository userAccountRepository;
+    AccountRepository accountRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -42,8 +43,8 @@ public class AuthUserServiceIntegrationTest {
         email = new Email(emailValue);
         password = Password.encrypt(passwordValue, passwordEncoder);
 
-        UserAccount userAccount = UserAccount.signUp(email, password);
-        userAccountRepository.save(userAccount);
+        Account account = Account.signUp(email, password, UserRole.USER );
+        accountRepository.save(account);
     }
 
     @Test

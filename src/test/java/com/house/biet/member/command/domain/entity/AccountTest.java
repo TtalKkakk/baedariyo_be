@@ -1,7 +1,8 @@
-package com.house.biet.user.command.domain.entity;
+package com.house.biet.member.command.domain.entity;
 
-import com.house.biet.member.domain.vo.Email;
-import com.house.biet.member.domain.vo.Password;
+import com.house.biet.member.command.domain.entity.Account;
+import com.house.biet.member.command.domain.vo.Email;
+import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.global.vo.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,12 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UserAccountTest {
+class AccountTest {
 
     private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
     @Test
-    @DisplayName("성공 - 계좌 생성 성공")
+    @DisplayName("성공 - 유저 계좌 생성 성공")
     void createAccess_Success() {
         // given
         String givenEmailValue = "abc@xyz.com";
@@ -27,16 +28,16 @@ class UserAccountTest {
         UserRole userRole = UserRole.USER;
 
         // when
-        UserAccount userAccount = UserAccount.signUp(givenEmail, givenEncryptedPassword);
+        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
 
         // then
-        assertThat(userAccount.getEmail().getValue()).isEqualTo(givenEmailValue);
-        assertThat(userAccount.getPassword().matches(givenPasswordValue, ENCODER)).isTrue();
-        assertThat(userAccount.getRole()).isEqualTo(userRole);
+        assertThat(account.getEmail().getValue()).isEqualTo(givenEmailValue);
+        assertThat(account.getPassword().matches(givenPasswordValue, ENCODER)).isTrue();
+        assertThat(account.getRole()).isEqualTo(userRole);
     }
 
     @Test
-    @DisplayName("성공 - 비밀번호 매치 성공")
+    @DisplayName("성공 - 유저 비밀번호 매치 성공")
     void matchedPassword_Success() {
         // given
         String givenEmailValue = "abc@xyz.com";
@@ -46,10 +47,10 @@ class UserAccountTest {
         Password givenEncryptedPassword = Password.encrypt(givenPasswordValue, ENCODER);
 
         UserRole userRole = UserRole.USER;
-        UserAccount userAccount = UserAccount.signUp(givenEmail, givenEncryptedPassword);
+        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
 
         // when
-        boolean matched = userAccount.matchedPassword(givenPasswordValue, ENCODER);
+        boolean matched = account.matchedPassword(givenPasswordValue, ENCODER);
 
         // then
         assertThat(matched).isTrue();
@@ -66,12 +67,12 @@ class UserAccountTest {
         Password givenEncryptedPassword = Password.encrypt(givenPasswordValue, ENCODER);
 
         UserRole userRole = UserRole.USER;
-        UserAccount userAccount = UserAccount.signUp(givenEmail, givenEncryptedPassword);
+        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
 
         String anotherPasswordValue = "<RANDOM_PASSWORD>";
 
         // when
-        boolean matched = userAccount.matchedPassword(anotherPasswordValue, ENCODER);
+        boolean matched = account.matchedPassword(anotherPasswordValue, ENCODER);
 
         // then
         assertThat(matched).isFalse();
@@ -88,15 +89,15 @@ class UserAccountTest {
         Password givenEncryptedPassword = Password.encrypt(givenPasswordValue, ENCODER);
 
         UserRole userRole = UserRole.USER;
-        UserAccount userAccount = UserAccount.signUp(givenEmail, givenEncryptedPassword);
+        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
 
         String newPasswordValue = "akl2da12keh@ahc!sdkjxx";
         Password newPassword = Password.encrypt(newPasswordValue, ENCODER);
 
         // when
-        userAccount.changePassword(newPassword);
+        account.changePassword(newPassword);
 
         // then
-        assertThat(userAccount.getPassword().matches(newPasswordValue, ENCODER)).isTrue();
+        assertThat(account.getPassword().matches(newPasswordValue, ENCODER)).isTrue();
     }
 }

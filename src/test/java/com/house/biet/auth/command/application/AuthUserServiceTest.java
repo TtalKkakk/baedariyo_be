@@ -4,10 +4,11 @@ import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.auth.infrastructure.jwt.JwtProvider;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.user.command.UserAccountRepository;
-import com.house.biet.user.command.domain.entity.UserAccount;
-import com.house.biet.member.domain.vo.Email;
-import com.house.biet.member.domain.vo.Password;
+import com.house.biet.global.vo.UserRole;
+import com.house.biet.member.command.AccountRepository;
+import com.house.biet.member.command.domain.entity.Account;
+import com.house.biet.member.command.domain.vo.Email;
+import com.house.biet.member.command.domain.vo.Password;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class AuthUserServiceTest {
     private AuthUserService authUserService;
 
     @Mock
-    private UserAccountRepository userAccountRepository;
+    private AccountRepository accountRepository;
 
     @Mock
     private JwtProvider jwtProvider;
@@ -50,36 +51,36 @@ class AuthUserServiceTest {
 
     Email givenEmail;
     Password givenPassword;
-    UserAccount userAccount;
+    Account account;
 
     @BeforeEach
     void setup() {
         givenEmail = new Email(givenEmailValue);
         givenPassword = Password.encrypt(givenPasswordValue, ENCODER);
 
-        userAccount = UserAccount.signUp(givenEmail, givenPassword);
+        account = Account.signUp(givenEmail, givenPassword, UserRole.USER);
     }
 
     @Test
     @DisplayName("성공 - 회원가입 성공")
     void signup_Success() {
         // when
-        given(userAccountRepository.existsByEmail(any(Email.class)))
+        given(accountRepository.existsByEmailAndRole(any(Email.class), eq(UserRole.USER)))
                 .willReturn(false);
 
         // when
         authUserService.signup(givenEmailValue, givenPasswordValue);
 
         // then
-        verify(userAccountRepository, times(1))
-                .save(any(UserAccount.class));
+        verify(accountRepository, times(1))
+                .save(any(Account.class));
     }
 
     @Test
     @DisplayName("에러 - 이미 존재하는 이메일입니다")
     void signup_Error_ExistEmailValue() {
         // when
-        given(userAccountRepository.existsByEmail(any(Email.class)))
+        given(accountRepository.existsByEmailAndRole(any(Email.class), eq(UserRole.USER)))
                 .willReturn(true);
 
         // when & then
@@ -92,8 +93,8 @@ class AuthUserServiceTest {
     @DisplayName("성공 - 로그인 성공")
     void login_success() {
         // given
-        given(userAccountRepository.findByEmail(any(Email.class)))
-                .willReturn(Optional.of(userAccount));
+        given(accountRepository.findByEmailAndRole(any(Email.class), eq(UserRole.USER)))
+                .willReturn(Optional.of(account));
 
         given(passwordEncoder.matches(anyString(), anyString()))
                 .willReturn(true);
@@ -116,7 +117,7 @@ class AuthUserServiceTest {
     @DisplayName("에러 - 존재하지 않은 이메일로 로그인")
     void login_Error_AccountNotFound() {
         // given
-        given(userAccountRepository.findByEmail(any(Email.class)))
+        given(accountRepository.findByEmailAndRole(any(Email.class), eq(UserRole.USER)))
                 .willReturn(Optional.empty());
 
         // when & then
@@ -131,8 +132,8 @@ class AuthUserServiceTest {
         // given
         String notCorrectPasswordValue = "Kwo87x37T3vjSD!20HY@VeAC4#5DNbT6wuY";
 
-        given(userAccountRepository.findByEmail(givenEmail))
-                .willReturn(Optional.of(userAccount));
+        given(accountRepository.findByEmailAndRole(givenEmail, UserRole.USER))
+                .willReturn(Optional.of(account));
 
         given(passwordEncoder.matches(anyString(), anyString()))
                 .willReturn(false);
