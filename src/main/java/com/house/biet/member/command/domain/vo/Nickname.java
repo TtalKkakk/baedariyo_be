@@ -26,5 +26,7 @@ public class Nickname {
             throw new CustomException(ErrorCode.INVALID_NICK_NAME_FORMAT);
         if (value.length() < 5 || value.length() > 15)
             throw new CustomException(ErrorCode.INVALID_NICK_NAME_FORMAT);
+
+        this.value = value;
     }
 }
