@@ -2,6 +2,7 @@ package com.house.biet.user.command.domain.vo;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
+import com.house.biet.member.domain.vo.Password;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

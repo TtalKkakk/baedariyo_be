@@ -1,8 +1,7 @@
-package com.house.biet.user.command.domain.vo;
+package com.house.biet.member.domain.vo;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;

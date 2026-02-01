@@ -2,7 +2,7 @@ package com.house.biet.user.command.infrastructure;
 
 import com.house.biet.user.command.UserAccountRepository;
 import com.house.biet.user.command.domain.entity.UserAccount;
-import com.house.biet.user.command.domain.vo.Email;
+import com.house.biet.member.domain.vo.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

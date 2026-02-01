@@ -1,11 +1,11 @@
 package com.house.biet.user.command.domain.vo;
 
 import com.house.biet.global.response.ErrorCode;
+import com.house.biet.member.domain.vo.Email;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class EmailTest {
 

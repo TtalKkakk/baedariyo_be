@@ -1,7 +1,7 @@
 package com.house.biet.user.command.domain.entity;
 
-import com.house.biet.user.command.domain.vo.Email;
-import com.house.biet.user.command.domain.vo.Password;
+import com.house.biet.member.domain.vo.Email;
+import com.house.biet.member.domain.vo.Password;
 import com.house.biet.global.vo.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
