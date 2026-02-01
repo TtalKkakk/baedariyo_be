@@ -1,6 +1,7 @@
 package com.house.biet.auth.command.application;
 
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
+import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.auth.infrastructure.jwt.JwtProvider;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
@@ -49,15 +50,28 @@ class AuthUserServiceTest {
     String givenEmailValue = "abc@xyz.com";
     String givenPasswordValue = "gsPqZwBlx@Wko2hihjaH!gB@peCJohn4ycIw8o";
 
+    UserSignupRequestDto userSignupRequestDto;
     Email givenEmail;
     Password givenPassword;
     Account account;
 
     @BeforeEach
     void setup() {
+
+        String givenRealNameValue = "<REAL_NAME>";
+        String givenNicknameValue = "<NICKNAME>";
+        String givenPhoneNumberValue = "000-1234-1562";
+
+        userSignupRequestDto = new UserSignupRequestDto(
+                givenEmailValue,
+                givenPasswordValue,
+                givenRealNameValue,
+                givenNicknameValue,
+                givenPhoneNumberValue
+        );
+
         givenEmail = new Email(givenEmailValue);
         givenPassword = Password.encrypt(givenPasswordValue, ENCODER);
-
         account = Account.signUp(givenEmail, givenPassword, UserRole.USER);
     }
 
@@ -69,7 +83,7 @@ class AuthUserServiceTest {
                 .willReturn(false);
 
         // when
-        authUserService.signup(givenEmailValue, givenPasswordValue);
+        authUserService.signup(userSignupRequestDto);
 
         // then
         verify(accountRepository, times(1))
@@ -84,7 +98,7 @@ class AuthUserServiceTest {
                 .willReturn(true);
 
         // when & then
-        assertThatThrownBy(() -> authUserService.signup(givenEmailValue, givenPasswordValue))
+        assertThatThrownBy(() -> authUserService.signup(userSignupRequestDto))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ALREADY_EXIST_EMAIL.getMessage());
     }
