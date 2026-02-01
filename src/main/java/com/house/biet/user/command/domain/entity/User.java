@@ -1,8 +1,10 @@
 package com.house.biet.user.command.domain.entity;
 
-import com.house.biet.user.command.domain.vo.Email;
-import com.house.biet.user.command.domain.vo.Password;
+import com.house.biet.member.domain.vo.Email;
+import com.house.biet.member.domain.vo.Nickname;
+import com.house.biet.member.domain.vo.Password;
 import com.house.biet.global.vo.UserRole;
+import com.house.biet.member.domain.vo.RealName;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,17 +29,34 @@ public class User {
     @Embedded
     @AttributeOverride(
             name = "value",
+            column = @Column(name = "real_name", nullable = false)
+    )
+    private RealName realName;
+
+    @Embedded
+    @AttributeOverride(
+            name = "value",
+            column = @Column(name = "nickname", nullable = false, unique = true)
+    )
+    private Nickname nickname;
+
+    @Embedded
+    @AttributeOverride(
+            name = "value",
             column = @Column(name = "password", nullable = false)
     )
     private Password password;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserRole role;
 
-    public static User create(String email, String rawPassword, PasswordEncoder encoder) {
+    public static User create(String email, String realName, String nickname, String rawPassword, PasswordEncoder encoder) {
         return new User(
                 null,
                 new Email(email),
+                new RealName(realName),
+                new Nickname(nickname),
                 Password.encrypt(rawPassword, encoder),
                 UserRole.USER
         );
