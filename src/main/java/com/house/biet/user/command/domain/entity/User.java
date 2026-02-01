@@ -43,4 +43,12 @@ public class User {
                 new PhoneNumber(phoneNumber)
         );
     }
+
+    public void changeNickname(Nickname nickname) {
+        this.nickname = nickname;
+    }
+
+    public void changePhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }
