@@ -2,7 +2,7 @@ package com.house.biet.user.command.domain.entity;
 
 import com.house.biet.user.command.domain.vo.Email;
 import com.house.biet.user.command.domain.vo.Password;
-import com.house.biet.user.command.domain.vo.UserRole;
+import com.house.biet.global.vo.UserRole;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

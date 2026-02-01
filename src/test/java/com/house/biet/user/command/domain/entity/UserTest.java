@@ -1,15 +1,12 @@
 package com.house.biet.user.command.domain.entity;
 
-import com.house.biet.user.command.domain.vo.Email;
-import com.house.biet.user.command.domain.vo.Password;
-import com.house.biet.user.command.domain.vo.UserRole;
+import com.house.biet.global.vo.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
 

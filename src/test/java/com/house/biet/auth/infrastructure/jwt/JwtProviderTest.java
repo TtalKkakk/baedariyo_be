@@ -1,17 +1,10 @@
 package com.house.biet.auth.infrastructure.jwt;
 
-import com.house.biet.user.command.domain.vo.UserRole;
+import com.house.biet.global.vo.UserRole;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.security.Key;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
