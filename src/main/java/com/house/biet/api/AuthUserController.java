@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthUserController {
 
     private final AuthUserService authUserService;
 
@@ -31,7 +31,7 @@ public class AuthController {
                 requestDto.password()
         );
         
-        // user 정보를 추후에 추가해야함
+        //TODO: user 정보를 추후에 추가해야함
 
         return ResponseEntity.ok(
                 CustomApiResponse.success(SuccessCode.SIGNUP_SUCCESS)
