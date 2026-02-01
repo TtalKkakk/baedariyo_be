@@ -23,6 +23,7 @@ class RealNameTest {
         // then
         assertThat(realName).isNotNull();
         assertThat(realName).isInstanceOf(RealName.class);
+        assertThat(realName.getValue()).isEqualTo(value);
     }
 
     @Test
