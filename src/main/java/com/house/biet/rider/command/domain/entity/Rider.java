@@ -4,6 +4,7 @@ import com.house.biet.global.jpa.BaseTimeEntity;
 import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.PhoneNumber;
 import com.house.biet.member.command.domain.vo.RealName;
+import com.house.biet.rider.command.domain.vo.RiderStatus;
 import com.house.biet.rider.command.domain.vo.VehicleType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -47,13 +48,18 @@ public class Rider extends BaseTimeEntity {
     @Column(nullable = false)
     private VehicleType vehicleType;
 
-    public static Rider create(String realName, String nickname, String phoneNumber, VehicleType vehicleType) {
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RiderStatus riderStatus;
+
+    public static Rider create(String realName, String nickname, String phoneNumber, VehicleType vehicleType, RiderStatus riderStatus) {
         return new Rider(
                 null,
                 new RealName(realName),
                 new Nickname(nickname),
                 new PhoneNumber(phoneNumber),
-                vehicleType
+                vehicleType,
+                riderStatus
         );
     }
 
@@ -67,5 +73,9 @@ public class Rider extends BaseTimeEntity {
 
     public void changeVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    public void changeRiderStatus(RiderStatus riderStatus) {
+        this.riderStatus = riderStatus;
     }
 }
