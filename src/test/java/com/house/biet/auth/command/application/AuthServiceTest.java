@@ -85,7 +85,7 @@ class AuthServiceTest {
         // when & then
         assertThatThrownBy(() -> authService.signup(givenEmailValue, givenPasswordValue))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.ALREADY_EXIST_EMAIL.getMessage());
+                .hasMessage(ErrorCode.ALREADY_EXIST_EMAIL_AND_ROLE.getMessage());
     }
 
     @Test

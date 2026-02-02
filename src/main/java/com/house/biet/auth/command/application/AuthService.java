@@ -25,7 +25,7 @@ public class AuthService {
         Email email = new Email(emailValue);
 
         if (accountRepository.existsByEmailAndRole(email, UserRole.USER))
-            throw new CustomException(ErrorCode.ALREADY_EXIST_EMAIL);
+            throw new CustomException(ErrorCode.ALREADY_EXIST_EMAIL_AND_ROLE);
 
         Password password = Password.encrypt(rawPasswordValue, passwordEncoder);
         Account account = Account.signUp(email, password, UserRole.USER);
