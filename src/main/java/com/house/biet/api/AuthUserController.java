@@ -6,6 +6,8 @@ import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
+import com.house.biet.signup.command.application.UserSignupService;
+import com.house.biet.user.command.application.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth/user")
 public class AuthUserController {
 
+    private final UserSignupService userSignupService;
     private final AuthUserService authUserService;
 
     @PostMapping("/signup")
@@ -26,8 +29,8 @@ public class AuthUserController {
             @RequestBody @Valid UserSignupRequestDto requestDto
     ) {
 
-        authUserService.signup(requestDto);
-        
+        userSignupService.signup(requestDto);
+
         return ResponseEntity.ok(
                 CustomApiResponse.success(SuccessCode.SIGNUP_SUCCESS)
         );
