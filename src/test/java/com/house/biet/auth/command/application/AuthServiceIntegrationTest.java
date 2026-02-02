@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
-public class AuthUserServiceIntegrationTest {
+public class AuthServiceIntegrationTest {
 
     @Autowired
-    AuthUserService authUserService;
+    AuthService authService;
 
     @Autowired
     AccountRepository accountRepository;
@@ -58,7 +58,7 @@ public class AuthUserServiceIntegrationTest {
     @DisplayName("성공 - 로그인 성공")
     void login_Success() {
         // when
-        LoginResultDto result = authUserService.login(emailValue, passwordValue);
+        LoginResultDto result = authService.login(emailValue, passwordValue);
 
         // then
         assertThat(result.accessToken()).isNotNull();
@@ -73,7 +73,7 @@ public class AuthUserServiceIntegrationTest {
         String randomPasswordValue = "jIVVjDgldziYWgVMJPkaC@zVx50";
 
         // when & then
-        assertThatThrownBy(() -> authUserService.login(notExistEmailValue, randomPasswordValue))
+        assertThatThrownBy(() -> authService.login(notExistEmailValue, randomPasswordValue))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
     }

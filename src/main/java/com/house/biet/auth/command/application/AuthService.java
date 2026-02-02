@@ -1,7 +1,6 @@
 package com.house.biet.auth.command.application;
 
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
-import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.auth.infrastructure.jwt.JwtProvider;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthUserService {
+public class AuthService {
 
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;

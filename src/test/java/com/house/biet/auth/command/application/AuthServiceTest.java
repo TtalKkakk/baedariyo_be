@@ -1,7 +1,6 @@
 package com.house.biet.auth.command.application;
 
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
-import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.auth.infrastructure.jwt.JwtProvider;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
@@ -31,10 +30,10 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
-class AuthUserServiceTest {
+class AuthServiceTest {
 
     @InjectMocks
-    private AuthUserService authUserService;
+    private AuthService authService;
 
     @Mock
     private AccountRepository accountRepository;
@@ -69,7 +68,7 @@ class AuthUserServiceTest {
                 .willReturn(false);
 
         // when
-        authUserService.signup(givenEmailValue, givenPasswordValue);
+        authService.signup(givenEmailValue, givenPasswordValue);
 
         // then
         verify(accountRepository, times(1))
@@ -84,7 +83,7 @@ class AuthUserServiceTest {
                 .willReturn(true);
 
         // when & then
-        assertThatThrownBy(() -> authUserService.signup(givenEmailValue, givenPasswordValue))
+        assertThatThrownBy(() -> authService.signup(givenEmailValue, givenPasswordValue))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ALREADY_EXIST_EMAIL.getMessage());
     }
@@ -106,7 +105,7 @@ class AuthUserServiceTest {
                 .willReturn("refresh-token");
 
         // when
-        LoginResultDto result = authUserService.login(givenEmailValue, givenPasswordValue);
+        LoginResultDto result = authService.login(givenEmailValue, givenPasswordValue);
 
         // then
         assertThat(result.accessToken()).isEqualTo("access-token");
@@ -121,7 +120,7 @@ class AuthUserServiceTest {
                 .willReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> authUserService.login("notInvalidId@xyz.com", "<RANDOM_NOT_SHORT_PASSWORD>"))
+        assertThatThrownBy(() -> authService.login("notInvalidId@xyz.com", "<RANDOM_NOT_SHORT_PASSWORD>"))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
     }
@@ -139,7 +138,7 @@ class AuthUserServiceTest {
                 .willReturn(false);
 
         // when & then
-        assertThatThrownBy(() -> authUserService.login(givenEmailValue, notCorrectPasswordValue))
+        assertThatThrownBy(() -> authService.login(givenEmailValue, notCorrectPasswordValue))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.NOT_CORRECT_PASSWORD.getMessage());
     }
