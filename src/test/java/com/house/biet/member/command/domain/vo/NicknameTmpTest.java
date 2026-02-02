@@ -15,15 +15,15 @@ class NicknameTmpTest {
     void CreateNicknameVO_Success() {
         // given
         String value5 = "abcde";
-        String value15 = "abcdefghijklmno";
+        String value30 = "abcdefghijklmnopqrstuvwxyz0123";
 
         // when
         Nickname nickname5 = new Nickname(value5);
-        Nickname nickname15 = new Nickname(value15);
+        Nickname nickname30 = new Nickname(value30);
 
         // then
         assertThat(nickname5.getValue()).isEqualTo(value5);
-        assertThat(nickname15.getValue()).isEqualTo(value15);
+        assertThat(nickname30.getValue()).isEqualTo(value30);
     }
 
     @Test
@@ -32,7 +32,7 @@ class NicknameTmpTest {
         // given
         String blankValue = "";
         String value4 = "abcd";
-        String value16 = "abcdefghijklmnop";
+        String value31 = "abcdefghijklmnopqrstuvwxyz01234";
 
         // when & then
         assertThatThrownBy(() -> new Nickname(blankValue))
@@ -43,7 +43,7 @@ class NicknameTmpTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.INVALID_NICK_NAME_FORMAT.getMessage());
 
-        assertThatThrownBy(() -> new Nickname(value16))
+        assertThatThrownBy(() -> new Nickname(value31))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.INVALID_NICK_NAME_FORMAT.getMessage());
     }
