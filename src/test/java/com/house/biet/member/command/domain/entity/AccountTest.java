@@ -40,7 +40,7 @@ class AccountTest {
     @DisplayName("성공 - 유저 계좌 생성 성공")
     void createAccess_Success() {
         // when
-        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
+        Account account = Account.signup(givenEmail, givenEncryptedPassword, userRole);
 
         // then
         assertThat(account.getEmail().getValue()).isEqualTo(givenEmailValue);
@@ -54,7 +54,7 @@ class AccountTest {
     @DisplayName("성공 - 계좌 삭제 시 정지 상태로 변경")
     void withdrawAccount_Success() {
         // given
-        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
+        Account account = Account.signup(givenEmail, givenEncryptedPassword, userRole);
 
         // when
         account.withdraw();
@@ -68,7 +68,7 @@ class AccountTest {
     @DisplayName("에러 - 이미 삭제된 계좌를 삭제")
     void withDrawAccount_Error_AlreadyWithdrawn() {
         // given
-        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
+        Account account = Account.signup(givenEmail, givenEncryptedPassword, userRole);
 
         ReflectionTestUtils.setField(account, "accountStatus", AccountStatus.WITHDRAWN);
 
@@ -82,7 +82,7 @@ class AccountTest {
     @DisplayName("성공 - 유저 비밀번호 매치 성공")
     void matchedPassword_Success() {
         // given
-        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
+        Account account = Account.signup(givenEmail, givenEncryptedPassword, userRole);
 
         // when
         boolean matched = account.matchedPassword(givenPasswordValue, ENCODER);
@@ -95,7 +95,7 @@ class AccountTest {
     @DisplayName("성공 - 비밀번호 매치 실패")
     void notMatchedPassword_Success() {
         // given
-        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
+        Account account = Account.signup(givenEmail, givenEncryptedPassword, userRole);
 
         String anotherPasswordValue = "<RANDOM_PASSWORD>";
 
@@ -110,7 +110,7 @@ class AccountTest {
     @DisplayName("성공 - 비밀번호 변경 성공")
     void changePassword_Success() {
         // given
-        Account account = Account.signUp(givenEmail, givenEncryptedPassword, userRole);
+        Account account = Account.signup(givenEmail, givenEncryptedPassword, userRole);
 
         String newPasswordValue = "akl2da12keh@ahc!sdkjxx";
         Password newPassword = Password.encrypt(newPasswordValue, ENCODER);

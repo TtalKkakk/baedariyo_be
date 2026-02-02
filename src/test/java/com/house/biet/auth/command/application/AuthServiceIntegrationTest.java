@@ -43,7 +43,7 @@ public class AuthServiceIntegrationTest {
         email = new Email(emailValue);
         password = Password.encrypt(passwordValue, passwordEncoder);
 
-        Account account = Account.signUp(email, password, UserRole.USER );
+        Account account = Account.signup(email, password, UserRole.USER );
         accountRepository.save(account);
     }
 

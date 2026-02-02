@@ -45,7 +45,7 @@ class AccountRepositoryTest {
         givenEmail = new Email(givenEmailValue);
         givenPassword = Password.encrypt(givenPasswordValue, ENCODER);
 
-        userAccount = Account.signUp(givenEmail, givenPassword, UserRole.USER);
+        userAccount = Account.signup(givenEmail, givenPassword, UserRole.USER);
     }
 
     @Test
@@ -71,7 +71,7 @@ class AccountRepositoryTest {
     @DisplayName("성공 - 동일한 이메일과 다른 Role로 회원가입")
     void saveEmail_Success_SameEmailLogin() {
         // given
-        Account riderAccount = Account.signUp(givenEmail, givenPassword, UserRole.RIDER);
+        Account riderAccount = Account.signup(givenEmail, givenPassword, UserRole.RIDER);
 
         // when
         accountRepository.save(userAccount);
@@ -100,8 +100,8 @@ class AccountRepositoryTest {
         Password givenPassword1 = Password.encrypt(givenPasswordValue1, ENCODER);
         Password givenPassword2 = Password.encrypt(givenPasswordValue2, ENCODER);
 
-        Account userAccount1 = Account.signUp(email1, givenPassword1, UserRole.USER);
-        Account userAccount2 = Account.signUp(email2, givenPassword2, UserRole.USER);
+        Account userAccount1 = Account.signup(email1, givenPassword1, UserRole.USER);
+        Account userAccount2 = Account.signup(email2, givenPassword2, UserRole.USER);
 
         accountRepository.save(userAccount1);
 

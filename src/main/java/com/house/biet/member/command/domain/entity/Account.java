@@ -61,7 +61,7 @@ public class Account {
         this.accountStatus = AccountStatus.ACTIVE;
     }
 
-    public static Account signUp(Email email, Password encryptedPassword, UserRole role) {
+    public static Account signup(Email email, Password encryptedPassword, UserRole role) {
         return new Account(email, encryptedPassword, role);
     }
 

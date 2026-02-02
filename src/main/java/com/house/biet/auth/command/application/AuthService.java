@@ -28,7 +28,7 @@ public class AuthService {
             throw new CustomException(ErrorCode.ALREADY_EXIST_EMAIL_AND_ROLE);
 
         Password password = Password.encrypt(rawPasswordValue, passwordEncoder);
-        Account account = Account.signUp(email, password, userRole);
+        Account account = Account.signup(email, password, userRole);
         
         accountRepository.save(account);
     }

@@ -57,7 +57,7 @@ class AuthServiceTest {
     void setup() {
         givenEmail = new Email(givenEmailValue);
         givenPassword = Password.encrypt(givenPasswordValue, ENCODER);
-        account = Account.signUp(givenEmail, givenPassword, UserRole.USER);
+        account = Account.signup(givenEmail, givenPassword, UserRole.USER);
     }
 
     @Test
