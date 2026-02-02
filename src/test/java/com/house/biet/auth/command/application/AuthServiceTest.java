@@ -7,6 +7,7 @@ import com.house.biet.global.response.ErrorCode;
 import com.house.biet.global.vo.UserRole;
 import com.house.biet.member.command.AccountRepository;
 import com.house.biet.member.command.domain.entity.Account;
+import com.house.biet.member.command.domain.vo.AccountStatus;
 import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Password;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
@@ -86,6 +88,23 @@ class AuthServiceTest {
         assertThatThrownBy(() -> authService.signup(givenEmailValue, givenPasswordValue, UserRole.USER))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ALREADY_EXIST_EMAIL_AND_ROLE.getMessage());
+    }
+
+    @Test
+    @DisplayName("성공 - 회원탈퇴 성공")
+    void withdraw_Success() {
+        // given
+        Long accountId = 1L;
+        ReflectionTestUtils.setField(account, "id", accountId);
+
+        given(accountRepository.findById(accountId))
+                .willReturn(Optional.of(account));
+
+        // when
+        authService.withdraw(accountId);
+
+        // then
+        assertThat(account.getAccountStatus()).isEqualTo(AccountStatus.WITHDRAWN);
     }
 
     @Test
