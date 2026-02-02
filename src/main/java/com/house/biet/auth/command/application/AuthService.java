@@ -21,22 +21,22 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
 
-    public void signup(String emailValue, String rawPasswordValue) {
+    public void signup(String emailValue, String rawPasswordValue, UserRole userRole) {
         Email email = new Email(emailValue);
 
-        if (accountRepository.existsByEmailAndRole(email, UserRole.USER))
+        if (accountRepository.existsByEmailAndRole(email, userRole))
             throw new CustomException(ErrorCode.ALREADY_EXIST_EMAIL_AND_ROLE);
 
         Password password = Password.encrypt(rawPasswordValue, passwordEncoder);
-        Account account = Account.signUp(email, password, UserRole.USER);
+        Account account = Account.signUp(email, password, userRole);
         
         accountRepository.save(account);
     }
 
-    public LoginResultDto login(String emailValue, String rawPasswordValue) {
+    public LoginResultDto login(String emailValue, String rawPasswordValue, UserRole userRole) {
         Email email = new Email(emailValue);
 
-        Account account = accountRepository.findByEmailAndRole(email, UserRole.USER)
+        Account account = accountRepository.findByEmailAndRole(email, userRole)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         if (!account.matchedPassword(rawPasswordValue, passwordEncoder))
