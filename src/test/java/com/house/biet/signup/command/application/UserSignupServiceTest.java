@@ -2,6 +2,7 @@ package com.house.biet.signup.command.application;
 
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
+import com.house.biet.global.vo.UserRole;
 import com.house.biet.user.command.application.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willThrow;
 
@@ -51,7 +53,7 @@ class UserSignupServiceTest {
 
         // then
         then(authService).should()
-                .signup(dto.email(), dto.password());
+                .signup(dto.email(), dto.password(), UserRole.USER);
 
         then(userService).should()
                 .save(dto.name(), dto.nickname(), dto.phoneNumber());
@@ -63,7 +65,7 @@ class UserSignupServiceTest {
         // given
         willThrow(new RuntimeException("auth fail"))
                 .given(authService)
-                .signup(anyString(), anyString());
+                .signup(anyString(), anyString(), eq(UserRole.USER));
 
         // when & then
         assertThatThrownBy(() -> userSignupService.signup(dto))

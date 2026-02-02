@@ -68,7 +68,7 @@ class AuthServiceTest {
                 .willReturn(false);
 
         // when
-        authService.signup(givenEmailValue, givenPasswordValue);
+        authService.signup(givenEmailValue, givenPasswordValue, UserRole.USER);
 
         // then
         verify(accountRepository, times(1))
@@ -83,7 +83,7 @@ class AuthServiceTest {
                 .willReturn(true);
 
         // when & then
-        assertThatThrownBy(() -> authService.signup(givenEmailValue, givenPasswordValue))
+        assertThatThrownBy(() -> authService.signup(givenEmailValue, givenPasswordValue, UserRole.USER))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ALREADY_EXIST_EMAIL_AND_ROLE.getMessage());
     }
@@ -105,7 +105,7 @@ class AuthServiceTest {
                 .willReturn("refresh-token");
 
         // when
-        LoginResultDto result = authService.login(givenEmailValue, givenPasswordValue);
+        LoginResultDto result = authService.login(givenEmailValue, givenPasswordValue, UserRole.USER);
 
         // then
         assertThat(result.accessToken()).isEqualTo("access-token");
@@ -120,7 +120,7 @@ class AuthServiceTest {
                 .willReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> authService.login("notInvalidId@xyz.com", "<RANDOM_NOT_SHORT_PASSWORD>"))
+        assertThatThrownBy(() -> authService.login("notInvalidId@xyz.com", "<RANDOM_NOT_SHORT_PASSWORD>", UserRole.USER))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
     }
@@ -138,7 +138,7 @@ class AuthServiceTest {
                 .willReturn(false);
 
         // when & then
-        assertThatThrownBy(() -> authService.login(givenEmailValue, notCorrectPasswordValue))
+        assertThatThrownBy(() -> authService.login(givenEmailValue, notCorrectPasswordValue, UserRole.USER))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.NOT_CORRECT_PASSWORD.getMessage());
     }

@@ -6,6 +6,7 @@ import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
+import com.house.biet.global.vo.UserRole;
 import com.house.biet.signup.command.application.UserSignupService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,8 @@ public class AuthUserController {
     ) {
         LoginResultDto resultDto = authService.login(
                 requestDto.email(),
-                requestDto.password()
+                requestDto.password(),
+                UserRole.USER
         );
 
         return ResponseEntity.ok(

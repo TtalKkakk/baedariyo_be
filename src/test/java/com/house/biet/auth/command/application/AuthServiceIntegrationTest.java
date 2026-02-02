@@ -58,7 +58,7 @@ public class AuthServiceIntegrationTest {
     @DisplayName("성공 - 로그인 성공")
     void login_Success() {
         // when
-        LoginResultDto result = authService.login(emailValue, passwordValue);
+        LoginResultDto result = authService.login(emailValue, passwordValue, UserRole.USER);
 
         // then
         assertThat(result.accessToken()).isNotNull();
@@ -73,7 +73,7 @@ public class AuthServiceIntegrationTest {
         String randomPasswordValue = "jIVVjDgldziYWgVMJPkaC@zVx50";
 
         // when & then
-        assertThatThrownBy(() -> authService.login(notExistEmailValue, randomPasswordValue))
+        assertThatThrownBy(() -> authService.login(notExistEmailValue, randomPasswordValue, UserRole.USER))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
     }
