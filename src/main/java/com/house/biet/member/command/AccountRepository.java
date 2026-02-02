@@ -11,6 +11,8 @@ public interface AccountRepository {
 
     Account save(Account account);
 
+    Optional<Account> findById(Long accountId);
+
     List<Account> findAll();
 
     boolean existsByEmailAndRole(Email email, UserRole role);

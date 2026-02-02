@@ -22,6 +22,11 @@ public class AccountRepositoryJpaAdapter implements AccountRepository {
     }
 
     @Override
+    public Optional<Account> findById(Long accountId) {
+        return accountRepositoryJpa.findById(accountId);
+    }
+
+    @Override
     public List<Account> findAll() {
         return accountRepositoryJpa.findAll();
     }

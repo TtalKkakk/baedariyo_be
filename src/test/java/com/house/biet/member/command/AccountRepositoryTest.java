@@ -110,6 +110,20 @@ class AccountRepositoryTest {
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 
+    @Test
+    @DisplayName("성공 - account id 로 account 조회")
+    void findById_Success() {
+        // given
+        Account account = accountRepository.save(userAccount);
+
+        // when
+        Optional<Account> foundAccount = accountRepository.findById(account.getId());
+
+        // then
+        assertThat(foundAccount).isNotEmpty();
+        assertThat(foundAccount.get().getEmail()).isEqualTo(account.getEmail());
+    }
+
 
     @Test
     @DisplayName("성공 - 이메일로 계정을 조회")
