@@ -1,5 +1,8 @@
 package com.house.biet.member.command.domain.entity;
 
+import com.house.biet.global.response.CustomException;
+import com.house.biet.global.response.ErrorCode;
+import com.house.biet.member.command.domain.vo.AccountStatus;
 import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.global.vo.UserRole;
@@ -46,15 +49,27 @@ public class Account {
 
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AccountStatus accountStatus;
+
     private Account(Email email, Password password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
         this.createdAt = LocalDateTime.now();
+        this.accountStatus = AccountStatus.ACTIVE;
     }
 
     public static Account signUp(Email email, Password encryptedPassword, UserRole role) {
         return new Account(email, encryptedPassword, role);
+    }
+
+    public void withdraw() {
+        if (this.accountStatus == AccountStatus.WITHDRAWN)
+            throw new CustomException(ErrorCode.ALREADY_WITHDRAWN_ACCOUNT);
+
+        this.accountStatus = AccountStatus.WITHDRAWN;
     }
 
     public boolean matchedPassword(String rawPassword, PasswordEncoder encoder) {
