@@ -16,6 +16,7 @@ public enum ErrorCode {
     INVALID_REAL_NAME_FORMAT(40105, HttpStatus.BAD_REQUEST, "잘못된 사용자 이름 형식입니다."),
     INVALID_NICK_NAME_FORMAT(40106, HttpStatus.BAD_REQUEST, "잘못된 사용자 닉네임 형식입니다."),
     INVALID_PHONE_NUMBER_FORMAT(40107, HttpStatus.BAD_REQUEST, "잘못된 휴대전화번호 형식입니다."),
+    ALREADY_WITHDRAWN_ACCOUNT(40108, HttpStatus.BAD_REQUEST, "이미 삭제된 계정입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
