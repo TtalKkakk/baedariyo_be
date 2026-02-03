@@ -15,7 +15,6 @@ class RiderTest {
     String givenNickNameValue = "<NICK_NAME>";
     String givenPhoneNumberValue = "010-1111-1111";
     VehicleType givenVehicleType = VehicleType.MOTORCYCLE;
-    RiderWorkingStatus givenRiderWorkingStatus = RiderWorkingStatus.ONLINE;
 
     @Test
     @DisplayName("성공 - rider 생성 성공")
@@ -25,8 +24,7 @@ class RiderTest {
                 givenRealNameValue,
                 givenNickNameValue,
                 givenPhoneNumberValue,
-                givenVehicleType,
-                givenRiderWorkingStatus
+                givenVehicleType
         );
 
         // then
@@ -34,7 +32,7 @@ class RiderTest {
         assertThat(rider.getNickname().getValue()).isEqualTo(givenNickNameValue);
         assertThat(rider.getPhoneNumber().getValue()).isEqualTo(givenPhoneNumberValue);
         assertThat(rider.getVehicleType()).isEqualTo(givenVehicleType);
-        assertThat(rider.getRiderWorkingStatus()).isEqualTo(givenRiderWorkingStatus);
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.OFFLINE);
     }
 
     @Test
@@ -45,8 +43,7 @@ class RiderTest {
                 givenRealNameValue,
                 givenNickNameValue,
                 givenPhoneNumberValue,
-                givenVehicleType,
-                givenRiderWorkingStatus
+                givenVehicleType
         );
         Nickname newNickname = new Nickname("NEW_NICKNAME");
 
@@ -65,8 +62,7 @@ class RiderTest {
                 givenRealNameValue,
                 givenNickNameValue,
                 givenPhoneNumberValue,
-                givenVehicleType,
-                givenRiderWorkingStatus
+                givenVehicleType
         );
         PhoneNumber newPhoneNumber = new PhoneNumber("010-2222-2222");
 
@@ -85,8 +81,7 @@ class RiderTest {
                 givenRealNameValue,
                 givenNickNameValue,
                 givenPhoneNumberValue,
-                givenVehicleType,
-                givenRiderWorkingStatus
+                givenVehicleType
         );
         VehicleType newVehicleType = VehicleType.BICYCLE;
 
@@ -105,8 +100,7 @@ class RiderTest {
                 givenRealNameValue,
                 givenNickNameValue,
                 givenPhoneNumberValue,
-                givenVehicleType,
-                givenRiderWorkingStatus
+                givenVehicleType
         );
         RiderWorkingStatus newStatus = RiderWorkingStatus.WORKING;
 

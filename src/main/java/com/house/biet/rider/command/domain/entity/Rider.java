@@ -52,14 +52,14 @@ public class Rider extends BaseTimeEntity {
     @Column(nullable = false)
     private RiderWorkingStatus riderWorkingStatus;
 
-    public static Rider create(String realName, String nickname, String phoneNumber, VehicleType vehicleType, RiderWorkingStatus riderWorkingStatus) {
+    public static Rider create(String realName, String nickname, String phoneNumber, VehicleType vehicleType) {
         return new Rider(
                 null,
                 new RealName(realName),
                 new Nickname(nickname),
                 new PhoneNumber(phoneNumber),
                 vehicleType,
-                riderWorkingStatus
+                RiderWorkingStatus.OFFLINE
         );
     }
 
