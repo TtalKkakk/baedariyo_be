@@ -1,0 +1,119 @@
+package com.house.biet.rider.command.domain.entity;
+
+import com.house.biet.member.command.domain.vo.Nickname;
+import com.house.biet.member.command.domain.vo.PhoneNumber;
+import com.house.biet.rider.command.domain.vo.RiderWorkingStatus;
+import com.house.biet.rider.command.domain.vo.VehicleType;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class RiderTest {
+
+    String givenRealNameValue = "<REAL_NAME>";
+    String givenNickNameValue = "<NICK_NAME>";
+    String givenPhoneNumberValue = "010-1111-1111";
+    VehicleType givenVehicleType = VehicleType.MOTORCYCLE;
+    RiderWorkingStatus givenRiderWorkingStatus = RiderWorkingStatus.ONLINE;
+
+    @Test
+    @DisplayName("성공 - rider 생성 성공")
+    void CreateRider_Success() {
+        // when
+        Rider rider = Rider.create(
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType,
+                givenRiderWorkingStatus
+        );
+
+        // then
+        assertThat(rider.getRealName().getValue()).isEqualTo(givenRealNameValue);
+        assertThat(rider.getNickname().getValue()).isEqualTo(givenNickNameValue);
+        assertThat(rider.getPhoneNumber().getValue()).isEqualTo(givenPhoneNumberValue);
+        assertThat(rider.getVehicleType()).isEqualTo(givenVehicleType);
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(givenRiderWorkingStatus);
+    }
+
+    @Test
+    @DisplayName("성공 - 닉네임 변경 성공")
+    void ChangeNickname_Success() {
+        // given
+        Rider rider = Rider.create(
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType,
+                givenRiderWorkingStatus
+        );
+        Nickname newNickname = new Nickname("NEW_NICKNAME");
+
+        // when
+        rider.changeNickname(newNickname);
+
+        // then
+        assertThat(rider.getNickname()).isEqualTo(newNickname);
+    }
+
+    @Test
+    @DisplayName("성공 - 전화번호 변경 성공")
+    void ChangePhoneNumber_Success() {
+        // given
+        Rider rider = Rider.create(
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType,
+                givenRiderWorkingStatus
+        );
+        PhoneNumber newPhoneNumber = new PhoneNumber("010-2222-2222");
+
+        // when
+        rider.changePhoneNumber(newPhoneNumber);
+
+        // then
+        assertThat(rider.getPhoneNumber()).isEqualTo(newPhoneNumber);
+    }
+
+    @Test
+    @DisplayName("성공 - 차량 타입 변경 성공")
+    void ChangeVehicleType_Success() {
+        // given
+        Rider rider = Rider.create(
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType,
+                givenRiderWorkingStatus
+        );
+        VehicleType newVehicleType = VehicleType.BICYCLE;
+
+        // when
+        rider.changeVehicleType(newVehicleType);
+
+        // then
+        assertThat(rider.getVehicleType()).isEqualTo(newVehicleType);
+    }
+
+    @Test
+    @DisplayName("성공 - 라이더 근무 상태 변경 성공")
+    void ChangeRiderWorkingStatus_Success() {
+        // given
+        Rider rider = Rider.create(
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType,
+                givenRiderWorkingStatus
+        );
+        RiderWorkingStatus newStatus = RiderWorkingStatus.WORKING;
+
+        // when
+        rider.changeRiderWorkingStatus(newStatus);
+
+        // then
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(newStatus);
+    }
+}
