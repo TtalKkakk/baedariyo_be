@@ -1,5 +1,6 @@
 package com.house.biet.user.command.domain.entity;
 
+import com.house.biet.global.jpa.BaseTimeEntity;
 import com.house.biet.member.command.domain.vo.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +10,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
