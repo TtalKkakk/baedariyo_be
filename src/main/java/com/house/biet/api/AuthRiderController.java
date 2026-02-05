@@ -2,11 +2,10 @@ package com.house.biet.api;
 
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
-import com.house.biet.auth.command.domain.dto.UserLoginRequestDto;
+import com.house.biet.auth.command.domain.dto.LoginRequestDto;
 import com.house.biet.auth.infrastructure.security.AuthPrincipal;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
-import com.house.biet.global.vo.UserRole;
 import com.house.biet.login.command.application.RiderLoginService;
 import com.house.biet.signup.command.application.RiderSignupService;
 import com.house.biet.auth.command.domain.dto.RiderSignupRequestDto;
@@ -49,7 +48,7 @@ public class AuthRiderController {
 
     @PostMapping("/login")
     public ResponseEntity<CustomApiResponse<LoginResultDto>> login(
-            @RequestBody @Valid UserLoginRequestDto requestDto
+            @RequestBody @Valid LoginRequestDto requestDto
     ) {
         LoginResultDto resultDto = riderLoginService.login(requestDto);
 

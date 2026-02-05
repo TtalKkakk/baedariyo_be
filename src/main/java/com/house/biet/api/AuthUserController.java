@@ -2,7 +2,7 @@ package com.house.biet.api;
 
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.application.dto.AuthLoginResultDto;
-import com.house.biet.auth.command.domain.dto.UserLoginRequestDto;
+import com.house.biet.auth.command.domain.dto.LoginRequestDto;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.auth.infrastructure.security.AuthPrincipal;
@@ -49,7 +49,7 @@ public class AuthUserController {
 
     @PostMapping("/login")
     public ResponseEntity<CustomApiResponse<LoginResultDto>> login(
-            @RequestBody @Valid UserLoginRequestDto requestDto
+            @RequestBody @Valid LoginRequestDto requestDto
     ) {
         AuthLoginResultDto authLoginResultDto = authService.login(
                 requestDto.email(),

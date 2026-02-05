@@ -3,7 +3,7 @@ package com.house.biet.login.command.application;
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.application.dto.AuthLoginResultDto;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
-import com.house.biet.auth.command.domain.dto.UserLoginRequestDto;
+import com.house.biet.auth.command.domain.dto.LoginRequestDto;
 import com.house.biet.global.vo.UserRole;
 import com.house.biet.rider.command.application.RiderService;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,11 +30,11 @@ class RiderLoginServiceTest {
     @Mock
     private RiderService riderService;
 
-    UserLoginRequestDto requestDto;
+    LoginRequestDto requestDto;
 
     @BeforeEach
     void setup() {
-        requestDto = new UserLoginRequestDto(
+        requestDto = new LoginRequestDto(
                 "rider@biet.com",
                 "password123"
         );
