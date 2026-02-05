@@ -35,4 +35,41 @@ class MoneyTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.INVALID_MONEY_AMOUNT.getMessage());
     }
+
+    @Test
+    @DisplayName("성공 - Money 덧셈")
+    void addMoney_Success() {
+        // given
+        int givenAmount1 = 1100;
+        int givenAmount2 = 1300;
+
+        Money money1 = new Money(givenAmount1);
+        Money money2 = new Money(givenAmount2);
+
+        // when
+        Money totalMoney = money1.add(money2);
+
+        // then
+        assertThat(totalMoney).isNotNull();
+        assertThat(totalMoney).isNotEqualTo(money1);
+        assertThat(totalMoney.value()).isEqualTo(givenAmount1 + givenAmount2);
+    }
+
+    @Test
+    @DisplayName("성공 - Money 곱셈")
+    void multiplyMoney_Success() {
+        // given
+        int givenAmount = 1000;
+        Money money = new Money(givenAmount);
+
+        int givenQuantity = 5;
+
+        // when
+        Money multiMoney = money.multiply(givenQuantity);
+
+        // then
+        assertThat(multiMoney).isNotNull();
+        assertThat(multiMoney).isNotEqualTo(money);
+        assertThat(multiMoney.value()).isEqualTo(givenAmount * givenQuantity);
+    }
 }
