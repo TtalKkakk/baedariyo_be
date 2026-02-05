@@ -1,6 +1,6 @@
 package com.house.biet.auth.command.application;
 
-import com.house.biet.auth.command.domain.dto.LoginResultDto;
+import com.house.biet.auth.command.application.dto.AuthLoginResultDto;
 import com.house.biet.auth.infrastructure.jwt.JwtProvider;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
@@ -78,26 +78,57 @@ public class AuthService {
     }
 
     /**
-     * 로그인을 수행하고 AccessToken과 RefreshToken을 발급
+     * 로그인을 수행하고 인증에 필요한 정보를 반환
+     *
+     * <p>
+     * 이 메서드는 이메일, 비밀번호, 사용자 역할(UserRole)을 기반으로
+     * 계정을 검증한 뒤 로그인을 수행한다.
+     * </p>
+     *
+     * <p>
+     * 로그인에 성공하면 AccessToken, RefreshToken과 함께
+     * 내부 후속 처리(도메인 상태 변경 등)를 위해 Account 식별자(accountId)를 반환한다.
+     * </p>
+     *
+     * <p>
+     * 반환되는 결과는 <b>Application Layer 내부 전용</b> 데이터이며,
+     * Controller 또는 외부 API 응답으로 직접 노출되어서는 안 된다.
+     * </p>
      *
      * @param emailValue       로그인 이메일
      * @param rawPasswordValue 평문 비밀번호
      * @param userRole         로그인 역할
-     * @return AccessToken과 RefreshToken을 포함한 로그인 결과 DTO
-     * @throws CustomException 계정이 존재하지 않거나 비밀번호가 일치하지 않는 경우
+     *
+     * @return accountId, AccessToken, RefreshToken을 포함한 내부 로그인 결과
+     *
+     * @throws CustomException 계정을 찾을 수 없는 경우
+     * @throws CustomException 비밀번호가 일치하지 않는 경우
      */
-    public LoginResultDto login(String emailValue, String rawPasswordValue, UserRole userRole) {
+    public AuthLoginResultDto login(String emailValue, String rawPasswordValue, UserRole userRole) {
         Email email = new Email(emailValue);
 
         Account account = accountRepository.findByEmailAndRole(email, userRole)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        if (!account.matchedPassword(rawPasswordValue, passwordEncoder))
+        if (!account.matchedPassword(rawPasswordValue, passwordEncoder)) {
             throw new CustomException(ErrorCode.NOT_CORRECT_PASSWORD);
+        }
 
-        String accessToken = jwtProvider.createAccessToken(account.getId(), account.getRole().name());
-        String refreshToken = jwtProvider.createRefreshToken(account.getId(), account.getRole().name());
+        String accessToken = jwtProvider.createAccessToken(
+                account.getId(),
+                account.getRole().name()
+        );
 
-        return new LoginResultDto(accessToken, refreshToken);
+        String refreshToken = jwtProvider.createRefreshToken(
+                account.getId(),
+                account.getRole().name()
+        );
+
+        return new AuthLoginResultDto(
+                account.getId(),
+                accessToken,
+                refreshToken
+        );
     }
+
 }

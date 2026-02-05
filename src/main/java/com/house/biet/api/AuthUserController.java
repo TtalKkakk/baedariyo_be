@@ -1,6 +1,7 @@
 package com.house.biet.api;
 
 import com.house.biet.auth.command.application.AuthService;
+import com.house.biet.auth.command.application.dto.AuthLoginResultDto;
 import com.house.biet.auth.command.domain.dto.UserLoginRequestDto;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
@@ -50,10 +51,15 @@ public class AuthUserController {
     public ResponseEntity<CustomApiResponse<LoginResultDto>> login(
             @RequestBody @Valid UserLoginRequestDto requestDto
     ) {
-        LoginResultDto resultDto = authService.login(
+        AuthLoginResultDto authLoginResultDto = authService.login(
                 requestDto.email(),
                 requestDto.password(),
                 UserRole.USER
+        );
+
+        LoginResultDto resultDto = new LoginResultDto(
+                authLoginResultDto.accessToken(),
+                authLoginResultDto.refreshToken()
         );
 
         return ResponseEntity.ok(

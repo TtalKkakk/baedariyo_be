@@ -1,5 +1,6 @@
 package com.house.biet.auth.command.application;
 
+import com.house.biet.auth.command.application.dto.AuthLoginResultDto;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
@@ -74,9 +75,10 @@ public class AuthUserServiceIntegrationTest {
     @DisplayName("성공 - 로그인 성공")
     void login_Success() {
         // when
-        LoginResultDto result = authService.login(emailValue, passwordValue, UserRole.USER);
+        AuthLoginResultDto result = authService.login(emailValue, passwordValue, UserRole.USER);
 
         // then
+        assertThat(result).isNotNull();
         assertThat(result.accessToken()).isNotNull();
         assertThat(result.refreshToken()).isNotNull();
     }

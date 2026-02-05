@@ -1,5 +1,6 @@
 package com.house.biet.auth.command.application;
 
+import com.house.biet.auth.command.application.dto.AuthLoginResultDto;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.auth.infrastructure.jwt.JwtProvider;
 import com.house.biet.global.response.CustomException;
@@ -130,7 +131,7 @@ class AuthServiceTest {
                 .willReturn("refresh-token");
 
         // when
-        LoginResultDto result = authService.login(givenEmailValue, givenPasswordValue, UserRole.USER);
+        AuthLoginResultDto result = authService.login(givenEmailValue, givenPasswordValue, UserRole.USER);
 
         // then
         assertThat(result.accessToken()).isEqualTo("access-token");
