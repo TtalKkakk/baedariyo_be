@@ -43,7 +43,7 @@ public class AuthService {
      * @param userRole        회원 역할
      * @throws CustomException 이미 존재하는 이메일과 역할 조합인 경우
      */
-    public void signup(String emailValue, String rawPasswordValue, UserRole userRole) {
+    public Account signup(String emailValue, String rawPasswordValue, UserRole userRole) {
         Email email = new Email(emailValue);
 
         if (accountRepository.existsByEmailAndRole(email, userRole))
@@ -52,7 +52,7 @@ public class AuthService {
         Password password = Password.encrypt(rawPasswordValue, passwordEncoder);
         Account account = Account.signup(email, password, userRole);
         
-        accountRepository.save(account);
+        return accountRepository.save(account);
     }
 
     /**

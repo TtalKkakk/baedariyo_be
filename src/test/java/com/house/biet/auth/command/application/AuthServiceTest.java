@@ -69,12 +69,18 @@ class AuthServiceTest {
         given(accountRepository.existsByEmailAndRole(any(Email.class), eq(UserRole.USER)))
                 .willReturn(false);
 
+        given(accountRepository.save(any(Account.class)))
+                .willReturn(account);
+
         // when
-        authService.signup(givenEmailValue, givenPasswordValue, UserRole.USER);
+        Account savedAccount = authService.signup(givenEmailValue, givenPasswordValue, UserRole.USER);
 
         // then
         verify(accountRepository, times(1))
                 .save(any(Account.class));
+
+        assertThat(savedAccount).isNotNull();
+        assertThat(savedAccount.getRole()).isEqualTo(UserRole.USER);
     }
 
     @Test

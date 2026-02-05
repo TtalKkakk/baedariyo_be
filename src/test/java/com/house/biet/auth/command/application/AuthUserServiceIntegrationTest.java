@@ -16,12 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
-public class AuthServiceIntegrationTest {
+public class AuthUserServiceIntegrationTest {
 
     @Autowired
     AuthService authService;
@@ -50,9 +52,23 @@ public class AuthServiceIntegrationTest {
     @Test
     @DisplayName("성공 - 회원가입 성공")
     void signup_Success() {
-        // when
+        // given
+        String newEmailValue = "new@xyz.com";
+        String newPasswordValue = "QwErTy!123456789";
+        UserRole role = UserRole.USER;
 
+        // when
+        authService.signup(newEmailValue, newPasswordValue, role);
+
+        // then
+        Optional<Account> savedAccount = accountRepository.findByEmailAndRole(new Email(newEmailValue), UserRole.USER);
+
+        assertThat(savedAccount).isPresent();
+        assertThat(savedAccount.get().getEmail().getValue()).isEqualTo(newEmailValue);
+        assertThat(passwordEncoder.matches(newPasswordValue, savedAccount.get().getPassword().getValue())).isTrue();
+        assertThat(savedAccount.get().getRole()).isEqualTo(UserRole.USER);
     }
+
 
     @Test
     @DisplayName("성공 - 로그인 성공")
