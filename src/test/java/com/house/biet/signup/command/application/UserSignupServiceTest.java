@@ -56,7 +56,7 @@ class UserSignupServiceTest {
         account = Account.signup(
                 new Email(dto.email()),
                 Password.encrypt(dto.password(), ENCODER),
-                UserRole.RIDER
+                UserRole.USER
         );
     }
 
@@ -64,7 +64,7 @@ class UserSignupServiceTest {
     @DisplayName("성공 - 회원가입 시 Account 와 User가 생성")
     void signup_Success() {
         // given
-        given(authService.signup(dto.email(), dto.password(), UserRole.RIDER))
+        given(authService.signup(dto.email(), dto.password(), UserRole.USER))
                 .willReturn(account);
 
         // when
