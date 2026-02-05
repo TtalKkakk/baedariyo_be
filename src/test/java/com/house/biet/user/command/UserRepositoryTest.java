@@ -1,6 +1,12 @@
 package com.house.biet.user.command;
 
+import com.house.biet.global.vo.UserRole;
+import com.house.biet.member.command.AccountRepository;
+import com.house.biet.member.command.domain.entity.Account;
+import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Nickname;
+import com.house.biet.member.command.domain.vo.Password;
+import com.house.biet.member.command.infrastructure.AccountRepositoryJpaAdapter;
 import com.house.biet.user.command.domain.entity.User;
 import com.house.biet.user.command.infrastructure.UserRepositoryJpaAdapter;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -18,13 +26,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(UserRepositoryJpaAdapter.class)
+@Import({
+        UserRepositoryJpaAdapter.class,
+        AccountRepositoryJpaAdapter.class
+})
 @ActiveProfiles("test")
 class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
+    private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+
+    String givenEmail = "abc@xyz.com";
+    String givenPassword = UUID.randomUUID().toString().substring(1, 30);
     String givenRealName = "<REAL_NAME>";
     String givenNickname = "<NICKNAME>";
     String givenPhoneNumber = "010-1111-1111";
@@ -33,7 +51,13 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setup() {
-        user = User.create(givenRealName, givenNickname, givenPhoneNumber);
+        Account savedAccount = accountRepository.save(Account.signup(
+                new Email(givenEmail),
+                Password.encrypt(givenPassword, ENCODER),
+                UserRole.USER
+        ));
+
+        user = User.create(savedAccount, givenRealName, givenNickname, givenPhoneNumber);
     }
 
     @Test

@@ -2,7 +2,12 @@ package com.house.biet.user.command.application;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
+import com.house.biet.global.vo.UserRole;
+import com.house.biet.member.command.AccountRepository;
+import com.house.biet.member.command.domain.entity.Account;
+import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Nickname;
+import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.user.command.UserRepository;
 import com.house.biet.user.command.domain.entity.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,9 +17,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -31,16 +39,34 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+
+    Account account;
     User user;
 
     @BeforeEach
     void setup() {
+        String givenEmail = "abc@xyz.com";
+        String givenPassword = UUID.randomUUID().toString().substring(1, 30);
+
+        account = Account.signup(
+                new Email(givenEmail),
+                Password.encrypt(givenPassword, ENCODER),
+                UserRole.USER
+        );
+
         String givenRealName = "<REAL-NAME>";
         String givenNickname = "<NICKNAME>";
         String givenPhoneNumber = "010-1111-1111";
 
-        user = User.create(givenRealName, givenNickname, givenPhoneNumber);
+        user = User.create(
+                account,
+                givenRealName,
+                givenNickname,
+                givenPhoneNumber
+        );
     }
+
 
     @Test
     @DisplayName("성공 - user 저장")
@@ -51,6 +77,7 @@ class UserServiceTest {
 
         // when
         userService.save(
+                account,
                 user.getRealName().getValue(),
                 user.getNickname().getValue(),
                 user.getPhoneNumber().getValue()

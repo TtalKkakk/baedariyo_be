@@ -3,6 +3,9 @@ package com.house.biet.signup.command.application;
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.global.vo.UserRole;
+import com.house.biet.member.command.domain.entity.Account;
+import com.house.biet.member.command.domain.vo.Email;
+import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.user.command.application.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,14 +14,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.then;
-import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserSignupServiceTest {
@@ -32,7 +36,11 @@ class UserSignupServiceTest {
     @Mock
     private UserService userService;
 
+    private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+
     UserSignupRequestDto dto;
+
+    Account account;
 
     @BeforeEach
     void setup() {
@@ -43,11 +51,22 @@ class UserSignupServiceTest {
                 "<NICKNAME>",
                 "010-1111-1111"
         );
+
+
+        account = Account.signup(
+                new Email(dto.email()),
+                Password.encrypt(dto.password(), ENCODER),
+                UserRole.RIDER
+        );
     }
 
     @Test
     @DisplayName("성공 - 회원가입 시 Account 와 User가 생성")
     void signup_Success() {
+        // given
+        given(authService.signup(dto.email(), dto.password(), UserRole.RIDER))
+                .willReturn(account);
+
         // when
         userSignupService.signup(dto);
 
@@ -56,7 +75,7 @@ class UserSignupServiceTest {
                 .signup(dto.email(), dto.password(), UserRole.USER);
 
         then(userService).should()
-                .save(dto.name(), dto.nickname(), dto.phoneNumber());
+                .save(account, dto.name(), dto.nickname(), dto.phoneNumber());
     }
 
     @Test

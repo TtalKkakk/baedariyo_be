@@ -1,6 +1,7 @@
 package com.house.biet.user.command.domain.entity;
 
 import com.house.biet.global.jpa.BaseTimeEntity;
+import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,6 +15,10 @@ public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false, unique = true)
+    private Account account;
 
     @Embedded
     @AttributeOverride(
@@ -36,9 +41,10 @@ public class User extends BaseTimeEntity {
     )
     private PhoneNumber phoneNumber;
 
-    public static User create(String realName, String nickname, String phoneNumber) {
+    public static User create(Account account, String realName, String nickname, String phoneNumber) {
         return new User(
                 null,
+                account,
                 new RealName(realName),
                 new Nickname(nickname),
                 new PhoneNumber(phoneNumber)

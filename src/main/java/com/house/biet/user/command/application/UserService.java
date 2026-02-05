@@ -2,6 +2,7 @@ package com.house.biet.user.command.application;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
+import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.PhoneNumber;
 import com.house.biet.user.command.UserRepository;
@@ -33,12 +34,13 @@ public class UserService {
     /**
      * 새로운 사용자를 생성하고 저장한다.
      *
+     * @param account         저장된 계좌 정보
      * @param realNameValue   사용자 실명
      * @param nicknameValue   사용자 닉네임
      * @param phoneNumberValue 사용자 전화번호
      */
-    public void save(String realNameValue, String nicknameValue, String phoneNumberValue) {
-        User user = User.create(realNameValue, nicknameValue, phoneNumberValue);
+    public void save(Account account, String realNameValue, String nicknameValue, String phoneNumberValue) {
+        User user = User.create(account, realNameValue, nicknameValue, phoneNumberValue);
 
         userRepository.save(user);
     }
