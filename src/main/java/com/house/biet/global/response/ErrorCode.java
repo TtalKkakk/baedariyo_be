@@ -19,6 +19,7 @@ public enum ErrorCode {
     ALREADY_WITHDRAWN_ACCOUNT(40108, HttpStatus.BAD_REQUEST, "이미 삭제된 계정입니다."),
     INVALID_MONEY_AMOUNT(40109, HttpStatus.BAD_REQUEST, "금액은 음수일 수 없습니다."),
     INVALID_MENU_QUANTITY(40110, HttpStatus.BAD_REQUEST, "메뉴 수량은 1 이상이어야 합니다."),
+    INVALID_MENU_NAME_FORMAT(40111, HttpStatus.BAD_REQUEST, "잘못된 메뉴 이름 형식입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
