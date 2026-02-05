@@ -2,6 +2,10 @@ package com.house.biet.rider.command.application;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
+import com.house.biet.global.vo.UserRole;
+import com.house.biet.member.command.domain.entity.Account;
+import com.house.biet.member.command.domain.vo.Email;
+import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.rider.command.RiderRepository;
 import com.house.biet.rider.command.domain.entity.Rider;
 import com.house.biet.rider.command.domain.vo.RiderWorkingStatus;
@@ -13,8 +17,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,16 +39,28 @@ class RiderServiceTest {
     @Mock
     RiderRepository riderRepository;
 
+    private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+
+    Account account;
     Rider rider;
 
     @BeforeEach
     void setup() {
+        String givenEmail = "abc@xyz.com";
+        String givenPassword = UUID.randomUUID().toString().substring(1, 30);
+
+        account = Account.signup(
+                new Email(givenEmail),
+                Password.encrypt(givenPassword, ENCODER),
+                UserRole.RIDER
+        );
+
         String givenRealName = "<REAL-NAME>";
         String givenNickname = "<NICKNAME>";
         String givenPhoneNumber = "010-1111-1111";
         VehicleType givenVehicleType = VehicleType.MOTORCYCLE;
 
-        rider = Rider.create(givenRealName, givenNickname, givenPhoneNumber, givenVehicleType);
+        rider = Rider.create(account, givenRealName, givenNickname, givenPhoneNumber, givenVehicleType);
     }
 
     @Test
@@ -54,7 +73,7 @@ class RiderServiceTest {
         VehicleType vehicleType = VehicleType.MOTORCYCLE;
 
         // When
-        riderService.save(realName, nickname, phoneNumber, vehicleType);
+        riderService.save(account, realName, nickname, phoneNumber, vehicleType);
 
         // Then
         verify(riderRepository, times(1)).save(any(Rider.class));
@@ -132,4 +151,41 @@ class RiderServiceTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.RIDER_NOT_FOUND.getMessage());
     }
+
+    @Test
+    @DisplayName("성공 - OFFLINE 라이더 로그인 시 ONLINE으로 변경")
+    void markOnlineIfOffline_whenOffline() {
+        // given
+        Long riderId = 1L;
+        rider.changeRiderWorkingStatus(RiderWorkingStatus.OFFLINE);
+
+        given(riderRepository.findById(riderId))
+                .willReturn(Optional.of(rider));
+
+        // when
+        riderService.markOnlineIfOffline(riderId);
+
+        // then
+        assertThat(rider.getRiderWorkingStatus())
+                .isEqualTo(RiderWorkingStatus.ONLINE);
+    }
+
+    @Test
+    @DisplayName("성공 - 이미 ONLINE 상태면 변경하지 않는다")
+    void markOnlineIfOffline_whenAlreadyOnline() {
+        // given
+        Long riderId = 1L;
+        rider.changeRiderWorkingStatus(RiderWorkingStatus.ONLINE);
+
+        given(riderRepository.findById(riderId))
+                .willReturn(Optional.of(rider));
+
+        // when
+        riderService.markOnlineIfOffline(riderId);
+
+        // then
+        assertThat(rider.getRiderWorkingStatus())
+                .isEqualTo(RiderWorkingStatus.ONLINE);
+    }
+
 }

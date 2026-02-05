@@ -2,6 +2,7 @@ package com.house.biet.rider.command.application;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
+import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.PhoneNumber;
 import com.house.biet.rider.command.RiderRepository;
@@ -35,13 +36,14 @@ public class RiderService {
     /**
      * 라이더를 신규 생성한다
      *
+     * @param account         저장된 계좌 정보
      * @param realNameValue   라이더 실명
      * @param nicknameValue   라이더 닉네임
      * @param phoneNumberValue 라이더 전화번호
      * @param vehicleType     이동 수단 타입
      */
-    public void save(String realNameValue, String nicknameValue, String phoneNumberValue, VehicleType vehicleType) {
-        Rider rider = Rider.create(realNameValue, nicknameValue, phoneNumberValue, vehicleType);
+    public void save(Account account, String realNameValue, String nicknameValue, String phoneNumberValue, VehicleType vehicleType) {
+        Rider rider = Rider.create(account, realNameValue, nicknameValue, phoneNumberValue, vehicleType);
 
         riderRepository.save(rider);
     }
@@ -101,4 +103,23 @@ public class RiderService {
 
         rider.changeRiderWorkingStatus(newRiderWorkingStatus);
     }
+
+    /**
+     * 라이더 로그인 시 근무 상태를 ONLINE으로 전환한다
+     *
+     * <p>
+     * 현재 상태가 OFFLINE인 경우에만 ONLINE으로 변경한다
+     * </p>
+     *
+     * @param riderId 라이더 식별자
+     */
+    public void markOnlineIfOffline(Long riderId) {
+        Rider rider = riderRepository.findById(riderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.RIDER_NOT_FOUND));
+
+        if (rider.getRiderWorkingStatus() == RiderWorkingStatus.OFFLINE) {
+            rider.changeRiderWorkingStatus(RiderWorkingStatus.ONLINE);
+        }
+    }
+
 }

@@ -3,6 +3,9 @@ package com.house.biet.signup.command.application;
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.domain.dto.RiderSignupRequestDto;
 import com.house.biet.global.vo.UserRole;
+import com.house.biet.member.command.domain.entity.Account;
+import com.house.biet.member.command.domain.vo.Email;
+import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.rider.command.application.RiderService;
 import com.house.biet.rider.command.domain.vo.VehicleType;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,14 +15,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.then;
-import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RiderSignupServiceTest {
@@ -33,7 +37,11 @@ class RiderSignupServiceTest {
     @Mock
     private RiderService riderService;
 
+    private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+
     RiderSignupRequestDto dto;
+
+    Account account;
 
     @BeforeEach
     void setup() {
@@ -45,11 +53,22 @@ class RiderSignupServiceTest {
                 "010-1111-1111",
                 VehicleType.MOTORCYCLE
         );
+
+
+        account = Account.signup(
+                new Email(dto.email()),
+                Password.encrypt(dto.password(), ENCODER),
+                UserRole.RIDER
+        );
     }
 
     @Test
     @DisplayName("성공 - 라이더 회원가입 시 Account 와 Rider가 생성")
     void signup_success() {
+        // given
+        given(authService.signup(dto.email(), dto.password(), UserRole.RIDER))
+                .willReturn(account);
+
         // when
         riderSignupService.signup(dto);
 
@@ -59,6 +78,7 @@ class RiderSignupServiceTest {
 
         then(riderService).should()
                 .save(
+                        account,
                         dto.name(),
                         dto.nickname(),
                         dto.phoneNumber(),

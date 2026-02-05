@@ -1,6 +1,7 @@
 package com.house.biet.rider.command.domain.entity;
 
 import com.house.biet.global.jpa.BaseTimeEntity;
+import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.PhoneNumber;
 import com.house.biet.member.command.domain.vo.RealName;
@@ -21,6 +22,10 @@ public class Rider extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "account_id", nullable = false, unique = true)
+    private Account account;
 
     @Embedded
     @AttributeOverride(
@@ -52,9 +57,10 @@ public class Rider extends BaseTimeEntity {
     @Column(nullable = false)
     private RiderWorkingStatus riderWorkingStatus;
 
-    public static Rider create(String realName, String nickname, String phoneNumber, VehicleType vehicleType) {
+    public static Rider create(Account account, String realName, String nickname, String phoneNumber, VehicleType vehicleType) {
         return new Rider(
                 null,
+                account,
                 new RealName(realName),
                 new Nickname(nickname),
                 new PhoneNumber(phoneNumber),
