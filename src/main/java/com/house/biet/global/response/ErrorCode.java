@@ -20,6 +20,12 @@ public enum ErrorCode {
     INVALID_MONEY_AMOUNT(40109, HttpStatus.BAD_REQUEST, "금액은 음수일 수 없습니다."),
     INVALID_MENU_QUANTITY(40110, HttpStatus.BAD_REQUEST, "메뉴 수량은 1 이상이어야 합니다."),
     INVALID_MENU_NAME_FORMAT(40111, HttpStatus.BAD_REQUEST, "잘못된 메뉴 이름 형식입니다."),
+    EMPTY_ORDER_MENU(40112, HttpStatus.BAD_REQUEST, "주문할 메뉴가 존재하지 않습니다."),
+    INVALID_STORE_ID(40113, HttpStatus.BAD_REQUEST, "올바르지 않은 가게입니다."),
+    INVALID_ORDER_STATUS(40114, HttpStatus.BAD_REQUEST, "잘못된 주문 배달 상태입니다."),
+    INVALID_ORDER_PAYMENT(40115, HttpStatus.BAD_REQUEST, "주문 취소를 할 수 없습니다."),
+    INVALID_ORDER_CANCEL(40116, HttpStatus.BAD_REQUEST, "결제를 할 수 없습니다."),
+    INVALID_ORDER_DATA(40117, HttpStatus.BAD_REQUEST, "결제 데이터가 올바르지 않습니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
