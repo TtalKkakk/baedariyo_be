@@ -26,7 +26,6 @@ class OrderMenuTest {
         givenMoney = new Money(givenMenuPrice);
     }
 
-
     @Test
     @DisplayName("성공 - 주문 메뉴 생성")
     void createOrderMenu_Success() {
@@ -45,6 +44,7 @@ class OrderMenuTest {
         assertThat(orderMenu.getMenuId()).isEqualTo(givenMenuId);
         assertThat(orderMenu.getMenuName()).isEqualTo(givenMenuName);
         assertThat(orderMenu.getQuantity()).isEqualTo(givenQuantity);
+        assertThat(orderMenu.getMenuPrice()).isEqualTo(givenMoney);
     }
 
     @Test
@@ -66,14 +66,15 @@ class OrderMenuTest {
     }
 
     @Test
-    @DisplayName("성공 - 주문 메뉴 총 가격 계산")
-    void calculateTotalPrice_Success() {
+    @DisplayName("성공 - 주문 메뉴 총 가격 계산 (수량 반영)")
+    void totalPrice_reflectsQuantity() {
         // given
+        int quantity = 3;
         OrderMenu orderMenu = new OrderMenu(
                 givenStoreId,
                 givenMenuId,
                 givenMenuName,
-                givenQuantity,
+                quantity,
                 givenMoney
         );
 
@@ -81,31 +82,46 @@ class OrderMenuTest {
         Money totalPrice = orderMenu.totalPrice();
 
         // then
-        assertThat(totalPrice).isEqualTo(new Money(givenMenuPrice * givenQuantity));
+        assertThat(totalPrice.value()).isEqualTo(givenMenuPrice * quantity);
     }
 
     @Test
-    @DisplayName("성공 - 값이 같으면 동일한 OrderMenu로 판단")
-    void equalsAndHashCode_Success() {
+    @DisplayName("성공 - OrderMenu equals/hashCode는 quantity 무시하고 비교")
+    void equals_ignoreQuantity() {
         // given
-        OrderMenu orderMenu1 = new OrderMenu(
-                givenStoreId,
-                givenMenuId,
-                new MenuName(givenMenuNameValue),
-                givenQuantity,
-                new Money(givenMenuPrice)
-        );
-
-        OrderMenu orderMenu2 = new OrderMenu(
-                givenStoreId,
-                givenMenuId,
-                new MenuName(givenMenuNameValue),
-                givenQuantity,
-                new Money(givenMenuPrice)
-        );
+        OrderMenu menu1 = new OrderMenu(givenStoreId, givenMenuId, givenMenuName, 2, givenMoney);
+        OrderMenu menu2 = new OrderMenu(givenStoreId, givenMenuId, givenMenuName, 5, givenMoney);
 
         // then
-        assertThat(orderMenu1).isEqualTo(orderMenu2);
-        assertThat(orderMenu1.hashCode()).isEqualTo(orderMenu2.hashCode());
+        // quantity가 달라도 동일 메뉴로 판단
+        assertThat(menu1).isEqualTo(menu2);
+        assertThat(menu1.hashCode()).isEqualTo(menu2.hashCode());
+    }
+
+    @Test
+    @DisplayName("성공 - 새로운 수량 합산 후 totalPrice 계산")
+    void mergeQuantity_totalPrice() {
+        // given
+        int originalQuantity = 2;
+        int addedQuantity = 3;
+
+        OrderMenu original = new OrderMenu(givenStoreId, givenMenuId, givenMenuName, originalQuantity, givenMoney);
+        OrderMenu added = new OrderMenu(givenStoreId, givenMenuId, givenMenuName, addedQuantity, givenMoney);
+
+        // VO 불변성을 지키기 위해 새 객체 생성
+        OrderMenu merged = new OrderMenu(
+                original.getStoreId(),
+                original.getMenuId(),
+                original.getMenuName(),
+                original.getQuantity() + added.getQuantity(),
+                original.getMenuPrice()
+        );
+
+        // when
+        Money totalPrice = merged.totalPrice();
+
+        // then
+        assertThat(merged.getQuantity()).isEqualTo(originalQuantity + addedQuantity);
+        assertThat(totalPrice.value()).isEqualTo(givenMenuPrice * (originalQuantity + addedQuantity));
     }
 }

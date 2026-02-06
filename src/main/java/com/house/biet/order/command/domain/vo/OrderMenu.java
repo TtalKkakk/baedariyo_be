@@ -2,6 +2,8 @@ package com.house.biet.order.command.domain.vo;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import lombok.AccessLevel;
@@ -25,7 +27,6 @@ import lombok.NoArgsConstructor;
         "storeId",
         "menuId",
         "menuName",
-        "quantity",
         "menuPrice",
 })
 public class OrderMenu {
@@ -43,6 +44,10 @@ public class OrderMenu {
     /**
      * 메뉴 이름
      */
+    @AttributeOverride(
+            name = "value",
+            column = @Column(name = "menu_name", nullable = false)
+    )
     private MenuName menuName;
 
     /**
@@ -54,6 +59,10 @@ public class OrderMenu {
      * 메뉴 기본 가격
      */
     @Embedded
+    @AttributeOverride(
+            name = "amount",
+            column = @Column(name = "menu_price", nullable = false)
+    )
     private Money menuPrice;
 
     public OrderMenu(Long storeId, Long menuId, MenuName menuName, int quantity, Money menuPrice) {
