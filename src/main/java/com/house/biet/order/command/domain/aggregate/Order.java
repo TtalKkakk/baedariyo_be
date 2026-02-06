@@ -37,44 +37,29 @@ public class Order extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * 주문 대상 가게 ID (한 주문 = 한 가게)
-     */
+    /** 주문 대상 가게 ID */
     @Column(nullable = false)
     private Long storeId;
 
-    /**
-     * 주문자 정보
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    /**
-     * 라이더 정보
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rider_id", nullable = false)
-    private Rider rider;
-
-    /**
-     * 주문 상태
-     */
+    /** 주문자 ID */
     @Column(nullable = false)
+    private Long userId;
+
+    /** 배정 라이더 ID */
+    @Column(nullable = false)
+    private Long riderId;
+
+    /** 주문 상태 */
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OrderStatus status;
 
-    /**
-     * 메뉴 전체
-     */
+    /** 주문 메뉴 */
     @ElementCollection
     @CollectionTable(name = "order_menus", joinColumns = @JoinColumn(name = "order_id"))
-    @Column(nullable = false)
     private List<OrderMenu> menus = new ArrayList<>();
 
-    /**
-     * 주문 총액
-     */
+    /** 주문 총액 */
     @Embedded
     @AttributeOverride(
             name = "amount",
@@ -82,84 +67,50 @@ public class Order extends BaseTimeEntity {
     )
     private Money totalPrice;
 
-    /**
-     * 가게 요청 사항
-     */
-    @Column(nullable = true)
+    /** 가게 요청 사항 */
     private String storeRequest;
 
-    /**
-     * 라이더 요청 사항
-     */
-    @Column(nullable = true)
+    /** 라이더 요청 사항 */
     private String riderRequest;
 
-    /**
-     * 배달 주소
-     */
+    /** 배달 주소 */
     @Column(nullable = false)
     private String deliveryAddress;
 
-    /**
-     * 결제 방법
-     */
+    /** 결제 방법 */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentMethod paymentMethod;
 
-    /**
-     * 결제 완료 여부
-     */
-    @Column(nullable = false)
-    private boolean paid;
-
-    /**
-     * 예상 배달 시간 (외부 API)
-     */
-    @Column(nullable = true)
+    /** 예상 배달 시간 */
     private LocalDateTime estimatedTime;
 
-    /**
-     * 주문 생성자
-     *
-     * @param storeId         가게 ID
-     * @param user            주문자
-     * @param rider           배정 라이더
-     * @param menus           주문 메뉴 리스트
-     * @param storeRequest    가게 요청 사항
-     * @param riderRequest    라이더 요청 사항
-     * @param deliveryAddress 배달 주소
-     * @param paymentMethod   결제 방식
-     * @param paid            결제 완료 여부
-     * @param estimatedTime   예상 배달 시간
-     */
     public Order(Long storeId,
-                 User user,
-                 Rider rider,
+                 Long userId,
+                 Long riderId,
                  List<OrderMenu> menus,
                  String storeRequest,
                  String riderRequest,
                  String deliveryAddress,
                  PaymentMethod paymentMethod,
-                 boolean paid,
                  LocalDateTime estimatedTime) {
 
         if (menus == null || menus.isEmpty()) {
             throw new CustomException(ErrorCode.EMPTY_ORDER_MENU);
         }
-        if (storeId == null || user == null || rider == null || deliveryAddress == null || paymentMethod == null) {
+        if (storeId == null || userId == null || riderId == null ||
+                deliveryAddress == null || paymentMethod == null) {
             throw new CustomException(ErrorCode.INVALID_ORDER_DATA);
         }
 
         this.storeId = storeId;
-        this.user = user;
-        this.rider = rider;
+        this.userId = userId;
+        this.riderId = riderId;
         this.status = OrderStatus.ORDERED;
         this.storeRequest = storeRequest;
         this.riderRequest = riderRequest;
         this.deliveryAddress = deliveryAddress;
         this.paymentMethod = paymentMethod;
-        this.paid = paid;
         this.estimatedTime = estimatedTime;
 
         menus.forEach(this::addMenu);
