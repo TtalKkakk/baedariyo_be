@@ -145,6 +145,64 @@ class OrderTest {
                 .hasMessage(ErrorCode.INVALID_STORE_ID.getMessage());
     }
 
+    @Test
+    @DisplayName("성공 - 메뉴 제거 후 총액 갱신")
+    void removeMenu_Success() {
+        Order order = new Order(storeId, userId, riderId, List.of(menu1, menu2),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+
+        order.removeMenu(menu1);
+
+        assertThat(order.getMenus()).containsExactly(menu2);
+        assertThat(order.getTotalPrice().value()).isEqualTo(price2 * quantity2);
+    }
+
+    @Test
+    @DisplayName("실패 - 존재하지 않는 메뉴 제거")
+    void removeMenu_Fail_NotFound() {
+        Order order = new Order(storeId, userId, riderId, List.of(menu1),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+
+        assertThatThrownBy(() -> order.removeMenu(menu2))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.ORDER_MENU_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("성공 - 메뉴 수량 수정 후 총액 갱신")
+    void updateMenuQuantity_Success() {
+        Order order = new Order(storeId, userId, riderId, List.of(menu1),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+
+        int newQuantity = 5;
+        order.updateMenuQuantity(menuId1, newQuantity);
+
+        assertThat(order.getMenus().get(0).getQuantity()).isEqualTo(newQuantity);
+        assertThat(order.getTotalPrice().value()).isEqualTo(price1 * newQuantity);
+    }
+
+    @Test
+    @DisplayName("실패 - 메뉴 수량 0 이하로 수정")
+    void updateMenuQuantity_Fail_InvalidQuantity() {
+        Order order = new Order(storeId, userId, riderId, List.of(menu1),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+
+        assertThatThrownBy(() -> order.updateMenuQuantity(menuId1, 0))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.INVALID_MENU_QUANTITY.getMessage());
+    }
+
+    @Test
+    @DisplayName("실패 - 존재하지 않는 메뉴 수량 수정")
+    void updateMenuQuantity_Fail_NotFound() {
+        Order order = new Order(storeId, userId, riderId, List.of(menu1),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+
+        assertThatThrownBy(() -> order.updateMenuQuantity(menuId2, 3))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.ORDER_MENU_NOT_FOUND.getMessage());
+    }
+
     /* --------------------------- 상태 전이 테스트 --------------------------- */
 
     @Test
@@ -205,5 +263,34 @@ class OrderTest {
         assertThatThrownBy(order::markDelivered)
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.INVALID_ORDER_STATUS.getMessage());
+    }
+
+    /* --------------------------- 상태 조회 테스트 --------------------------- */
+
+    @Test
+    @DisplayName("성공 - 예상 배달 시간 갱신")
+    void updateEstimatedTime_Success() {
+        Order order = new Order(storeId, userId, riderId, List.of(menu1),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+
+        LocalDateTime newTime = estimatedTime.plusMinutes(15);
+        order.updateEstimatedTime(newTime);
+
+        assertThat(order.getEstimatedTime()).isEqualTo(newTime);
+    }
+
+    @Test
+    @DisplayName("성공 - 주문 요약 문자열 확인")
+    void summary_Success() {
+        Order order = new Order(storeId, userId, riderId, List.of(menu1, menu2),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+
+        String summary = order.summary();
+
+        assertThat(summary).contains("주문ID")
+                .contains("상태: ORDERED")
+                .contains(menuName1)
+                .contains(menuName2)
+                .contains(String.valueOf(order.getTotalPrice().value()));
     }
 }
