@@ -40,6 +40,7 @@ public enum ErrorCode {
     ACCOUNT_NOT_FOUND(40401, HttpStatus.NOT_FOUND, "계정을 찾을 수 없습니다."),
     USER_NOT_FOUND(40402, HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
     RIDER_NOT_FOUND(40403, HttpStatus.NOT_FOUND, "라이더를 찾을 수 없습니다."),
+    ORDER_MENU_NOT_FOUND(40404, HttpStatus.NOT_FOUND, "주문 메뉴를 찾을 수 없습니다."),
     NOT_FOUND(40400, HttpStatus.NOT_FOUND, "찾을 수 없습니다."),
 
     // 409 Conflict
