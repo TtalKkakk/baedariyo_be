@@ -48,16 +48,18 @@ class UserRepositoryTest {
     String givenPhoneNumber = "010-1111-1111";
 
     User user;
+    Account savedAccount;
 
     @BeforeEach
     void setup() {
-        Account savedAccount = accountRepository.save(Account.signup(
+        savedAccount = accountRepository.save(Account.signup(
                 new Email(givenEmail),
                 Password.encrypt(givenPassword, ENCODER),
                 UserRole.USER
         ));
 
         user = User.create(savedAccount, givenRealName, givenNickname, givenPhoneNumber);
+
     }
 
     @Test
@@ -131,5 +133,33 @@ class UserRepositoryTest {
 
         // then
         assertThat(foundUser).isEmpty();
+    }
+    @Test
+    @DisplayName("성공 - accountId로 userId 조회")
+    void findUserIdByAccountId_success() {
+        // given
+        userRepository.save(user);
+        Long accountId = savedAccount.getId();
+
+        // when
+        Optional<Long> result = userRepository.findUserIdByAccountId(accountId);
+
+        // then
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(user.getId());
+    }
+
+    @Test
+    @DisplayName("실패 - 존재하지 않는 accountId로 조회 시 empty 반환")
+    void findUserIdByAccountId_notFound() {
+        // given
+        userRepository.save(user);
+        Long invalidAccountId = 9999L;
+
+        // when
+        Optional<Long> result = userRepository.findUserIdByAccountId(invalidAccountId);
+
+        // then
+        assertThat(result).isEmpty();
     }
 }

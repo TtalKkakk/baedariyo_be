@@ -12,4 +12,6 @@ public interface UserRepository {
     Optional<User> findById(Long userId);
 
     Optional<User> findByNickname(Nickname nickname);
+
+    Optional<Long> findUserIdByAccountId(Long accountId);
 }

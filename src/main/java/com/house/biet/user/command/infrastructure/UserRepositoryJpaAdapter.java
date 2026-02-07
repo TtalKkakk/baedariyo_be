@@ -28,4 +28,9 @@ public class UserRepositoryJpaAdapter implements UserRepository {
     public Optional<User> findByNickname(Nickname nickname) {
         return userRepositoryJpa.findByNickname(nickname);
     }
+
+    @Override
+    public Optional<Long> findUserIdByAccountId(Long accountId) {
+        return userRepositoryJpa.findUserIdByAccountId(accountId);
+    }
 }
