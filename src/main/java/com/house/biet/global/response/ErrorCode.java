@@ -26,6 +26,8 @@ public enum ErrorCode {
     INVALID_ORDER_PAYMENT(40115, HttpStatus.BAD_REQUEST, "주문 취소를 할 수 없습니다."),
     INVALID_ORDER_CANCEL(40116, HttpStatus.BAD_REQUEST, "결제를 할 수 없습니다."),
     INVALID_ORDER_DATA(40117, HttpStatus.BAD_REQUEST, "결제 데이터가 올바르지 않습니다."),
+    ALREADY_ASSIGN_RIDER(40118, HttpStatus.BAD_REQUEST, "이미 라이더가 배정되었습니다."),
+    INVALID_RIDER_ID(40119, HttpStatus.BAD_REQUEST, "유효하지 않은 라이더 아이디입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
