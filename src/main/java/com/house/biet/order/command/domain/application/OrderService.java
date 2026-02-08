@@ -40,7 +40,6 @@ public class OrderService {
      *
      * @param storeId 주문 대상 가게 ID
      * @param userId 주문자 ID
-     * @param riderId 배정 라이더 ID
      * @param menus 주문 메뉴 리스트
      * @param storeRequest 가게 요청 사항
      * @param riderRequest 라이더 요청 사항
@@ -52,7 +51,6 @@ public class OrderService {
      */
     public Order create(Long storeId,
                              Long userId,
-                             Long riderId,
                              List<OrderMenu> menus,
                              String storeRequest,
                              String riderRequest,
@@ -63,7 +61,6 @@ public class OrderService {
         Order order = new Order(
                 storeId,
                 userId,
-                riderId,
                 menus,
                 storeRequest,
                 riderRequest,

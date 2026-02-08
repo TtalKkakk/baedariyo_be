@@ -34,21 +34,19 @@ public class OrderServiceIntegrationTest {
         // given
         Long storeId = 1L;
         Long userId = 10L;
-        Long riderId = 20L;
 
         OrderMenu menu = new OrderMenu(
                 1L,
                 100L,
-                OrderFixtures.order(userId, riderId).getMenus().get(0).getMenuName(),
+                OrderFixtures.order(userId).getMenus().get(0).getMenuName(),
                 2,
-                OrderFixtures.order(userId, riderId).getMenus().get(0).getMenuPrice()
+                OrderFixtures.order(userId).getMenus().get(0).getMenuPrice()
         );
 
         // when
         Order order = orderService.create(
                 storeId,
                 userId,
-                riderId,
                 List.of(menu),
                 "가게 요청",
                 "라이더 요청",
@@ -60,7 +58,6 @@ public class OrderServiceIntegrationTest {
         // then
         assertThat(order.getId()).isNotNull();
         assertThat(order.getUserId()).isEqualTo(userId);
-        assertThat(order.getRiderId()).isEqualTo(riderId);
         assertThat(order.getTotalAmount()).isGreaterThan(0);
     }
 
@@ -69,7 +66,7 @@ public class OrderServiceIntegrationTest {
     void addMenu_success() {
         // given
         Order order = orderRepository.save(
-                OrderFixtures.order(1L, 2L)
+                OrderFixtures.order(1L)
         );
 
         OrderMenu newMenu = new OrderMenu(
@@ -96,7 +93,7 @@ public class OrderServiceIntegrationTest {
     void removeMenu_success() {
         // given
         Order order = orderRepository.save(
-                OrderFixtures.order(1L, 2L)
+                OrderFixtures.order(1L)
         );
 
         OrderMenu menu = order.getMenus().get(0);
@@ -115,7 +112,7 @@ public class OrderServiceIntegrationTest {
     void orderStatusFlow_success() {
         // given
         Order order = orderRepository.save(
-                OrderFixtures.order(1L, 2L)
+                OrderFixtures.order(1L)
         );
 
         // when
@@ -134,7 +131,7 @@ public class OrderServiceIntegrationTest {
     void cancelOrder_success() {
         // given
         Order order = orderRepository.save(
-                OrderFixtures.order(1L, 2L)
+                OrderFixtures.order(1L)
         );
 
         // when
@@ -150,7 +147,7 @@ public class OrderServiceIntegrationTest {
     void findOrderForUpdate_success() {
         // given
         Order order = orderRepository.save(
-                OrderFixtures.order(1L, 2L)
+                OrderFixtures.order(1L)
         );
 
         // when

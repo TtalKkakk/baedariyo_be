@@ -85,7 +85,6 @@ public class Order extends BaseTimeEntity {
 
     public Order(Long storeId,
                  Long userId,
-                 Long riderId,
                  List<OrderMenu> menus,
                  String storeRequest,
                  String riderRequest,
@@ -102,7 +101,6 @@ public class Order extends BaseTimeEntity {
 
         this.storeId = storeId;
         this.userId = userId;
-        this.riderId = riderId;
         this.status = OrderStatus.ORDERED;
         this.storeRequest = storeRequest;
         this.riderRequest = riderRequest;

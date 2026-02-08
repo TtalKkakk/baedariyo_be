@@ -30,7 +30,7 @@ class OrderServiceConcurrencyTest {
 
     @BeforeEach
     void setUp() {
-        Order order = OrderFixtures.order(1L, 2L);
+        Order order = OrderFixtures.order(1L);
         orderRepository.save(order);
         orderId = order.getId();
     }

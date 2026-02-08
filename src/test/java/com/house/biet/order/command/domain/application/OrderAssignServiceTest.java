@@ -36,7 +36,7 @@ class OrderAssignServiceTest {
         Long orderId = 4L;
         Long riderId = 10L;
 
-        Order order = OrderFixtures.order(userId, null);
+        Order order = OrderFixtures.order(userId);
         order.markPaid();
 
         when(orderRepository.findByIdForUpdate(orderId))

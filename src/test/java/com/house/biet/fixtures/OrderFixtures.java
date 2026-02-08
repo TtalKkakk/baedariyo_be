@@ -17,9 +17,8 @@ public class OrderFixtures {
      * 테스트용 Order 생성
      *
      * @param userId  주문자 ID
-     * @param riderId 배정 라이더 ID
      */
-    public static Order order(Long userId, Long riderId) {
+    public static Order order(Long userId) {
         OrderMenu menu = new OrderMenu(
                 1L,          // storeId
                 100L,        // menuId
@@ -31,7 +30,6 @@ public class OrderFixtures {
         return new Order(
                 1L,               // storeId
                 userId,
-                riderId,
                 List.of(menu),
                 "가게 요청",
                 "라이더 요청",

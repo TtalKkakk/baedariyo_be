@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,7 +35,7 @@ class OrderServiceTest {
 
     @BeforeEach
     void setup() {
-        order = OrderFixtures.order(1L, 2L);
+        order = OrderFixtures.order(1L);
         menu = order.getMenus().get(0);
     }
 
@@ -52,7 +51,6 @@ class OrderServiceTest {
         Order saved = orderService.create(
                 order.getStoreId(),
                 order.getUserId(),
-                order.getRiderId(),
                 order.getMenus(),
                 order.getStoreRequest(),
                 order.getRiderRequest(),
@@ -117,7 +115,7 @@ class OrderServiceTest {
     @DisplayName("성공 - 주문 메뉴 제거")
     void removeMenu_success() {
         // given
-        Order order = OrderFixtures.order(1L, 2L);
+        Order order = OrderFixtures.order(1L);
         OrderMenu menu = order.getMenus().get(0);
 
         given(orderRepository.findById(order.getId()))
@@ -196,7 +194,7 @@ class OrderServiceTest {
     @DisplayName("성공 - 주문 취소")
     void cancelOrder_success() {
         // given
-        Order order = OrderFixtures.order(1L, 2L);
+        Order order = OrderFixtures.order(1L);
 
         given(orderRepository.findById(order.getId()))
                 .willReturn(Optional.of(order));
@@ -212,7 +210,7 @@ class OrderServiceTest {
     @DisplayName("실패 - 배달 중 주문 취소")
     void cancelOrder_fail_invalidStatus() {
         // given
-        Order order = OrderFixtures.order(1L, 2L);
+        Order order = OrderFixtures.order(1L);
         order.markPaid();
         order.markDelivering();
 
