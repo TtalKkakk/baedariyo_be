@@ -129,4 +129,32 @@ class RiderRepositoryTest {
         // then
         assertThat(isExists).isFalse();
     }
+
+    @Test
+    @DisplayName("성공 - 닉네임으로 id 찾기")
+    void findRiderIdByNickname_Success() {
+        // given
+        riderRepository.save(rider);
+
+        // when
+        Optional<Long> foundRiderId = riderRepository.findRiderIdByNickname(rider.getNickname().getValue());
+
+        // then
+        assertThat(foundRiderId).isPresent();
+        assertThat(foundRiderId.get()).isEqualTo(rider.getId());
+    }
+
+    @Test
+    @DisplayName("성공 - 없는 nickname 으로 조회시 null")
+    void findRiderIdyNickname_Success_NotExistsNickname() {
+        // given
+        riderRepository.save(rider);
+        String notExistsNicknameValue = "<NOT_EXISTS_NICKNAME>";
+
+        // when
+        Optional<Long> foundRiderId = riderRepository.findRiderIdByNickname(notExistsNicknameValue);
+
+        // then
+        assertThat(foundRiderId).isEmpty();
+    }
 }

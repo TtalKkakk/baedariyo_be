@@ -1,5 +1,6 @@
 package com.house.biet.rider.command;
 
+import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.rider.command.domain.entity.Rider;
 
 import java.util.Optional;
@@ -46,4 +47,17 @@ public interface RiderRepository {
      * @return 존재 시 true, 미존재 시 false
      */
     boolean existsById(Long riderId);
+
+    /**
+     * 라이더 닉네임으로 라이더 ID를 조회
+     *
+     * <p>
+     * - 닉네임 값(String)을 기준으로 라이더의 내부 식별자(riderId)를 조회
+     * - 라이더가 존재하지 않을 경우 {@link Optional#empty()}를 반환
+     * </p>
+     *
+     * @param nickname 조회할 라이더 닉네임 값
+     * @return 라이더 ID를 담은 Optional
+     */
+    Optional<Long> findRiderIdByNickname(String nickname);
 }

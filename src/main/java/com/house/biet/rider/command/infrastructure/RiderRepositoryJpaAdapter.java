@@ -1,5 +1,6 @@
 package com.house.biet.rider.command.infrastructure;
 
+import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.rider.command.RiderRepository;
 import com.house.biet.rider.command.domain.entity.Rider;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,10 @@ public class RiderRepositoryJpaAdapter implements RiderRepository {
     @Override
     public boolean existsById(Long riderId) {
         return repositoryJpa.existsById(riderId);
+    }
+
+    @Override
+    public Optional<Long> findRiderIdByNickname(String nickname) {
+        return repositoryJpa.findIdByNickname(nickname);
     }
 }
