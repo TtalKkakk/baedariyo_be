@@ -44,7 +44,7 @@ public class Order extends BaseTimeEntity {
     private Long userId;
 
     /** 배정 라이더 ID */
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long riderId;
 
     /** 주문 상태 */
@@ -96,8 +96,7 @@ public class Order extends BaseTimeEntity {
         if (menus == null || menus.isEmpty()) {
             throw new CustomException(ErrorCode.EMPTY_ORDER_MENU);
         }
-        if (storeId == null || userId == null || riderId == null ||
-                deliveryAddress == null || paymentMethod == null) {
+        if (storeId == null || userId == null || deliveryAddress == null || paymentMethod == null) {
             throw new CustomException(ErrorCode.INVALID_ORDER_DATA);
         }
 
@@ -225,6 +224,40 @@ public class Order extends BaseTimeEntity {
      */
     public int getTotalAmount() {
         return totalPrice.value();
+    }
+
+    /* -------------------- 라이더 결정 ------------------ */
+
+    /**
+     * 라이더를 주문에 배정한다.
+     *
+     * <p>
+     * 도메인 규칙:
+     * <ul>
+     *     <li>라이더 ID는 null일 수 없다.</li>
+     *     <li>주문 상태가 {@link OrderStatus#PAID} 인 경우에만 배정 가능하다.</li>
+     *     <li>이미 라이더가 배정된 주문에는 다시 배정할 수 없다.</li>
+     * </ul>
+     * </p>
+     *
+     * @param riderId 배정할 라이더 ID
+     *
+     * @throws CustomException
+     * <ul>
+     *     <li>{@link ErrorCode#INVALID_RIDER_ID} 라이더 ID가 null인 경우</li>
+     *     <li>{@link ErrorCode#INVALID_ORDER_STATUS} 주문 상태가 배정 불가능한 경우</li>
+     *     <li>{@link ErrorCode#ALREADY_ASSIGN_RIDER} 이미 라이더가 배정된 경우</li>
+     * </ul>
+     */
+    public void assignRider(Long riderId) {
+        if (riderId == null)
+            throw new CustomException(ErrorCode.INVALID_RIDER_ID);
+        if (this.status != OrderStatus.PAID)
+            throw new CustomException(ErrorCode.INVALID_ORDER_STATUS);
+        if (this.riderId != null)
+            throw new CustomException(ErrorCode.ALREADY_ASSIGN_RIDER);
+
+        this.riderId = riderId;
     }
 
     /* -------------------- 상태 변경 -------------------- */

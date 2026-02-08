@@ -203,6 +203,67 @@ class OrderTest {
                 .hasMessage(ErrorCode.ORDER_MENU_NOT_FOUND.getMessage());
     }
 
+    /* --------------------------- 라이더 배정 테스트 --------------------------- */
+
+    @Test
+    @DisplayName("성공 - 결제된 주문에 라이더를 배정")
+    void assignRider_success() {
+        // given
+        Order order = new Order(storeId, userId, null, List.of(menu1),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        order.markPaid(); // 결제
+
+        // when
+        order.assignRider(riderId);
+
+        // then
+        assertThat(order.getRiderId()).isEqualTo(riderId);
+    }
+
+    @Test
+    @DisplayName("에러 - 라이더 Id가 null")
+    void assignRider_Error_RiderIdIsNull() {
+        // given
+        Order order = new Order(storeId, userId, null, List.of(menu1),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        order.markPaid(); // 결제
+
+        // when & then
+        assertThatThrownBy(() -> order.assignRider(null))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.INVALID_RIDER_ID.getMessage());
+    }
+
+    @Test
+    @DisplayName("에러 - 결제되지 않은 주문에 rider 배정")
+    void assignRider_Error_NotPaidOrder() {
+        // given
+        Order order = new Order(storeId, userId, null, List.of(menu1),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+
+        // when & then
+        assertThatThrownBy(() -> order.assignRider(riderId))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.INVALID_ORDER_STATUS.getMessage());
+    }
+
+    @Test
+    @DisplayName("에러 - 이미 라이더가 배정된 경우")
+    void assignRider_Error_AlreadyAssignRider() {
+        // given
+        Order order = new Order(storeId, userId, null, List.of(menu1),
+                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        order.markPaid(); // 결제
+        order.assignRider(riderId);
+
+        Long anotherRiderId = 3L;
+
+        // when & then
+        assertThatThrownBy(() -> order.assignRider(anotherRiderId))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.ALREADY_ASSIGN_RIDER.getMessage());
+    }
+
     /* --------------------------- 상태 전이 테스트 --------------------------- */
 
     @Test
