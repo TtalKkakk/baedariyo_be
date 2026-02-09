@@ -17,7 +17,11 @@ public enum SuccessCode {
     WITHDRAW_SUCCESS(21003, "회원탈퇴가 완료되었습니다."),
 
     // User
-    USER_UPDATE_SUCCESS(22000, "회원 정보가 수정되었습니다.");
+    USER_UPDATE_SUCCESS(22000, "회원 정보가 수정되었습니다."),
+
+    // Order
+    ORDER_CREATE_SUCCESS(20300, "주문이 생성되었습니다."),
+    ORDER_RIDER_ASSIGN_SUCCESS(20301, "주문에 라이더가 배정되었습니다.");
 
     private final int code;
     private final String message;
