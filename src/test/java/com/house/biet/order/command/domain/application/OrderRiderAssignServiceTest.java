@@ -20,10 +20,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class OrderAssignServiceTest {
+class OrderRiderAssignServiceTest {
 
     @InjectMocks
-    private OrderAssignService orderAssignService;
+    private OrderRiderAssignService orderRiderAssignService;
 
     @Mock
     private OrderRepository orderRepository;
@@ -43,7 +43,7 @@ class OrderAssignServiceTest {
                 .thenReturn(Optional.of(order));
 
         // when
-        orderAssignService.assignRider(orderId, riderId);
+        orderRiderAssignService.assignRider(orderId, riderId);
 
         // then
         assertThat(order.getRiderId()).isEqualTo(riderId);
@@ -61,7 +61,7 @@ class OrderAssignServiceTest {
                 .thenReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> orderAssignService.assignRider(orderId, riderId))
+        assertThatThrownBy(() -> orderRiderAssignService.assignRider(orderId, riderId))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ORDER_NOT_FOUND.getMessage());
     }

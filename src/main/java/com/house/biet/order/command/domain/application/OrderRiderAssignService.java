@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OrderAssignService {
+public class OrderRiderAssignService {
 
     private final OrderRepository orderRepository;
 

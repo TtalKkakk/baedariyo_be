@@ -16,10 +16,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class OrderAssignServiceConcurrencyTest {
+class OrderRiderAssignServiceConcurrencyTest {
 
     @Autowired
-    private OrderAssignService orderAssignService;
+    private OrderRiderAssignService orderRiderAssignService;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -47,7 +47,7 @@ class OrderAssignServiceConcurrencyTest {
 
             executorService.submit(() -> {
                 try {
-                    orderAssignService.assignRider(orderId, currentRiderId);
+                    orderRiderAssignService.assignRider(orderId, currentRiderId);
                     successCount.incrementAndGet();
                 } catch (Exception e) {
                     // e.printStackTrace();
