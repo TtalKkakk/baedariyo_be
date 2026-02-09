@@ -13,4 +13,7 @@ public interface RiderRepositoryJpa
 
     @Query("select r.id from Rider r where r.nickname.value = :nickname")
     Optional<Long> findIdByNickname(@Param("nickname") String nickname);
+
+    @Query("select r.id from Rider r where r.account.id = :accountId")
+    Optional<Long> findRiderIdByAccountId(@Param("accountId") Long accountId);
 }

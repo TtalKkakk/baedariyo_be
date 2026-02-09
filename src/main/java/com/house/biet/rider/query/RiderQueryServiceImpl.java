@@ -18,4 +18,10 @@ public class RiderQueryServiceImpl implements RiderQueryService {
         return riderRepository.findRiderIdByNickname(nicknameValue)
                 .orElseThrow(() -> new CustomException(ErrorCode.RIDER_NOT_FOUND));
     }
+
+    @Override
+    public Long getRiderIdByAccountId(Long accountId) {
+        return riderRepository.findRiderIdByAccountId(accountId)
+                .orElseThrow(() -> new CustomException(ErrorCode.RIDER_NOT_FOUND));
+    }
 }

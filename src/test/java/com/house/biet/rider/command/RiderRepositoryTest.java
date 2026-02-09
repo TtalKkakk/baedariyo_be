@@ -157,4 +157,33 @@ class RiderRepositoryTest {
         // then
         assertThat(foundRiderId).isEmpty();
     }
+
+    @Test
+    @DisplayName("성공 - accountId로 riderId 찾기")
+    void findRiderIdByAccountId_Success() {
+        // given
+        riderRepository.save(rider);
+        Long accountId = rider.getAccount().getId();
+
+        // when
+        Optional<Long> foundRiderId = riderRepository.findRiderIdByAccountId(accountId);
+
+        // then
+        assertThat(foundRiderId).isPresent();
+        assertThat(foundRiderId.get()).isEqualTo(rider.getId());
+    }
+
+    @Test
+    @DisplayName("성공 - 없는 accountId로 riderId 찾기")
+    void findRiderIdByAccountId_Success_NotFoundAccountId() {
+        // given
+        riderRepository.save(rider);
+        Long notExistsAccountId = -1L;
+
+        // when
+        Optional<Long> foundRiderId = riderRepository.findRiderIdByAccountId(notExistsAccountId);
+
+        // then
+        assertThat(foundRiderId).isEmpty();
+    }
 }

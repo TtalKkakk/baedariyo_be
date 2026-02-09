@@ -34,4 +34,26 @@ public interface RiderQueryService {
      * @throws com.house.biet.global.response.CustomException 라이더가 존재하지 않을 경우
      */
     Long getRiderIdByNickname(String nicknameValue);
+
+    /**
+     * Account ID로 라이더 ID 조회
+     *
+     * <p>
+     * - 라이더가 연관된 계정(Account)을 기준으로 내부 식별자인 Rider ID를 반환
+     * - Command 도메인에서는 Account ID만 알고 있어도 라이더를 참조할 수 있게 해줌
+     * - 라이더가 존재하지 않으면 {@link com.house.biet.global.response.CustomException}을 발생시킴
+     * </p>
+     *
+     * <p>
+     * 사용 예시:
+     * <pre>
+     * Long riderId = riderQueryService.getRiderIdByAccountId(accountId);
+     * </pre>
+     * </p>
+     *
+     * @param accountId 라이더와 연결된 계정 ID
+     * @return 조회된 라이더 ID
+     * @throws com.house.biet.global.response.CustomException 라이더가 존재하지 않을 경우
+     */
+    Long getRiderIdByAccountId(Long accountId);
 }

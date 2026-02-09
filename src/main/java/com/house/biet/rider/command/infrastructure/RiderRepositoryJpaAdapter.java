@@ -33,4 +33,9 @@ public class RiderRepositoryJpaAdapter implements RiderRepository {
     public Optional<Long> findRiderIdByNickname(String nickname) {
         return repositoryJpa.findIdByNickname(nickname);
     }
+
+    @Override
+    public Optional<Long> findRiderIdByAccountId(Long accountId) {
+        return repositoryJpa.findRiderIdByAccountId(accountId);
+    }
 }

@@ -60,4 +60,17 @@ public interface RiderRepository {
      * @return 라이더 ID를 담은 Optional
      */
     Optional<Long> findRiderIdByNickname(String nickname);
+
+    /**
+     * account ID 로 라이더 ID를 조회
+     *
+     * <p>
+     * - 계좌 식별자(accountId)를 기준으로 라이더의 내부 식별자(riderId)를 조회
+     * - 라이더가 존재하지 않을 경우 {@link Optional#empty()}를 반환
+     * </p>
+     *
+     * @param accountId account Id
+     * @return 라이더 ID를 담은 Optional
+     */
+    Optional<Long> findRiderIdByAccountId(Long accountId);
 }
