@@ -1,10 +1,7 @@
 package com.house.biet.fixtures;
 
 import com.house.biet.order.command.domain.aggregate.Order;
-import com.house.biet.order.command.domain.vo.MenuName;
-import com.house.biet.order.command.domain.vo.Money;
-import com.house.biet.order.command.domain.vo.OrderMenu;
-import com.house.biet.order.command.domain.vo.PaymentMethod;
+import com.house.biet.order.command.domain.vo.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +30,16 @@ public class OrderFixtures {
                 List.of(menu),
                 "가게 요청",
                 "라이더 요청",
-                "서울시 강남구",
+                new Address(
+                        "서울특별시 마포구 월드컵북로 396",
+                        "서울특별시 마포구 상암동 1605",
+                        "101동 1001호"
+                ),
+                new DeliveryLocation(
+                        36.32,
+                        127.12,
+                        "서울시 강남구"
+                ),
                 PaymentMethod.CARD,
                 LocalDateTime.now()
         );

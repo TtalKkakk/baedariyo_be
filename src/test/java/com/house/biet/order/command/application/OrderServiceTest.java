@@ -56,6 +56,7 @@ class OrderServiceTest {
                 order.getStoreRequest(),
                 order.getRiderRequest(),
                 order.getDeliveryAddress(),
+                order.getDeliveryLocation(),
                 order.getPaymentMethod(),
                 order.getEstimatedTime()
         );

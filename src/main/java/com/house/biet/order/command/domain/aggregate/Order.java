@@ -3,10 +3,7 @@ package com.house.biet.order.command.domain.aggregate;
 import com.house.biet.global.jpa.BaseTimeEntity;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.order.command.domain.vo.Money;
-import com.house.biet.order.command.domain.vo.OrderMenu;
-import com.house.biet.order.command.domain.vo.OrderStatus;
-import com.house.biet.order.command.domain.vo.PaymentMethod;
+import com.house.biet.order.command.domain.vo.*;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -72,8 +69,20 @@ public class Order extends BaseTimeEntity {
     private String riderRequest;
 
     /** 배달 주소 */
-    @Column(nullable = false)
-    private String deliveryAddress;
+    @Embedded
+    @AttributeOverride(
+            name = "deliveryAddress",
+            column = @Column(name = "delivery_address", nullable = false)
+    )
+    private Address deliveryAddress;
+
+    /** 배달 위치 */
+    @Embedded
+    @AttributeOverride(
+            name = "deliveryLocation",
+            column = @Column(name = "delivery_location", nullable = false)
+    )
+    private DeliveryLocation deliveryLocation;
 
     /** 결제 방법 */
     @Enumerated(EnumType.STRING)
@@ -88,14 +97,15 @@ public class Order extends BaseTimeEntity {
                  List<OrderMenu> menus,
                  String storeRequest,
                  String riderRequest,
-                 String deliveryAddress,
+                 Address deliveryAddress,
+                 DeliveryLocation deliveryLocation,
                  PaymentMethod paymentMethod,
                  LocalDateTime estimatedTime) {
 
         if (menus == null || menus.isEmpty()) {
             throw new CustomException(ErrorCode.EMPTY_ORDER_MENU);
         }
-        if (storeId == null || userId == null || deliveryAddress == null || paymentMethod == null) {
+        if (storeId == null || userId == null || paymentMethod == null) {
             throw new CustomException(ErrorCode.INVALID_ORDER_DATA);
         }
 
@@ -105,6 +115,7 @@ public class Order extends BaseTimeEntity {
         this.storeRequest = storeRequest;
         this.riderRequest = riderRequest;
         this.deliveryAddress = deliveryAddress;
+        this.deliveryLocation = deliveryLocation;
         this.paymentMethod = paymentMethod;
         this.estimatedTime = estimatedTime;
 

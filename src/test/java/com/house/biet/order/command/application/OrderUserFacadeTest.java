@@ -7,6 +7,8 @@ import com.house.biet.order.command.application.OrderService;
 import com.house.biet.order.command.application.OrderUserFacade;
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.order.command.domain.dto.OrderCreateRequestDto;
+import com.house.biet.order.command.domain.vo.Address;
+import com.house.biet.order.command.domain.vo.DeliveryLocation;
 import com.house.biet.order.command.domain.vo.PaymentMethod;
 import com.house.biet.user.query.UserQueryService;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +59,8 @@ class OrderUserFacadeTest {
                 anyList(),
                 any(String.class),
                 any(String.class),
-                any(String.class),
+                any(Address.class),
+                any(DeliveryLocation.class),
                 any(PaymentMethod.class),
                 any(LocalDateTime.class)
         )).willReturn(order);
@@ -75,7 +78,8 @@ class OrderUserFacadeTest {
                 anyList(),
                 any(String.class),
                 any(String.class),
-                any(String.class),
+                any(Address.class),
+                any(DeliveryLocation.class),
                 any(PaymentMethod.class),
                 any(LocalDateTime.class)
         );

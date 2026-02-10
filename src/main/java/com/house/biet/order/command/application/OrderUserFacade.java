@@ -2,9 +2,7 @@ package com.house.biet.order.command.application;
 
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.order.command.domain.dto.OrderCreateRequestDto;
-import com.house.biet.order.command.domain.vo.MenuName;
-import com.house.biet.order.command.domain.vo.Money;
-import com.house.biet.order.command.domain.vo.OrderMenu;
+import com.house.biet.order.command.domain.vo.*;
 import com.house.biet.user.query.UserQueryService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -35,13 +33,31 @@ public class OrderUserFacade {
                 ))
                 .toList();
 
+        Address address = new Address(
+                requestDto.deliveryAddress().detailAddress(),
+                requestDto.deliveryAddress().jibunAddress(),
+                requestDto.deliveryAddress().roadAddress()
+        );
+
+        // TODO: 추후 api 끌어올것!
+        double createdOrderLatitude = 34.2;
+        double createdOrderLongitude = 128.2;
+        String region = "d";
+
+        DeliveryLocation deliveryLocation = new DeliveryLocation(
+                createdOrderLatitude,
+                createdOrderLongitude,
+                region
+        );
+
         Order createdOrder = orderService.create(
                 storeId,
                 userId,
                 menus,
                 requestDto.storeRequest(),
                 requestDto.storeRequest(),
-                requestDto.deliveryAddress(),
+                address,
+                deliveryLocation,
                 requestDto.paymentMethod(),
                 LocalDateTime.now()
         );

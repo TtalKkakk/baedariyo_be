@@ -4,6 +4,8 @@ import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.order.command.OrderRepository;
 import com.house.biet.order.command.domain.aggregate.Order;
+import com.house.biet.order.command.domain.vo.Address;
+import com.house.biet.order.command.domain.vo.DeliveryLocation;
 import com.house.biet.order.command.domain.vo.OrderMenu;
 import com.house.biet.order.command.domain.vo.PaymentMethod;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +46,7 @@ public class OrderService {
      * @param storeRequest 가게 요청 사항
      * @param riderRequest 라이더 요청 사항
      * @param deliveryAddress 배달 주소
+     * @param deliveryLocation 배달 위치
      * @param paymentMethod 결제 방법
      * @param estimatedTime 예상 배달 시간
      * @return 생성된 Order 엔티티
@@ -54,7 +57,8 @@ public class OrderService {
                              List<OrderMenu> menus,
                              String storeRequest,
                              String riderRequest,
-                             String deliveryAddress,
+                             Address deliveryAddress,
+                             DeliveryLocation deliveryLocation,
                              PaymentMethod paymentMethod,
                              LocalDateTime estimatedTime
     ) {
@@ -65,6 +69,7 @@ public class OrderService {
                 storeRequest,
                 riderRequest,
                 deliveryAddress,
+                deliveryLocation,
                 paymentMethod,
                 estimatedTime
         );

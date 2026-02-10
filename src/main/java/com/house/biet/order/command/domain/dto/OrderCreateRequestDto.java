@@ -20,7 +20,7 @@ public record OrderCreateRequestDto(
         String riderRequest,
 
         @NotBlank
-        String deliveryAddress,
+        DeliveryAddressDto deliveryAddress,
 
         @NotNull
         PaymentMethod paymentMethod

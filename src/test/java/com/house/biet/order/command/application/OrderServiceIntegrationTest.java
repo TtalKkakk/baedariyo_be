@@ -1,9 +1,12 @@
 package com.house.biet.order.command.application;
 
+import com.house.biet.fixtures.AddressFixtures;
+import com.house.biet.fixtures.DeliveryLocationFixtures;
 import com.house.biet.fixtures.OrderFixtures;
 import com.house.biet.order.command.OrderRepository;
-import com.house.biet.order.command.application.OrderService;
 import com.house.biet.order.command.domain.aggregate.Order;
+import com.house.biet.order.command.domain.vo.Address;
+import com.house.biet.order.command.domain.vo.DeliveryLocation;
 import com.house.biet.order.command.domain.vo.OrderMenu;
 import com.house.biet.order.command.domain.vo.PaymentMethod;
 import jakarta.transaction.Transactional;
@@ -29,6 +32,9 @@ public class OrderServiceIntegrationTest {
     @Autowired
     private OrderRepository orderRepository;
 
+    private final Address addressMapo = AddressFixtures.mapoAddress();
+    private final DeliveryLocation deliveryLocationMapo = DeliveryLocationFixtures.seoulMapo();
+
     @Test
     @DisplayName("성공 - 주문 생성")
     void createOrder_success() {
@@ -51,7 +57,8 @@ public class OrderServiceIntegrationTest {
                 List.of(menu),
                 "가게 요청",
                 "라이더 요청",
-                "서울시 강남구",
+                addressMapo,
+                deliveryLocationMapo,
                 PaymentMethod.CARD,
                 LocalDateTime.now()
         );

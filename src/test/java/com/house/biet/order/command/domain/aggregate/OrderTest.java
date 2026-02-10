@@ -2,11 +2,7 @@ package com.house.biet.order.command.domain.aggregate;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.order.command.domain.vo.MenuName;
-import com.house.biet.order.command.domain.vo.Money;
-import com.house.biet.order.command.domain.vo.OrderMenu;
-import com.house.biet.order.command.domain.vo.OrderStatus;
-import com.house.biet.order.command.domain.vo.PaymentMethod;
+import com.house.biet.order.command.domain.vo.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +37,8 @@ class OrderTest {
 
     String storeRequest;
     String riderRequest;
-    String deliveryAddress;
+    Address deliveryAddress;
+    DeliveryLocation deliveryLocation;
     PaymentMethod paymentMethod;
     LocalDateTime estimatedTime;
 
@@ -52,7 +49,17 @@ class OrderTest {
 
         storeRequest = "가게 요청";
         riderRequest = "라이더 요청";
-        deliveryAddress = "서울시 강남구";
+        deliveryAddress = new Address(
+                "서울특별시 마포구 월드컵북로 396",
+                "서울특별시 마포구 상암동 1605",
+                "101동 1001호"
+        );
+        deliveryLocation = new DeliveryLocation(
+                36.32,
+                127.12,
+                "서울시 마포구"
+        );
+
         paymentMethod = PaymentMethod.CARD;
         estimatedTime = LocalDateTime.now().plusMinutes(30);
     }
@@ -67,6 +74,7 @@ class OrderTest {
                 storeRequest,
                 riderRequest,
                 deliveryAddress,
+                deliveryLocation,
                 paymentMethod,
                 estimatedTime
         );
@@ -93,6 +101,7 @@ class OrderTest {
                 storeRequest,
                 riderRequest,
                 deliveryAddress,
+                deliveryLocation,
                 paymentMethod,
                 estimatedTime
         ))
@@ -103,8 +112,16 @@ class OrderTest {
     @Test
     @DisplayName("성공 - 새로운 메뉴 추가 및 총액 갱신")
     void addMenu_Success_NewMenu() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         order.addMenu(menu2);
 
@@ -115,8 +132,16 @@ class OrderTest {
     @Test
     @DisplayName("성공 - 기존 메뉴 추가 시 수량 합산")
     void addMenu_Success_ExistingMenu() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         int addQuantity = 3;
         OrderMenu additionalMenu = new OrderMenu(storeId, menuId1, new MenuName(menuName1), addQuantity, new Money(price1));
@@ -131,8 +156,16 @@ class OrderTest {
     @Test
     @DisplayName("실패 - 다른 가게 메뉴 추가 시 예외")
     void addMenu_Fail_InvalidStore() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         long otherStoreId = 999L;
         OrderMenu otherStoreMenu = new OrderMenu(otherStoreId, 1L, new MenuName("타가게 메뉴"), 1, new Money(1000));
@@ -145,8 +178,16 @@ class OrderTest {
     @Test
     @DisplayName("성공 - 메뉴 제거 후 총액 갱신")
     void removeMenu_Success() {
-        Order order = new Order(storeId, userId, List.of(menu1, menu2),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1, menu2),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         order.removeMenu(menu1);
 
@@ -157,8 +198,16 @@ class OrderTest {
     @Test
     @DisplayName("실패 - 존재하지 않는 메뉴 제거")
     void removeMenu_Fail_NotFound() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         assertThatThrownBy(() -> order.removeMenu(menu2))
                 .isInstanceOf(CustomException.class)
@@ -168,8 +217,16 @@ class OrderTest {
     @Test
     @DisplayName("성공 - 메뉴 수량 수정 후 총액 갱신")
     void updateMenuQuantity_Success() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         int newQuantity = 5;
         order.updateMenuQuantity(menuId1, newQuantity);
@@ -181,8 +238,16 @@ class OrderTest {
     @Test
     @DisplayName("실패 - 메뉴 수량 0 이하로 수정")
     void updateMenuQuantity_Fail_InvalidQuantity() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         assertThatThrownBy(() -> order.updateMenuQuantity(menuId1, 0))
                 .isInstanceOf(CustomException.class)
@@ -192,8 +257,16 @@ class OrderTest {
     @Test
     @DisplayName("실패 - 존재하지 않는 메뉴 수량 수정")
     void updateMenuQuantity_Fail_NotFound() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         assertThatThrownBy(() -> order.updateMenuQuantity(menuId2, 3))
                 .isInstanceOf(CustomException.class)
@@ -206,8 +279,16 @@ class OrderTest {
     @DisplayName("성공 - 결제된 주문에 라이더를 배정")
     void assignRider_success() {
         // given
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
         order.markPaid(); // 결제
 
         // when
@@ -221,8 +302,16 @@ class OrderTest {
     @DisplayName("에러 - 라이더 Id가 null")
     void assignRider_Error_RiderIdIsNull() {
         // given
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
         order.markPaid(); // 결제
 
         // when & then
@@ -235,8 +324,16 @@ class OrderTest {
     @DisplayName("에러 - 결제되지 않은 주문에 rider 배정")
     void assignRider_Error_NotPaidOrder() {
         // given
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         // when & then
         assertThatThrownBy(() -> order.assignRider(riderId))
@@ -248,8 +345,17 @@ class OrderTest {
     @DisplayName("에러 - 이미 라이더가 배정된 경우")
     void assignRider_Error_AlreadyAssignRider() {
         // given
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
+
         order.markPaid(); // 결제
         order.assignRider(riderId);
 
@@ -266,8 +372,16 @@ class OrderTest {
     @Test
     @DisplayName("성공 - 주문 취소")
     void cancelOrder_Success() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         order.cancel();
         assertThat(order.getStatus()).isEqualTo(OrderStatus.CANCELLED);
@@ -276,8 +390,16 @@ class OrderTest {
     @Test
     @DisplayName("실패 - 주문 취소 잘못된 상태")
     void cancelOrder_Fail() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         order.markPaid();
         order.markDelivering();
@@ -290,8 +412,16 @@ class OrderTest {
     @Test
     @DisplayName("성공 - 결제, 배달, 완료 상태 전이")
     void orderStatusFlow_Success() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         order.markPaid();
         assertThat(order.getStatus()).isEqualTo(OrderStatus.PAID);
@@ -306,8 +436,16 @@ class OrderTest {
     @Test
     @DisplayName("실패 - 잘못된 상태 전이 시 예외")
     void orderStatusFlow_Fail_InvalidTransition() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         assertThatThrownBy(order::markDelivering)
                 .isInstanceOf(CustomException.class)
@@ -328,8 +466,16 @@ class OrderTest {
     @Test
     @DisplayName("성공 - 예상 배달 시간 갱신")
     void updateEstimatedTime_Success() {
-        Order order = new Order(storeId, userId, List.of(menu1),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         LocalDateTime newTime = estimatedTime.plusMinutes(15);
         order.updateEstimatedTime(newTime);
@@ -340,8 +486,16 @@ class OrderTest {
     @Test
     @DisplayName("성공 - 주문 요약 문자열 확인")
     void summary_Success() {
-        Order order = new Order(storeId, userId, List.of(menu1, menu2),
-                storeRequest, riderRequest, deliveryAddress, paymentMethod, estimatedTime);
+        Order order = new Order(storeId,
+                userId,
+                List.of(menu1, menu2),
+                storeRequest,
+                riderRequest,
+                deliveryAddress,
+                deliveryLocation,
+                paymentMethod,
+                estimatedTime
+        );
 
         String summary = order.summary();
 
