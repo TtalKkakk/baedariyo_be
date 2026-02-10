@@ -1,4 +1,4 @@
-package com.house.biet.order.command.domain.application;
+package com.house.biet.order.command.application;
 
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.order.command.domain.dto.OrderCreateRequestDto;

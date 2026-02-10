@@ -3,7 +3,7 @@ package com.house.biet.api;
 import com.house.biet.auth.infrastructure.security.AuthPrincipal;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
-import com.house.biet.order.command.domain.application.OrderUserFacade;
+import com.house.biet.order.command.application.OrderUserFacade;
 import com.house.biet.order.command.domain.dto.OrderCreateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

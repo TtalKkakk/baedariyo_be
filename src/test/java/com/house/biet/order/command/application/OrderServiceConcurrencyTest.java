@@ -1,7 +1,8 @@
-package com.house.biet.order.command.domain.application;
+package com.house.biet.order.command.application;
 
 import com.house.biet.fixtures.OrderFixtures;
 import com.house.biet.order.command.OrderRepository;
+import com.house.biet.order.command.application.OrderService;
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.order.command.domain.vo.OrderStatus;
 import org.junit.jupiter.api.BeforeEach;

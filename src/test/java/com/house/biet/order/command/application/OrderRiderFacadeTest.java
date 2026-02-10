@@ -1,7 +1,9 @@
-package com.house.biet.order.command.domain.application;
+package com.house.biet.order.command.application;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
+import com.house.biet.order.command.application.OrderRiderAssignService;
+import com.house.biet.order.command.application.OrderRiderFacade;
 import com.house.biet.rider.query.RiderQueryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,19 +1,16 @@
-package com.house.biet.order.command.domain.application;
+package com.house.biet.order.command.application;
 
-import com.house.biet.fixtures.AccountFixtures;
 import com.house.biet.fixtures.OrderFixtures;
-import com.house.biet.fixtures.RiderFixtures;
 import com.house.biet.global.vo.UserRole;
 import com.house.biet.member.command.AccountRepository;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.*;
 import com.house.biet.order.command.OrderRepository;
+import com.house.biet.order.command.application.OrderRiderFacade;
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.rider.command.RiderRepository;
 import com.house.biet.rider.command.domain.entity.Rider;
-import com.house.biet.rider.command.domain.vo.RiderWorkingStatus;
 import com.house.biet.rider.command.domain.vo.VehicleType;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
