@@ -12,12 +12,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Address {
 
-    private String fullAddressValue;
+    private String roadAddress;     // 필수
+    private String jibunAddress;    // 필수
+    private String detailAddress;   // 필수
 
-    public Address(String fullAddressValue) {
-        if (fullAddressValue == null || fullAddressValue.isBlank())
+    public Address(String roadAddress, String jibunAddress, String detailAddress) {
+        if (roadAddress == null || roadAddress.isBlank()
+                || jibunAddress == null || jibunAddress.isBlank()
+                || detailAddress == null || detailAddress.isBlank()) {
             throw new CustomException(ErrorCode.INVALID_ADDRESS_FORMAT);
+        }
 
-        this.fullAddressValue = fullAddressValue;
+        this.roadAddress = roadAddress;
+        this.jibunAddress = jibunAddress;
+        this.detailAddress = detailAddress;
     }
 }
