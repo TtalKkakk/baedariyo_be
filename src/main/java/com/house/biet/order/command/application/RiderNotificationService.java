@@ -19,7 +19,7 @@ public class RiderNotificationService {
     /**
      * 주문 생성 이벤트를 받아서 주변 라이더에게 호출 메시지를 보냄
      */
-    public void notifyRiders(OrderCreatedEvent event) {
+    public void notifyNearByRiders(OrderCreatedEvent event) {
         // 주변 5km 내의 라이더 찾기
         List<RiderCandidate> candidates
                 = riderFinder.findNearby(event.getPickupLocationDto(), 5.0);

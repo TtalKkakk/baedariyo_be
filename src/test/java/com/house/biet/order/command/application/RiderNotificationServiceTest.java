@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.BDDMockito.given;
@@ -34,7 +33,7 @@ class RiderNotificationServiceTest {
 
     @Test
     @DisplayName("성공 - 라이더 알림 서비스")
-    void notifyRiders_Success() {
+    void notifyNearByRiders_Success() {
         // given
         OrderCreatedEvent event = new OrderCreatedEvent(
                 1L,
@@ -53,7 +52,7 @@ class RiderNotificationServiceTest {
                 .willReturn(List.of(candidate));
 
         // when
-        riderNotificationService.notifyRiders(event);
+        riderNotificationService.notifyNearByRiders(event);
 
         // then
         verify(riderCallSender).send(candidate, event);
