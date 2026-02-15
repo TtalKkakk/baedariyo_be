@@ -143,7 +143,8 @@ public class OrderService {
      * @throws CustomException 주문이 존재하지 않거나 취소 불가능한 상태일 경우
      */
     public void cancelOrder(Long orderId) {
-        Order order = findOrderOrThrow(orderId);
+        Order order = orderRepository.findByIdForUpdate(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
         order.cancel();
     }
 
