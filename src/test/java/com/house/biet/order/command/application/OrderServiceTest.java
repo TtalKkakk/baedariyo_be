@@ -198,7 +198,7 @@ class OrderServiceTest {
         // given
         Order order = OrderFixtures.order(1L);
 
-        given(orderRepository.findById(order.getId()))
+        given(orderRepository.findByIdForUpdate(order.getId()))
                 .willReturn(Optional.of(order));
 
         // when
@@ -216,7 +216,7 @@ class OrderServiceTest {
         order.markPaid();
         order.markDelivering();
 
-        given(orderRepository.findById(order.getId()))
+        given(orderRepository.findByIdForUpdate(order.getId()))
                 .willReturn(Optional.of(order));
 
         // when / then

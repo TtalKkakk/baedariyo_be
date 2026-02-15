@@ -2,12 +2,11 @@ package com.house.biet.order.command.application;
 
 import com.house.biet.fixtures.OrderFixtures;
 import com.house.biet.order.command.OrderRepository;
-import com.house.biet.order.command.application.OrderRiderAssignService;
 import com.house.biet.order.command.domain.aggregate.Order;
+import com.house.biet.support.config.ServiceConcurrencyTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -16,14 +15,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class OrderRiderAssignServiceConcurrencyTest {
+class OrderRiderAssignServiceConcurrencyTest extends ServiceConcurrencyTest {
 
     @Autowired
     private OrderRiderAssignService orderRiderAssignService;
 
     @Autowired
     private OrderRepository orderRepository;
+
+    static int threadCount = 5;
 
     @Test
     @DisplayName("여러 라이더가 동시에 주문을 수락하면 한 명만 성공한다")
@@ -35,7 +35,6 @@ class OrderRiderAssignServiceConcurrencyTest {
 
         Long orderId = order.getId();
 
-        int threadCount = 5;
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
 

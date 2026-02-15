@@ -9,6 +9,7 @@ import com.house.biet.order.command.domain.vo.Address;
 import com.house.biet.order.command.domain.vo.DeliveryLocation;
 import com.house.biet.order.command.domain.vo.OrderMenu;
 import com.house.biet.order.command.domain.vo.PaymentMethod;
+import com.house.biet.support.config.ServiceIntegrationTest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,10 +22,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@ActiveProfiles("test")
-@Transactional
-public class OrderServiceIntegrationTest {
+public class OrderServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private OrderService orderService;

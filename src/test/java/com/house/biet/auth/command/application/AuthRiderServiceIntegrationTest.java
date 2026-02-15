@@ -1,7 +1,6 @@
 package com.house.biet.auth.command.application;
 
 import com.house.biet.auth.command.application.dto.AuthLoginResultDto;
-import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.global.vo.UserRole;
@@ -9,12 +8,11 @@ import com.house.biet.member.command.AccountRepository;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Password;
-import jakarta.transaction.Transactional;
+import com.house.biet.support.config.ServiceIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -22,9 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-@Transactional
-class AuthRiderServiceIntegrationTest {
+class AuthRiderServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     AuthService authService;

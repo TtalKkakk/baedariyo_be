@@ -1,25 +1,25 @@
 package com.house.biet.order.command.application;
 
 import com.house.biet.fixtures.OrderFixtures;
+import com.house.biet.global.response.CustomException;
+import com.house.biet.global.response.ErrorCode;
 import com.house.biet.order.command.OrderRepository;
 import com.house.biet.order.command.application.OrderService;
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.order.command.domain.vo.OrderStatus;
+import com.house.biet.support.config.ServiceConcurrencyTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@ActiveProfiles("test")
-class OrderServiceConcurrencyTest {
+class OrderServiceConcurrencyTest extends ServiceConcurrencyTest {
 
     @Autowired
     private OrderService orderService;
@@ -36,30 +36,35 @@ class OrderServiceConcurrencyTest {
         orderId = order.getId();
     }
 
+    static final int threadCount = 3;
+
     @Test
     void OrderConcurrencyCancel_Success() throws InterruptedException {
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-        CountDownLatch latch = new CountDownLatch(2);
+        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+        CountDownLatch latch = new CountDownLatch(threadCount);
 
-        executor.submit(() -> {
-            try {
-                orderService.cancelOrder(orderId);
-            } finally {
-                latch.countDown();
-            }
-        });
+        AtomicInteger success = new AtomicInteger();
+        AtomicInteger fail = new AtomicInteger();
 
-        executor.submit(() -> {
-            try {
-                orderService.cancelOrder(orderId);
-            } finally {
-                latch.countDown();
-            }
-        });
+        for (int i = 0; i < threadCount; i++) {
+            executor.submit(() -> {
+                try {
+                    orderService.cancelOrder(orderId);
+                    success.incrementAndGet();
+                } catch (CustomException e) {
+                    fail.incrementAndGet();
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
 
         latch.await();
 
         Order order = orderService.getOrder(orderId);
+
+        assertThat(success.get()).isEqualTo(1);
+        assertThat(fail.get()).isEqualTo(threadCount-1);
         assertThat(order.getStatus()).isEqualTo(OrderStatus.CANCELLED);
     }
 }

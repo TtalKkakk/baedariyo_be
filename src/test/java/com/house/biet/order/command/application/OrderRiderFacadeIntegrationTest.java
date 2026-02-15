@@ -9,24 +9,20 @@ import com.house.biet.global.vo.UserRole;
 import com.house.biet.member.command.AccountRepository;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.order.command.OrderRepository;
-import com.house.biet.order.command.application.OrderRiderFacade;
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.rider.command.RiderRepository;
 import com.house.biet.rider.command.domain.entity.Rider;
-import jakarta.transaction.Transactional;
+import com.house.biet.support.config.ServiceIntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-@Transactional
-public class OrderRiderFacadeIntegrationTest {
+public class OrderRiderFacadeIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private OrderRiderFacade orderRiderFacade;
