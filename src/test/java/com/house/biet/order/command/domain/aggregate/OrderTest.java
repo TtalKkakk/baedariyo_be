@@ -1,5 +1,6 @@
 package com.house.biet.order.command.domain.aggregate;
 
+import com.house.biet.common.domain.vo.Money;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.order.command.domain.vo.*;
