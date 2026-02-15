@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RabbitRiderCallSender implements RiderCallSender {
 
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
     @Override
     public void send(RiderCandidate candidate, OrderCreatedEvent event) {
