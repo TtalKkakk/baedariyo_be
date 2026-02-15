@@ -1,0 +1,10 @@
+# application-integration.yml
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: sa
+    password: sa
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true

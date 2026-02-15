@@ -79,6 +79,17 @@ dependencies {
 
 	// RabbitMQContainer
 	testImplementation("org.testcontainers:rabbitmq:1.20.1")
+
+	implementation("org.springframework.boot:spring-boot-starter-json")
+
+	// postgre SQL container
+	testImplementation "org.testcontainers:junit-jupiter:1.19.3"
+	testImplementation "org.testcontainers:postgresql:1.19.3"
+
+}
+
+test {
+	systemProperty "spring.profiles.active", "test"
 }
 
 tasks.named('test') {
