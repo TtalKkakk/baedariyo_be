@@ -1,6 +1,6 @@
 package com.house.biet.fixtures;
 
-import com.house.biet.order.command.domain.vo.Address;
+import com.house.biet.common.domain.vo.Address;
 
 public class AddressFixtures {
 

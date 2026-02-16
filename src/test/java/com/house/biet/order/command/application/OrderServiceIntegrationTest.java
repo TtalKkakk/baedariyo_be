@@ -5,7 +5,7 @@ import com.house.biet.fixtures.DeliveryLocationFixtures;
 import com.house.biet.fixtures.OrderFixtures;
 import com.house.biet.order.command.OrderRepository;
 import com.house.biet.order.command.domain.aggregate.Order;
-import com.house.biet.order.command.domain.vo.Address;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.order.command.domain.vo.DeliveryLocation;
 import com.house.biet.order.command.domain.vo.OrderMenu;
 import com.house.biet.order.command.domain.vo.PaymentMethod;
