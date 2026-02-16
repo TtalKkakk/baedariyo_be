@@ -36,6 +36,7 @@ public enum ErrorCode {
     INVALID_MENU_OPTION_NAME_FORMAT(40125, HttpStatus.BAD_REQUEST, "잘못된 메뉴 옵션 이름 형식입니다."),
     EXCEED_MAX_OPTION_SELECTABLE_COUNT(40126, HttpStatus.BAD_REQUEST, "메뉴 옵션 최대치를 초과하였습니다."),
     INVALID_STORE_NAME_FORMAT(40127, HttpStatus.BAD_REQUEST, "잘못된 가게 이름 형식입니다."),
+    INVALID_MENU_NAME_FORMAT(40128, HttpStatus.BAD_REQUEST, "잘못된 메뉴 이름 형식입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
