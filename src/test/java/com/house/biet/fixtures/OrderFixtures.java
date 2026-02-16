@@ -20,7 +20,7 @@ public class OrderFixtures {
         OrderMenu menu = new OrderMenu(
                 1L,          // storeId
                 100L,        // menuId
-                new MenuName("치즈버거"),
+                new OrderMenuName("치즈버거"),
                 2,           // quantity
                 new Money(6300)
         );

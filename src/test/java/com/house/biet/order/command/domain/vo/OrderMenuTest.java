@@ -18,12 +18,12 @@ class OrderMenuTest {
     int givenQuantity = 2;
     int givenMenuPrice = 1000;
 
-    MenuName givenMenuName;
+    OrderMenuName givenOrderMenuName;
     Money givenMoney;
 
     @BeforeEach
     void setup() {
-        givenMenuName = new MenuName(givenMenuNameValue);
+        givenOrderMenuName = new OrderMenuName(givenMenuNameValue);
         givenMoney = new Money(givenMenuPrice);
     }
 
@@ -34,7 +34,7 @@ class OrderMenuTest {
         OrderMenu orderMenu = new OrderMenu(
                 givenStoreId,
                 givenMenuId,
-                givenMenuName,
+                givenOrderMenuName,
                 givenQuantity,
                 givenMoney
         );
@@ -43,7 +43,7 @@ class OrderMenuTest {
         assertThat(orderMenu).isNotNull();
         assertThat(orderMenu.getStoreId()).isEqualTo(givenStoreId);
         assertThat(orderMenu.getMenuId()).isEqualTo(givenMenuId);
-        assertThat(orderMenu.getMenuName()).isEqualTo(givenMenuName);
+        assertThat(orderMenu.getOrderMenuName()).isEqualTo(givenOrderMenuName);
         assertThat(orderMenu.getQuantity()).isEqualTo(givenQuantity);
         assertThat(orderMenu.getMenuPrice()).isEqualTo(givenMoney);
     }
@@ -58,12 +58,12 @@ class OrderMenuTest {
         assertThatThrownBy(() -> new OrderMenu(
                 givenStoreId,
                 givenMenuId,
-                givenMenuName,
+                givenOrderMenuName,
                 invalidQuantity,
                 givenMoney
         ))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.INVALID_MENU_QUANTITY.getMessage());
+                .hasMessage(ErrorCode.INVALID_ORDER_MENU_QUANTITY.getMessage());
     }
 
     @Test
@@ -74,7 +74,7 @@ class OrderMenuTest {
         OrderMenu orderMenu = new OrderMenu(
                 givenStoreId,
                 givenMenuId,
-                givenMenuName,
+                givenOrderMenuName,
                 quantity,
                 givenMoney
         );
@@ -90,8 +90,8 @@ class OrderMenuTest {
     @DisplayName("성공 - OrderMenu equals/hashCode는 quantity 무시하고 비교")
     void equals_ignoreQuantity() {
         // given
-        OrderMenu menu1 = new OrderMenu(givenStoreId, givenMenuId, givenMenuName, 2, givenMoney);
-        OrderMenu menu2 = new OrderMenu(givenStoreId, givenMenuId, givenMenuName, 5, givenMoney);
+        OrderMenu menu1 = new OrderMenu(givenStoreId, givenMenuId, givenOrderMenuName, 2, givenMoney);
+        OrderMenu menu2 = new OrderMenu(givenStoreId, givenMenuId, givenOrderMenuName, 5, givenMoney);
 
         // then
         // quantity가 달라도 동일 메뉴로 판단
@@ -106,14 +106,14 @@ class OrderMenuTest {
         int originalQuantity = 2;
         int addedQuantity = 3;
 
-        OrderMenu original = new OrderMenu(givenStoreId, givenMenuId, givenMenuName, originalQuantity, givenMoney);
-        OrderMenu added = new OrderMenu(givenStoreId, givenMenuId, givenMenuName, addedQuantity, givenMoney);
+        OrderMenu original = new OrderMenu(givenStoreId, givenMenuId, givenOrderMenuName, originalQuantity, givenMoney);
+        OrderMenu added = new OrderMenu(givenStoreId, givenMenuId, givenOrderMenuName, addedQuantity, givenMoney);
 
         // VO 불변성을 지키기 위해 새 객체 생성
         OrderMenu merged = new OrderMenu(
                 original.getStoreId(),
                 original.getMenuId(),
-                original.getMenuName(),
+                original.getOrderMenuName(),
                 original.getQuantity() + added.getQuantity(),
                 original.getMenuPrice()
         );

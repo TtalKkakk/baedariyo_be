@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = {
         "storeId",
         "menuId",
-        "menuName",
+        "orderMenuName",
         "menuPrice",
 })
 public class OrderMenu {
@@ -49,7 +49,7 @@ public class OrderMenu {
             name = "value",
             column = @Column(name = "menu_name", nullable = false)
     )
-    private MenuName menuName;
+    private OrderMenuName orderMenuName;
 
     /**
      * 주문 수량
@@ -66,13 +66,13 @@ public class OrderMenu {
     )
     private Money menuPrice;
 
-    public OrderMenu(Long storeId, Long menuId, MenuName menuName, int quantity, Money menuPrice) {
+    public OrderMenu(Long storeId, Long menuId, OrderMenuName orderMenuName, int quantity, Money menuPrice) {
         if (quantity <= 0)
-            throw new CustomException(ErrorCode.INVALID_MENU_QUANTITY);
+            throw new CustomException(ErrorCode.INVALID_ORDER_MENU_QUANTITY);
 
         this.storeId = storeId;
         this.menuId = menuId;
-        this.menuName = menuName;
+        this.orderMenuName = orderMenuName;
         this.quantity = quantity;
         this.menuPrice = menuPrice;
     }

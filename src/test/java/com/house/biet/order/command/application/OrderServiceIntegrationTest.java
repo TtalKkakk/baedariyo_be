@@ -10,12 +10,9 @@ import com.house.biet.order.command.domain.vo.DeliveryLocation;
 import com.house.biet.order.command.domain.vo.OrderMenu;
 import com.house.biet.order.command.domain.vo.PaymentMethod;
 import com.house.biet.support.config.ServiceIntegrationTest;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,7 +40,7 @@ public class OrderServiceIntegrationTest extends ServiceIntegrationTest {
         OrderMenu menu = new OrderMenu(
                 1L,
                 100L,
-                OrderFixtures.order(userId).getMenus().get(0).getMenuName(),
+                OrderFixtures.order(userId).getMenus().get(0).getOrderMenuName(),
                 2,
                 OrderFixtures.order(userId).getMenus().get(0).getMenuPrice()
         );
@@ -78,7 +75,7 @@ public class OrderServiceIntegrationTest extends ServiceIntegrationTest {
         OrderMenu newMenu = new OrderMenu(
                 1L,
                 200L,
-                order.getMenus().get(0).getMenuName(),
+                order.getMenus().get(0).getOrderMenuName(),
                 1,
                 order.getMenus().get(0).getMenuPrice()
         );

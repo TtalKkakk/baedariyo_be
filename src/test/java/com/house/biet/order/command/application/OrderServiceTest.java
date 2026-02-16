@@ -4,7 +4,6 @@ import com.house.biet.fixtures.OrderFixtures;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.order.command.OrderRepository;
-import com.house.biet.order.command.application.OrderService;
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.order.command.domain.vo.OrderMenu;
 import org.junit.jupiter.api.BeforeEach;
@@ -104,7 +103,7 @@ class OrderServiceTest {
     void addMenu_Success() {
         // given
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
-        OrderMenu newMenu = new OrderMenu(1L, 2L, menu.getMenuName(), 1, menu.getMenuPrice());
+        OrderMenu newMenu = new OrderMenu(1L, 2L, menu.getOrderMenuName(), 1, menu.getMenuPrice());
 
         // when
         orderService.addMenu(order.getId(), newMenu);

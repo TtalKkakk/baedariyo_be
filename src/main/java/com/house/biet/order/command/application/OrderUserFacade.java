@@ -28,7 +28,7 @@ public class OrderUserFacade {
                 .map(orderMenuRequestDto -> new OrderMenu(
                         storeId,
                         orderMenuRequestDto.menuId(),
-                        new MenuName(orderMenuRequestDto.menuName()),
+                        new OrderMenuName(orderMenuRequestDto.menuName()),
                         orderMenuRequestDto.quantity(),
                         new Money(orderMenuRequestDto.menuPrice())          // Money VO
                 ))

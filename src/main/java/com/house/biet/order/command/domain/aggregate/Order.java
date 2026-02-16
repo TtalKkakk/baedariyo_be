@@ -147,7 +147,7 @@ public class Order extends BaseTimeEntity {
             OrderMenu mergedMenu = new OrderMenu(
                     existing.getStoreId(),
                     existing.getMenuId(),
-                    existing.getMenuName(),
+                    existing.getOrderMenuName(),
                     updatedQuantity,
                     existing.getMenuPrice()
             );
@@ -194,7 +194,7 @@ public class Order extends BaseTimeEntity {
      * @throws CustomException 메뉴가 존재하지 않거나 수량이 유효하지 않은 경우
      */
     public void updateMenuQuantity(Long menuId, int newQuantity) {
-        if (newQuantity <= 0) throw new CustomException(ErrorCode.INVALID_MENU_QUANTITY);
+        if (newQuantity <= 0) throw new CustomException(ErrorCode.INVALID_ORDER_MENU_QUANTITY);
 
         OrderMenu existing = menus.stream()
                 .filter(m -> m.getMenuId().equals(menuId))
@@ -204,7 +204,7 @@ public class Order extends BaseTimeEntity {
         OrderMenu updatedMenu = new OrderMenu(
                 existing.getStoreId(),
                 existing.getMenuId(),
-                existing.getMenuName(),
+                existing.getOrderMenuName(),
                 newQuantity,
                 existing.getMenuPrice()
         );
@@ -385,7 +385,7 @@ public class Order extends BaseTimeEntity {
                 .append(", 상태: ").append(status)
                 .append(", 총액: ").append(totalPrice.value())
                 .append(", 메뉴: ");
-        menus.forEach(m -> sb.append(m.getMenuName().value())
+        menus.forEach(m -> sb.append(m.getOrderMenuName().value())
                 .append("(").append(m.getQuantity()).append("개) "));
         return sb.toString();
     }

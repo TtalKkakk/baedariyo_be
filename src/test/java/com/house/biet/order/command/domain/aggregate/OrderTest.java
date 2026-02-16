@@ -45,8 +45,8 @@ class OrderTest {
 
     @BeforeEach
     void setup() {
-        menu1 = new OrderMenu(storeId, menuId1, new MenuName(menuName1), quantity1, new Money(price1));
-        menu2 = new OrderMenu(storeId, menuId2, new MenuName(menuName2), quantity2, new Money(price2));
+        menu1 = new OrderMenu(storeId, menuId1, new OrderMenuName(menuName1), quantity1, new Money(price1));
+        menu2 = new OrderMenu(storeId, menuId2, new OrderMenuName(menuName2), quantity2, new Money(price2));
 
         storeRequest = "가게 요청";
         riderRequest = "라이더 요청";
@@ -145,7 +145,7 @@ class OrderTest {
         );
 
         int addQuantity = 3;
-        OrderMenu additionalMenu = new OrderMenu(storeId, menuId1, new MenuName(menuName1), addQuantity, new Money(price1));
+        OrderMenu additionalMenu = new OrderMenu(storeId, menuId1, new OrderMenuName(menuName1), addQuantity, new Money(price1));
 
         order.addMenu(additionalMenu);
 
@@ -169,7 +169,7 @@ class OrderTest {
         );
 
         long otherStoreId = 999L;
-        OrderMenu otherStoreMenu = new OrderMenu(otherStoreId, 1L, new MenuName("타가게 메뉴"), 1, new Money(1000));
+        OrderMenu otherStoreMenu = new OrderMenu(otherStoreId, 1L, new OrderMenuName("타가게 메뉴"), 1, new Money(1000));
 
         assertThatThrownBy(() -> order.addMenu(otherStoreMenu))
                 .isInstanceOf(CustomException.class)
@@ -252,7 +252,7 @@ class OrderTest {
 
         assertThatThrownBy(() -> order.updateMenuQuantity(menuId1, 0))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.INVALID_MENU_QUANTITY.getMessage());
+                .hasMessage(ErrorCode.INVALID_ORDER_MENU_QUANTITY.getMessage());
     }
 
     @Test

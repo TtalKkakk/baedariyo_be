@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class MenuNameTest {
+class OrderMenuNameTest {
 
     @Test
     @DisplayName("성공 - 정상적인 메뉴 이름 생성")
@@ -17,11 +17,11 @@ class MenuNameTest {
         String givenMenuName = "고추마요순살";
 
         // when
-        MenuName menuName = new MenuName(givenMenuName);
+        OrderMenuName orderMenuName = new OrderMenuName(givenMenuName);
 
         // then
-        assertThat(menuName).isNotNull();
-        assertThat(menuName.value()).isEqualTo(givenMenuName);
+        assertThat(orderMenuName).isNotNull();
+        assertThat(orderMenuName.value()).isEqualTo(givenMenuName);
     }
 
     @Test
@@ -31,11 +31,11 @@ class MenuNameTest {
         String fiftyMenuName = "a".repeat(50);
 
         // when
-        MenuName menuName = new MenuName(fiftyMenuName);
+        OrderMenuName orderMenuName = new OrderMenuName(fiftyMenuName);
 
         // then
-        assertThat(menuName).isNotNull();
-        assertThat(menuName.value()).isEqualTo(fiftyMenuName);
+        assertThat(orderMenuName).isNotNull();
+        assertThat(orderMenuName.value()).isEqualTo(fiftyMenuName);
     }
 
     @Test
@@ -45,9 +45,9 @@ class MenuNameTest {
         String nullValue = null;
 
         // when & then
-        assertThatThrownBy(() -> new MenuName(nullValue))
+        assertThatThrownBy(() -> new OrderMenuName(nullValue))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.INVALID_MENU_NAME_FORMAT.getMessage());
+                .hasMessage(ErrorCode.INVALID_ORDER_MENU_NAME_FORMAT.getMessage());
     }
 
     @Test
@@ -57,9 +57,9 @@ class MenuNameTest {
         String blankValue = "   ";
 
         // when & then
-        assertThatThrownBy(() -> new MenuName(blankValue))
+        assertThatThrownBy(() -> new OrderMenuName(blankValue))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.INVALID_MENU_NAME_FORMAT.getMessage());
+                .hasMessage(ErrorCode.INVALID_ORDER_MENU_NAME_FORMAT.getMessage());
     }
 
 
@@ -70,31 +70,31 @@ class MenuNameTest {
         String longMenuName = "a".repeat(51);
 
         // when & then
-        assertThatThrownBy(() -> new MenuName(longMenuName))
+        assertThatThrownBy(() -> new OrderMenuName(longMenuName))
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.INVALID_MENU_NAME_FORMAT.getMessage());
+                .hasMessage(ErrorCode.INVALID_ORDER_MENU_NAME_FORMAT.getMessage());
     }
 
     @Test
     @DisplayName("성공 - 같은 값의 MenuName은 동등하다")
     void equalsAndHashCode_SameValue() {
         // given
-        MenuName menuName1 = new MenuName("고추마요순살");
-        MenuName menuName2 = new MenuName("고추마요순살");
+        OrderMenuName orderMenuName1 = new OrderMenuName("고추마요순살");
+        OrderMenuName orderMenuName2 = new OrderMenuName("고추마요순살");
 
         // then
-        assertThat(menuName1).isEqualTo(menuName2);
-        assertThat(menuName1.hashCode()).isEqualTo(menuName2.hashCode());
+        assertThat(orderMenuName1).isEqualTo(orderMenuName2);
+        assertThat(orderMenuName1.hashCode()).isEqualTo(orderMenuName2.hashCode());
     }
 
     @Test
     @DisplayName("성공 - 다른 값의 MenuName은 동등하지 않다")
     void equalsAndHashCode_DifferentValue() {
         // given
-        MenuName menuName1 = new MenuName("고추마요순살");
-        MenuName menuName2 = new MenuName("간장마늘치킨");
+        OrderMenuName orderMenuName1 = new OrderMenuName("고추마요순살");
+        OrderMenuName orderMenuName2 = new OrderMenuName("간장마늘치킨");
 
         // then
-        assertThat(menuName1).isNotEqualTo(menuName2);
+        assertThat(orderMenuName1).isNotEqualTo(orderMenuName2);
     }
 }

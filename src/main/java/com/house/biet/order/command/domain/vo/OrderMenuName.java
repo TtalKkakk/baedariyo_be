@@ -20,15 +20,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
-public class MenuName {
+public class OrderMenuName {
 
     private String value;
 
-    public MenuName(String value) {
+    public OrderMenuName(String value) {
         if (value == null || value.isBlank())
-            throw new CustomException(ErrorCode.INVALID_MENU_NAME_FORMAT);
+            throw new CustomException(ErrorCode.INVALID_ORDER_MENU_NAME_FORMAT);
         if (value.length() > 50)
-            throw new CustomException(ErrorCode.INVALID_MENU_NAME_FORMAT);
+            throw new CustomException(ErrorCode.INVALID_ORDER_MENU_NAME_FORMAT);
 
         this.value = value;
     }
