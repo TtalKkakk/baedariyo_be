@@ -4,7 +4,7 @@ import com.house.biet.common.domain.vo.Money;
 import com.house.biet.store.command.domain.aggregate.Store;
 import com.house.biet.store.command.domain.entity.Menu;
 import com.house.biet.store.command.domain.entity.MenuOptionGroup;
-import org.springframework.test.util.ReflectionTestUtils;
+import com.house.biet.store.command.domain.vo.MenuName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +13,9 @@ public class MenuFixture {
 
     private Store store;
     private Money price = new Money(10000);
-    private String menuName = "기본 메뉴";
+    private MenuName menuName = new MenuName("기본 메뉴");
     private String menuDescription = "기본 메뉴 설명";
-    private List<MenuOptionGroup>  optionGroups = new ArrayList<>();
+    private List<MenuOptionGroup> optionGroups = new ArrayList<>();
 
     public static MenuFixture aMenu() {
         return new MenuFixture();
@@ -31,8 +31,8 @@ public class MenuFixture {
         return this;
     }
 
-    public MenuFixture withMenuName(String name) {
-        this.menuName = name;
+    public MenuFixture withMenuName(String MenuNameValue) {
+        this.menuName = new MenuName(MenuNameValue);
         return this;
     }
 
@@ -47,13 +47,12 @@ public class MenuFixture {
     }
 
     public Menu build() {
-        Menu menu = new Menu();
-
-        ReflectionTestUtils.setField(menu, "store", store);
-        ReflectionTestUtils.setField(menu, "price", price);
-        ReflectionTestUtils.setField(menu, "menuName", menuName);
-        ReflectionTestUtils.setField(menu, "menuDescription", menuDescription);
-        ReflectionTestUtils.setField(menu, "menuOptionGroups", new ArrayList<>());
+        Menu menu = Menu.create(
+                store,
+                menuName,
+                price,
+                menuDescription
+        );
 
         for (MenuOptionGroup group : optionGroups) {
             menu.addOptionGroup(group);
@@ -61,4 +60,5 @@ public class MenuFixture {
 
         return menu;
     }
+
 }
