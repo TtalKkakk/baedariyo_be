@@ -1,6 +1,5 @@
 package com.house.biet.store.command.domain.vo;
 
-import com.house.biet.common.domain.enums.DayOfWeek;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import jakarta.persistence.*;
@@ -9,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.EnumMap;
 import java.util.Map;

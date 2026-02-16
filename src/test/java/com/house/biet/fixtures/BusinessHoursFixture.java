@@ -1,9 +1,9 @@
 package com.house.biet.fixtures;
 
-import com.house.biet.common.domain.enums.DayOfWeek;
 import com.house.biet.store.command.domain.vo.BusinessHour;
 import com.house.biet.store.command.domain.vo.BusinessHours;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.EnumMap;
 import java.util.Map;
@@ -14,15 +14,15 @@ public class BusinessHoursFixture {
         Map<DayOfWeek, BusinessHour> hours = new EnumMap<>(DayOfWeek.class);
 
         hours.put(
-                DayOfWeek.MON,
+                DayOfWeek.MONDAY,
                 new BusinessHour(LocalTime.of(9, 0), LocalTime.of(18, 0))
         );
         hours.put(
-                DayOfWeek.TUE,
+                DayOfWeek.TUESDAY,
                 new BusinessHour(LocalTime.of(9, 0), LocalTime.of(18, 0))
         );
         hours.put(
-                DayOfWeek.WED,
+                DayOfWeek.WEDNESDAY,
                 new BusinessHour(LocalTime.of(9, 0), LocalTime.of(18, 0))
         );
 

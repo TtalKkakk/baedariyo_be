@@ -1,12 +1,12 @@
 package com.house.biet.store.command.domain.vo;
 
-import com.house.biet.common.domain.enums.DayOfWeek;
 import com.house.biet.fixtures.BusinessHoursFixture;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.EnumMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ class BusinessHoursTest {
         // given
         Map<DayOfWeek, BusinessHour> hours = new EnumMap<>(DayOfWeek.class);
         hours.put(
-                DayOfWeek.MON,
+                DayOfWeek.MONDAY,
                 new BusinessHour(LocalTime.of(9, 0), LocalTime.of(18, 0))
         );
 
@@ -31,7 +31,7 @@ class BusinessHoursTest {
         // then
         assertThat(businessHours.getHours()).hasSize(1);
         assertThat(businessHours.getHours())
-                .containsKey(DayOfWeek.MON);
+                .containsKey(DayOfWeek.MONDAY);
     }
 
     @Test
@@ -42,7 +42,7 @@ class BusinessHoursTest {
 
         // when
         boolean result = businessHours.isOpen(
-                DayOfWeek.MON,
+                DayOfWeek.MONDAY,
                 LocalTime.of(10, 0)
         );
 
@@ -58,7 +58,7 @@ class BusinessHoursTest {
 
         // when
         boolean result = businessHours.isOpen(
-                DayOfWeek.MON,
+                DayOfWeek.MONDAY,
                 LocalTime.of(23, 0)
         );
 
@@ -70,11 +70,11 @@ class BusinessHoursTest {
     @DisplayName("성공 - 해당 요일 영업시간이 없으면 false 반환")
     void isOpen_false_whenDayNotExists() {
         // given
-        BusinessHours businessHours = BusinessHoursFixture.onlyWeekday(DayOfWeek.MON);
+        BusinessHours businessHours = BusinessHoursFixture.onlyWeekday(DayOfWeek.MONDAY);
 
         // when
         boolean result = businessHours.isOpen(
-                DayOfWeek.SUN,
+                DayOfWeek.SUNDAY,
                 LocalTime.of(10, 0)
         );
 
