@@ -1,4 +1,4 @@
-package com.house.biet.global.vo;
+package com.house.biet.common.domain.enums;
 
 public enum UserRole {
     USER,

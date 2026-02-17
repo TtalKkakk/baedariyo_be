@@ -2,7 +2,7 @@ package com.house.biet.signup.command.application;
 
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Password;

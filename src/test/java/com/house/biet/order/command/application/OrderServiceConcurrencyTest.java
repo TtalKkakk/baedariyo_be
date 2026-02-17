@@ -2,11 +2,9 @@ package com.house.biet.order.command.application;
 
 import com.house.biet.fixtures.OrderFixtures;
 import com.house.biet.global.response.CustomException;
-import com.house.biet.global.response.ErrorCode;
 import com.house.biet.order.command.OrderRepository;
-import com.house.biet.order.command.application.OrderService;
 import com.house.biet.order.command.domain.aggregate.Order;
-import com.house.biet.order.command.domain.vo.OrderStatus;
+import com.house.biet.common.domain.enums.OrderStatus;
 import com.house.biet.support.config.ServiceConcurrencyTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

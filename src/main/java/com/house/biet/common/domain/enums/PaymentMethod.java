@@ -1,4 +1,4 @@
-package com.house.biet.order.command.domain.vo;
+package com.house.biet.common.domain.enums;
 
 public enum PaymentMethod {
     CARD,

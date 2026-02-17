@@ -1,27 +1,22 @@
 package com.house.biet.order.command.application;
 
 import com.house.biet.fixtures.OrderFixtures;
-import com.house.biet.global.response.CustomException;
-import com.house.biet.global.response.ErrorCode;
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.member.command.AccountRepository;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.*;
 import com.house.biet.order.command.OrderRepository;
-import com.house.biet.order.command.application.port.RiderFinder;
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.rider.command.RiderRepository;
 import com.house.biet.rider.command.domain.entity.Rider;
-import com.house.biet.rider.command.domain.vo.VehicleType;
+import com.house.biet.common.domain.enums.VehicleType;
 import com.house.biet.support.config.AbstractPostgresConcurrencyTest;
-import com.house.biet.support.config.ServiceIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.ArrayList;
 import java.util.List;

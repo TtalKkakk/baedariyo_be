@@ -2,7 +2,7 @@ package com.house.biet.fixtures;
 
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.rider.command.domain.entity.Rider;
-import com.house.biet.rider.command.domain.vo.VehicleType;
+import com.house.biet.common.domain.enums.VehicleType;
 
 public class RiderFixtures {
 

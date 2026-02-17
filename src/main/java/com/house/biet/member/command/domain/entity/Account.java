@@ -2,10 +2,10 @@ package com.house.biet.member.command.domain.entity;
 
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.member.command.domain.vo.AccountStatus;
+import com.house.biet.common.domain.enums.AccountStatus;
 import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Password;
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

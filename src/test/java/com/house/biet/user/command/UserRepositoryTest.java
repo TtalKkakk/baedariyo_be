@@ -1,6 +1,6 @@
 package com.house.biet.user.command;
 
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.member.command.AccountRepository;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Email;
@@ -23,7 +23,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import({

@@ -8,7 +8,7 @@ import com.house.biet.auth.command.domain.dto.UserSignupRequestDto;
 import com.house.biet.auth.infrastructure.security.AuthPrincipal;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.signup.command.application.UserSignupService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.house.biet.auth.infrastructure.security;
 
 import com.house.biet.auth.infrastructure.jwt.JwtAuthenticationToken;
 import com.house.biet.auth.infrastructure.jwt.JwtProvider;
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

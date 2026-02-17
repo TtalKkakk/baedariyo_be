@@ -1,6 +1,6 @@
 package com.house.biet.auth.command.domain.dto;
 
-import com.house.biet.rider.command.domain.vo.VehicleType;
+import com.house.biet.common.domain.enums.VehicleType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 

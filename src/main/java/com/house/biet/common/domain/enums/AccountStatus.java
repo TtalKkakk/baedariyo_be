@@ -1,4 +1,4 @@
-package com.house.biet.member.command.domain.vo;
+package com.house.biet.common.domain.enums;
 
 public enum AccountStatus {
     ACTIVE,

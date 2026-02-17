@@ -5,7 +5,7 @@ import com.house.biet.fixtures.OrderFixtures;
 import com.house.biet.fixtures.RiderFixtures;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.member.command.AccountRepository;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.order.command.OrderRepository;

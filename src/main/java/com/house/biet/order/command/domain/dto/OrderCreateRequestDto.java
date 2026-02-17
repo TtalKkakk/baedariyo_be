@@ -1,6 +1,6 @@
 package com.house.biet.order.command.domain.dto;
 
-import com.house.biet.order.command.domain.vo.PaymentMethod;
+import com.house.biet.common.domain.enums.PaymentMethod;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

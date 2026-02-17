@@ -4,7 +4,7 @@ import com.house.biet.fixtures.AccountFixtures;
 import com.house.biet.fixtures.UserFixtures;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.user.command.UserRepository;
 import com.house.biet.user.command.domain.entity.User;

@@ -1,4 +1,4 @@
-package com.house.biet.rider.command.domain.vo;
+package com.house.biet.common.domain.enums;
 
 public enum VehicleType {
     CAR,            // 자동차

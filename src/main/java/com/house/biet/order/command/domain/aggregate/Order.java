@@ -1,5 +1,7 @@
 package com.house.biet.order.command.domain.aggregate;
 
+import com.house.biet.common.domain.enums.OrderStatus;
+import com.house.biet.common.domain.enums.PaymentMethod;
 import com.house.biet.common.domain.vo.Address;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.global.jpa.BaseTimeEntity;

@@ -1,14 +1,14 @@
 package com.house.biet.rider.command;
 
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.member.command.AccountRepository;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.member.command.infrastructure.AccountRepositoryJpaAdapter;
 import com.house.biet.rider.command.domain.entity.Rider;
-import com.house.biet.rider.command.domain.vo.RiderWorkingStatus;
-import com.house.biet.rider.command.domain.vo.VehicleType;
+import com.house.biet.common.domain.enums.RiderWorkingStatus;
+import com.house.biet.common.domain.enums.VehicleType;
 import com.house.biet.rider.command.infrastructure.RiderRepositoryJpaAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

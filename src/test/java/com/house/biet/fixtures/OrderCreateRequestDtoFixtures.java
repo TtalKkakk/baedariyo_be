@@ -3,7 +3,7 @@ package com.house.biet.fixtures;
 import com.house.biet.order.command.domain.dto.DeliveryAddressDto;
 import com.house.biet.order.command.domain.dto.OrderCreateRequestDto;
 import com.house.biet.order.command.domain.dto.OrderMenuRequestDto;
-import com.house.biet.order.command.domain.vo.PaymentMethod;
+import com.house.biet.common.domain.enums.PaymentMethod;
 
 import java.util.List;
 

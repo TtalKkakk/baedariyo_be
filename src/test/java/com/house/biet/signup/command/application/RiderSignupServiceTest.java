@@ -2,12 +2,12 @@ package com.house.biet.signup.command.application;
 
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.domain.dto.RiderSignupRequestDto;
-import com.house.biet.global.vo.UserRole;
+import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.rider.command.application.RiderService;
-import com.house.biet.rider.command.domain.vo.VehicleType;
+import com.house.biet.common.domain.enums.VehicleType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

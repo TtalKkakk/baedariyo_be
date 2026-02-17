@@ -1,4 +1,4 @@
-package com.house.biet.rider.command.domain.vo;
+package com.house.biet.common.domain.enums;
 
 public enum RiderWorkingStatus {
     OFFLINE,    // 로그인 안 함
