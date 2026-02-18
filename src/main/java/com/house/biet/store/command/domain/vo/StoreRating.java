@@ -1,5 +1,7 @@
 package com.house.biet.store.command.domain.vo;
 
+import com.house.biet.global.response.CustomException;
+import com.house.biet.global.response.ErrorCode;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,9 @@ public class StoreRating {
     }
 
     public StoreRating addRating(int newRating) {
+        if (newRating < 1 || newRating > 5)
+            throw new CustomException(ErrorCode.INVALID_RATING_SCORE);
+
         return new StoreRating(
                 totalRating + newRating,
                 reviewCount + 1
