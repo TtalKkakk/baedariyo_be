@@ -38,6 +38,12 @@ public enum ErrorCode {
     INVALID_STORE_NAME_FORMAT(40127, HttpStatus.BAD_REQUEST, "잘못된 가게 이름 형식입니다."),
     INVALID_MENU_NAME_FORMAT(40128, HttpStatus.BAD_REQUEST, "잘못된 메뉴 이름 형식입니다."),
     INVALID_MENU_PRICE(40129, HttpStatus.BAD_REQUEST, "잘못된 메뉴 가격 설정입니다."),
+    INVALID_BUSINESS_HOUR_TIME_RANGE(40130, HttpStatus.BAD_REQUEST, "오픈 시간은 마감 시간보다 빠를 수 없습니다."),
+    EMPTY_BUSINESS_HOURS(40131, HttpStatus.BAD_REQUEST, "운영 시간이 비어있습니다."),
+    INVALID_THUMBNAIL_URL_FORMAT(40132, HttpStatus.BAD_REQUEST, "잘못된 썸네일 url 형식입니다."),
+    INVALID_STORE_INFO_FORMAT(40133, HttpStatus.BAD_REQUEST, "잘못된 매장 정보 형식입니다."),
+    INVALID_OPERATION_INFO_FORMAT(40134, HttpStatus.BAD_REQUEST, "잘못된 원산지 정보 형식입니다."),
+    INVALID_RATING_SCORE(40135, HttpStatus.BAD_REQUEST, "올바르지 않은 평점이 입력되었습니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
