@@ -3,6 +3,7 @@ package com.house.biet.store.command.domain.entity;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.fixtures.MenuFixture;
 import com.house.biet.fixtures.MenuOptionGroupFixture;
+import com.house.biet.fixtures.StoreFixture;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.store.command.domain.aggregate.Store;
@@ -19,7 +20,7 @@ class MenuTest {
     @DisplayName("성공 - 메뉴 생성")
     void CreateMenu_Success() {
         // given
-        Store store = new Store();
+        Store store = StoreFixture.createStore();
         MenuName menuName = new MenuName("불고기버거");
         Money price = new Money(8000);
         String description = "대표 메뉴";
@@ -55,7 +56,7 @@ class MenuTest {
     @DisplayName("에러 - 메뉴 이름이 null이면 메뉴 생성 실패")
     void CreateMenu_Fail_MenuNameIsNull() {
         // given
-        Store store = new Store();
+        Store store = StoreFixture.createStore();
         MenuName menuName = null;
         Money price = new Money(8000);
 
@@ -71,7 +72,7 @@ class MenuTest {
     @DisplayName("에러 - 가격이 null이면 메뉴 생성 실패")
     void CreateMenu_Fail_PriceIsNull() {
         // given
-        Store store = new Store();
+        Store store = StoreFixture.createStore();
         MenuName menuName = new MenuName("불고기버거");
         Money price = null;
 
@@ -87,7 +88,7 @@ class MenuTest {
     @DisplayName("성공 - 메뉴에 옵션 그룹 추가")
     void AddOptionGroup_Success() {
         // given
-        Store store = new Store();
+        Store store = StoreFixture.createStore();
         Menu menu = MenuFixture.aMenu()
                 .withStore(store)
                 .build();
