@@ -6,7 +6,9 @@ import com.house.biet.global.response.ErrorCode;
 import com.house.biet.store.command.domain.aggregate.Store;
 import com.house.biet.store.command.domain.vo.MenuName;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "menus")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Menu {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +28,8 @@ public class Menu {
 
     @Embedded
     @AttributeOverride(
-            name = "price",
-            column = @Column(name = "money", nullable = false)
+            name = "amount",
+            column = @Column(name = "price", nullable = false)
     )
     private Money price;
 
