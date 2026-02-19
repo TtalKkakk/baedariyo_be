@@ -10,7 +10,7 @@ public class StoreReviewFixture {
 
     public static StoreReview create() {
         return new StoreReview(
-                1L,
+                null,
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 100L,
@@ -23,7 +23,7 @@ public class StoreReviewFixture {
 
     public static StoreReview createWithRating(int rating) {
         return new StoreReview(
-                1L,
+                null,
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 100L,
@@ -57,6 +57,32 @@ public class StoreReviewFixture {
                 5,
                 new StoreReviewImages(null),
                 new StoreReviewComment("괜찮아요")
+        );
+    }
+
+    public static StoreReview createWithStoreId(UUID storePublicId) {
+        return new StoreReview(
+                null,
+                UUID.randomUUID(),
+                storePublicId,
+                100L,
+                2L,
+                5,
+                new StoreReviewImages(null),
+                new StoreReviewComment("괜찮아요")
+        );
+    }
+
+    public static StoreReview createWithUserId(Long userId) {
+        return new StoreReview(
+                null,
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                userId,
+                2L,
+                4,
+                new StoreReviewImages(null),
+                null
         );
     }
 }
