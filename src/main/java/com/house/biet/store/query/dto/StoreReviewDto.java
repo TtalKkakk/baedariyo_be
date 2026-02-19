@@ -13,6 +13,7 @@ public class StoreReviewDto {
 
     private UUID publicStoreReviewId;
     private Long userId;
+    private UUID storePublicId;
     private String storeName;
     private int rating;
     private LocalDateTime createdAt;
