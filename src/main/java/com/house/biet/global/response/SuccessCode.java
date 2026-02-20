@@ -21,7 +21,16 @@ public enum SuccessCode {
 
     // Order
     ORDER_CREATE_SUCCESS(20300, "주문이 생성되었습니다."),
-    ORDER_RIDER_ASSIGN_SUCCESS(20301, "주문에 라이더가 배정되었습니다.");
+    ORDER_RIDER_ASSIGN_SUCCESS(20301, "주문에 라이더가 배정되었습니다."),
+
+    // Store
+    STORE_CREATE_SUCCESS(20400, "가게가 생성되었습니다."),
+    STORE_UPDATE_SUCCESS(20401, "가게 정보가 수정되었습니다."),
+    STORE_DELETE_SUCCESS(20402, "가게가 삭제되었습니다."),
+
+    // Store Review
+    STORE_REVIEW_CREATE_SUCCESS(20500, "리뷰가 생성되었습니다."),
+    STORE_REVIEW_DELETE_SUCCESS(20501, "리뷰가 삭제되었습니다.");
 
     private final int code;
     private final String message;
