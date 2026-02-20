@@ -53,7 +53,7 @@ public enum ErrorCode {
     UNAUTHORIZED(40100, HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
 
     // 403 Forbidden
-
+    FORBIDDEN_STORE_REVIEW_MODIFICATION(40301, HttpStatus.FORBIDDEN, "리뷰 수정 권한이 없습니다."),
     FORBIDDEN(40300, HttpStatus.FORBIDDEN, "권한이 없습니다."),
 
     // 404 Not Found
