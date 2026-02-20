@@ -108,7 +108,7 @@ class StoreReviewRepositoryTest {
         // then
         assertThat(reviews).hasSize(2);
         assertThat(reviews)
-                .extracting(StoreReview::getStoreId)
+                .extracting(StoreReview::getPublicStoreId)
                 .containsOnly(storePublicId);
     }
 

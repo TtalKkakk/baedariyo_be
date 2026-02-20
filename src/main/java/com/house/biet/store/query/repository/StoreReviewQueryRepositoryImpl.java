@@ -4,14 +4,12 @@ import com.house.biet.store.query.StoreReviewQueryRepository;
 import com.house.biet.store.query.dto.MyStoreReviewDto;
 import com.house.biet.store.query.dto.StoreReviewDto;
 import com.house.biet.store.command.domain.entity.StoreReview;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import static com.house.biet.store.command.domain.aggregate.QStore.store;
 import static com.house.biet.store.command.domain.entity.QStoreReview.storeReview;
-import static com.house.biet.store.command.domain.vo.QStoreReviewImages.storeReviewImages;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,10 +35,10 @@ public class StoreReviewQueryRepositoryImpl implements StoreReviewQueryRepositor
         return reviews.stream()
                 .map(r -> new MyStoreReviewDto(
                         r.getPublicStoreReviewId(),
-                        r.getStoreId(),
+                        r.getPublicStoreId(),
                         queryFactory.select(store.storeName.value)
                                 .from(store)
-                                .where(store.publicId.eq(r.getStoreId()))
+                                .where(store.publicId.eq(r.getPublicStoreId()))
                                 .fetchOne(),
                         r.getRating(),
                         r.getCreatedAt(),
@@ -63,10 +61,10 @@ public class StoreReviewQueryRepositoryImpl implements StoreReviewQueryRepositor
                 .map(r -> new StoreReviewDto(
                         r.getPublicStoreReviewId(),
                         r.getUserId(),
-                        r.getStoreId(),
+                        r.getPublicStoreId(),
                         queryFactory.select(store.storeName.value)
                                 .from(store)
-                                .where(store.publicId.eq(r.getStoreId()))
+                                .where(store.publicId.eq(r.getPublicStoreId()))
                                 .fetchOne(),
                         r.getRating(),
                         r.getCreatedAt(),

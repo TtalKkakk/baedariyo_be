@@ -32,7 +32,7 @@ public class StoreReview extends BaseTimeEntity {
      * 리뷰 대상 Store의 외부 식별자
      */
     @Column(nullable = false)
-    private UUID storeId;
+    private UUID publicStoreId;
 
     /**
      * 리뷰 작성자 사용자 ID
