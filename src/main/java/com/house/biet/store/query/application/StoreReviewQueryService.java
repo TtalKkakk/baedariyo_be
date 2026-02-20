@@ -31,4 +31,12 @@ public interface StoreReviewQueryService {
      * @return 가게 리뷰 DTO 목록
      */
     List<StoreReviewDto> findReviewsByStore(UUID storePublicId);
+
+    /**
+     * 특정 가게(Store)의 최근 사진 리뷰 최대 3개 조회
+     *
+     * @param storePublicId 조회 대상 가게 공개 ID
+     * @return 최근 사진 리뷰 최대 3개
+     */
+    List<StoreReviewDto> findTop3PhotoReviewsByStore(UUID storePublicId);
 }

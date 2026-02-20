@@ -48,4 +48,17 @@ public interface StoreReviewQueryRepository {
      * @return 가게에 대한 리뷰 목록
      */
     List<StoreReviewDto> findReviewsByStore(UUID storePublicId);
+
+    /**
+     * 특정 가게에 대한 리뷰 목록을 날짜순으로 3개 조회한다.
+     *
+     * <p>
+     * 가게 상세 화면에서 사용되며,
+     * 여러 사용자의 리뷰를 포함한다.
+     * </p>
+     *
+     * @param storePublicId 가게 공개 식별자
+     * @return 가게에 대한 리뷰 목록
+     */
+    List<StoreReviewDto> findTop3PhotoReviewsByStore(UUID storePublicId);
 }

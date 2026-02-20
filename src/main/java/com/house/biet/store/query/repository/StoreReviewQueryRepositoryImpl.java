@@ -26,7 +26,7 @@ public class StoreReviewQueryRepositoryImpl implements StoreReviewQueryRepositor
         // StoreReview + Store join
         List<StoreReview> reviews = queryFactory
                 .selectFrom(storeReview)
-                .join(store).on(store.publicId.eq(storeReview.storeId))
+                .join(store).on(store.publicId.eq(storeReview.storePublicId))
                 .where(storeReview.userId.eq(userId))
                 .orderBy(storeReview.createdAt.desc())
                 .fetch();
@@ -34,11 +34,11 @@ public class StoreReviewQueryRepositoryImpl implements StoreReviewQueryRepositor
         // DTO 변환
         return reviews.stream()
                 .map(r -> new MyStoreReviewDto(
-                        r.getPublicStoreReviewId(),
-                        r.getPublicStoreId(),
+                        r.getPublicId(),
+                        r.getStorePublicId(),
                         queryFactory.select(store.storeName.value)
                                 .from(store)
-                                .where(store.publicId.eq(r.getPublicStoreId()))
+                                .where(store.publicId.eq(r.getStorePublicId()))
                                 .fetchOne(),
                         r.getRating(),
                         r.getCreatedAt(),
@@ -52,19 +52,46 @@ public class StoreReviewQueryRepositoryImpl implements StoreReviewQueryRepositor
     public List<StoreReviewDto> findReviewsByStore(UUID storePublicId) {
         List<StoreReview> reviews = queryFactory
                 .selectFrom(storeReview)
-                .join(store).on(store.publicId.eq(storeReview.storeId))
-                .where(storeReview.storeId.eq(storePublicId))
+                .join(store).on(store.publicId.eq(storeReview.storePublicId))
+                .where(storeReview.storePublicId.eq(storePublicId))
                 .orderBy(storeReview.createdAt.desc())
                 .fetch();
 
         return reviews.stream()
                 .map(r -> new StoreReviewDto(
-                        r.getPublicStoreReviewId(),
+                        r.getPublicId(),
                         r.getUserId(),
-                        r.getPublicStoreId(),
+                        r.getStorePublicId(),
                         queryFactory.select(store.storeName.value)
                                 .from(store)
-                                .where(store.publicId.eq(r.getPublicStoreId()))
+                                .where(store.publicId.eq(r.getStorePublicId()))
+                                .fetchOne(),
+                        r.getRating(),
+                        r.getCreatedAt(),
+                        r.getStoreReviewImages() != null ? r.getStoreReviewImages().getImages() : List.of(),
+                        r.getStoreReviewComment() != null ? r.getStoreReviewComment().getComment() : null
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StoreReviewDto> findTop3PhotoReviewsByStore(UUID storePublicId) {
+        List<StoreReview> reviews = queryFactory
+                .selectFrom(storeReview)
+                .join(store).on(store.publicId.eq(storeReview.storePublicId))
+                .where(storeReview.storePublicId.eq(storePublicId))
+                .orderBy(storeReview.createdAt.desc())
+                .limit(3) // 최근 3개만
+                .fetch();
+
+        return reviews.stream()
+                .map(r -> new StoreReviewDto(
+                        r.getPublicId(),
+                        r.getUserId(),
+                        r.getStorePublicId(),
+                        queryFactory.select(store.storeName.value)
+                                .from(store)
+                                .where(store.publicId.eq(r.getStorePublicId()))
                                 .fetchOne(),
                         r.getRating(),
                         r.getCreatedAt(),

@@ -67,4 +67,27 @@ class StoreReviewQueryServiceTest {
         // Then
         assertThat(results).hasSize(2).contains(storeReviewDto1);
     }
+
+    @Test
+    @DisplayName("성공 - 특정 가게 최근 사진 리뷰 3개 조회")
+    void findTop3PhotoReviewsByStore_Success() {
+        // given
+        UUID storePublicId = UUID.randomUUID();
+
+        List<StoreReviewDto> mockResult = List.of(
+                org.mockito.Mockito.mock(StoreReviewDto.class),
+                org.mockito.Mockito.mock(StoreReviewDto.class),
+                org.mockito.Mockito.mock(StoreReviewDto.class)
+        );
+
+        given(storeReviewQueryRepository.findTop3PhotoReviewsByStore(storePublicId))
+                .willReturn(mockResult);
+
+        // when
+        List<StoreReviewDto> result =
+                storeReviewQueryService.findTop3PhotoReviewsByStore(storePublicId);
+
+        // then
+        assertThat(result).isSameAs(mockResult);
+    }
 }

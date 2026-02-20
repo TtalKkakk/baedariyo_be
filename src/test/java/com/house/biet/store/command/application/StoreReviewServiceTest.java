@@ -48,12 +48,12 @@ class StoreReviewServiceTest {
 
     @Test
     @DisplayName("성공 - publicStoreReviewId 기준 리뷰 삭제")
-    void deleteByPublicStoreReviewId_Success() {
+    void deleteByPublicId_Success() {
         // Given
         UUID id = UUID.randomUUID();
 
         // When
-        storeReviewService.deleteByPublicStoreReviewId(id);
+        storeReviewService.deleteByPublicId(id);
 
         // Then
         verify(storeReviewRepository).deleteByPublicId(id);
@@ -61,14 +61,14 @@ class StoreReviewServiceTest {
 
     @Test
     @DisplayName("성공 - publicStoreReviewId 기준 리뷰 조회")
-    void findByPublicStoreReviewId_Success() {
+    void findByPublicId_Success() {
         // Given
         UUID id = UUID.randomUUID();
         StoreReview review = StoreReviewFixture.create();
         given(storeReviewRepository.findByPublicId(id)).willReturn(Optional.of(review));
 
         // When
-        StoreReview result = storeReviewService.findByPublicStoreReviewId(id);
+        StoreReview result = storeReviewService.findByPublicId(id);
 
         // Then
         assertThat(result).isEqualTo(review);
@@ -76,13 +76,13 @@ class StoreReviewServiceTest {
 
     @Test
     @DisplayName("실패 - publicStoreReviewId 기준 리뷰 조회 | 리뷰 없음")
-    void findByPublicStoreReviewId_Error_NotFound() {
+    void findByPublicId_Error_NotFound() {
         // Given
         UUID id = UUID.randomUUID();
         given(storeReviewRepository.findByPublicId(id)).willReturn(Optional.empty());
 
         // When & Then
-        assertThatThrownBy(() -> storeReviewService.findByPublicStoreReviewId(id))
+        assertThatThrownBy(() -> storeReviewService.findByPublicId(id))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.STORE_REVIEW_NOT_FOUND.getMessage());
     }
@@ -116,4 +116,6 @@ class StoreReviewServiceTest {
         // Then
         assertThat(results).hasSize(1).contains(review);
     }
+
+
 }

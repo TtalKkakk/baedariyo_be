@@ -24,4 +24,9 @@ public class StoreReviewQueryServiceImpl implements StoreReviewQueryService {
     public List<StoreReviewDto> findReviewsByStore(UUID storePublicId) {
         return storeReviewQueryRepository.findReviewsByStore(storePublicId);
     }
+
+    @Override
+    public List<StoreReviewDto> findTop3PhotoReviewsByStore(UUID storePublicId) {
+        return storeReviewQueryRepository.findTop3PhotoReviewsByStore(storePublicId);
+    }
 }
