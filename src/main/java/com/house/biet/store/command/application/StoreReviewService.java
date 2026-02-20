@@ -39,21 +39,21 @@ public class StoreReviewService {
     /**
      * publicStoreReviewId 기준으로 리뷰 삭제
      *
-     * @param publicStoreReviewId 삭제 대상 리뷰 공개 식별자
+     * @param publicId 삭제 대상 리뷰 공개 식별자
      */
-    public void deleteByPublicStoreReviewId(UUID publicStoreReviewId) {
-        storeReviewRepository.deleteByPublicId(publicStoreReviewId);
+    public void deleteByPublicId(UUID publicId) {
+        storeReviewRepository.deleteByPublicId(publicId);
     }
 
     /**
      * publicStoreReviewId 기준 리뷰 조회
      *
-     * @param publicStoreReviewId 조회 대상 리뷰 공개 식별자
+     * @param publicId 조회 대상 리뷰 공개 식별자
      * @return 조회된 StoreReview
      * @throws CustomException 리뷰를 찾지 못하면 STORE_REVIEW_NOT_FOUND 예외 발생
      */
-    public StoreReview findByPublicStoreReviewId(UUID publicStoreReviewId) {
-        return storeReviewRepository.findByPublicId(publicStoreReviewId)
+    public StoreReview findByPublicId(UUID publicId) {
+        return storeReviewRepository.findByPublicId(publicId)
                 .orElseThrow(() -> new CustomException(ErrorCode.STORE_REVIEW_NOT_FOUND));
     }
 
