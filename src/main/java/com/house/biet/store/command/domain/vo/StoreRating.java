@@ -22,13 +22,30 @@ public class StoreRating {
     }
 
     public StoreRating addRating(int newRating) {
-        if (newRating < 1 || newRating > 5)
-            throw new CustomException(ErrorCode.INVALID_RATING_SCORE);
+        validate(newRating);
 
         return new StoreRating(
                 totalRating + newRating,
                 reviewCount + 1
         );
+    }
+
+    public StoreRating removeRating(int removedRating) {
+        validate(removedRating);
+
+        if (reviewCount <= 0) {
+            throw new CustomException(ErrorCode.INVALID_RATING_SCORE);
+        }
+
+        return new StoreRating(
+                totalRating - removedRating,
+                reviewCount - 1
+        );
+    }
+
+    private void validate(int rating) {
+        if (rating < 1 || rating > 5)
+            throw new CustomException(ErrorCode.INVALID_RATING_SCORE);
     }
 
     public double average() {

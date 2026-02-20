@@ -126,13 +126,39 @@ public class Store {
 
     /* ===== 도메인 로직 ===== */
 
+    /**
+     * 가게에 새로운 메뉴를 추가한다.
+     *
+     * @param name        메뉴 이름
+     * @param price       메뉴 가격
+     * @param description 메뉴 설명
+     * @return 생성된 Menu 엔티티
+     */
     public Menu addMenu(MenuName name, Money price, String description) {
         Menu menu = Menu.create(this, name, price, description);
         menus.add(menu);
         return menu;
     }
 
+    /**
+     * 리뷰가 추가될 때 호출된다.
+     * <p>
+     * 평균 평점과 리뷰 개수를 갱신한다.
+     *
+     * @param ratingScore 추가되는 리뷰의 평점 점수
+     */
     public void addRating(int ratingScore) {
         this.rating = this.rating.addRating(ratingScore);
+    }
+
+    /**
+     * 리뷰가 삭제될 때 호출된다.
+     * <p>
+     * 평균 평점과 리뷰 개수를 감소시킨다.
+     *
+     * @param ratingScore 삭제되는 리뷰의 평점 점수
+     */
+    public void removeRating(int ratingScore) {
+        this.rating = this.rating.removeRating(ratingScore);
     }
 }

@@ -103,6 +103,51 @@ class StoreTest {
         assertThat(store.getRating().getTotalRating()).isEqualTo(9);
     }
 
+    @Test
+    @DisplayName("성공 - 별점 제거 시 누적 값이 감소한다")
+    void removeRating_Success() {
+        // given
+        Store store = createStore();
+        store.addRating(5);
+        store.addRating(4); // total 9, count 2
+
+        // when
+        store.removeRating(4);
+
+        // then
+        assertThat(store.getRating().getReviewCount()).isEqualTo(1);
+        assertThat(store.getRating().getTotalRating()).isEqualTo(5);
+        assertThat(store.getRating().average()).isEqualTo(5.0);
+    }
+
+    @Test
+    @DisplayName("성공 - 마지막 별점 제거 시 0으로 초기화")
+    void removeRating_Success_LastReview() {
+        // given
+        Store store = createStore();
+        store.addRating(5);
+
+        // when
+        store.removeRating(5);
+
+        // then
+        assertThat(store.getRating().getReviewCount()).isZero();
+        assertThat(store.getRating().getTotalRating()).isZero();
+        assertThat(store.getRating().average()).isZero();
+    }
+
+    @Test
+    @DisplayName("실패 - 리뷰가 없는데 제거하면 예외 발생")
+    void removeRating_Error_NoReview() {
+        // given
+        Store store = createStore();
+
+        // when & then
+        assertThatThrownBy(() -> store.removeRating(5))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.INVALID_RATING_SCORE.getMessage());
+    }
+
     /* =========================
        테스트 헬퍼
        ========================= */
