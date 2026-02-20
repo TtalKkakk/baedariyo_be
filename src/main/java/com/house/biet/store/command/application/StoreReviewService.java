@@ -42,7 +42,7 @@ public class StoreReviewService {
      * @param publicStoreReviewId 삭제 대상 리뷰 공개 식별자
      */
     public void deleteByPublicStoreReviewId(UUID publicStoreReviewId) {
-        storeReviewRepository.deleteByPublicStoreReviewId(publicStoreReviewId);
+        storeReviewRepository.deleteByPublicId(publicStoreReviewId);
     }
 
     /**
@@ -53,7 +53,7 @@ public class StoreReviewService {
      * @throws CustomException 리뷰를 찾지 못하면 STORE_REVIEW_NOT_FOUND 예외 발생
      */
     public StoreReview findByPublicStoreReviewId(UUID publicStoreReviewId) {
-        return storeReviewRepository.findByPublicStoreReviewId(publicStoreReviewId)
+        return storeReviewRepository.findByPublicId(publicStoreReviewId)
                 .orElseThrow(() -> new CustomException(ErrorCode.STORE_REVIEW_NOT_FOUND));
     }
 
@@ -64,7 +64,7 @@ public class StoreReviewService {
      * @return 해당 가게에 작성된 리뷰 목록
      */
     public List<StoreReview> findByPublicStoreId(UUID publicStoreId) {
-        return storeReviewRepository.findByPublicStoreId(publicStoreId);
+        return storeReviewRepository.findByStorePublicId(publicStoreId);
     }
 
     /**

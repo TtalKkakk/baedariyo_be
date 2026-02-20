@@ -34,7 +34,7 @@ class StoreReviewTest {
         );
 
         // then
-        assertThat(storeReview.getPublicStoreId()).isEqualTo(storeId);
+        assertThat(storeReview.getStorePublicId()).isEqualTo(storeId);
         assertThat(storeReview.getUserId()).isEqualTo(userId);
         assertThat(storeReview.getOrderId()).isEqualTo(orderId);
         assertThat(storeReview.getRating()).isEqualTo(rating);

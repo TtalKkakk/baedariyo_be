@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StoreReviewDto {
 
-    private UUID publicStoreReviewId;
+    private UUID publicId;
     private Long userId;
     private UUID storePublicId;
     private String storeName;

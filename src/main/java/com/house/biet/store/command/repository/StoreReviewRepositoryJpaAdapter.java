@@ -22,18 +22,18 @@ public class StoreReviewRepositoryJpaAdapter
     }
 
     @Override
-    public void deleteByPublicStoreReviewId(UUID publicStoreReviewId) {
-        storeReviewRepositoryJpa.deleteByPublicStoreReviewId(publicStoreReviewId);
+    public void deleteByPublicId(UUID publicId) {
+        storeReviewRepositoryJpa.deleteByPublicId(publicId);
     }
 
     @Override
-    public Optional<StoreReview> findByPublicStoreReviewId(UUID publicStoreReviewId) {
-        return storeReviewRepositoryJpa.findByPublicStoreReviewId(publicStoreReviewId);
+    public Optional<StoreReview> findByPublicId(UUID publicId) {
+        return storeReviewRepositoryJpa.findByPublicId(publicId);
     }
 
     @Override
-    public List<StoreReview> findByPublicStoreId(UUID storePublicId) {
-        return storeReviewRepositoryJpa.findByPublicStoreId(storePublicId);
+    public List<StoreReview> findByStorePublicId(UUID storePublicId) {
+        return storeReviewRepositoryJpa.findByStorePublicId(storePublicId);
     }
 
     @Override

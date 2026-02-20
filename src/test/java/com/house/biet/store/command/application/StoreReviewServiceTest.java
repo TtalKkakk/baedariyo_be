@@ -56,7 +56,7 @@ class StoreReviewServiceTest {
         storeReviewService.deleteByPublicStoreReviewId(id);
 
         // Then
-        verify(storeReviewRepository).deleteByPublicStoreReviewId(id);
+        verify(storeReviewRepository).deleteByPublicId(id);
     }
 
     @Test
@@ -65,7 +65,7 @@ class StoreReviewServiceTest {
         // Given
         UUID id = UUID.randomUUID();
         StoreReview review = StoreReviewFixture.create();
-        given(storeReviewRepository.findByPublicStoreReviewId(id)).willReturn(Optional.of(review));
+        given(storeReviewRepository.findByPublicId(id)).willReturn(Optional.of(review));
 
         // When
         StoreReview result = storeReviewService.findByPublicStoreReviewId(id);
@@ -79,7 +79,7 @@ class StoreReviewServiceTest {
     void findByPublicStoreReviewId_Error_NotFound() {
         // Given
         UUID id = UUID.randomUUID();
-        given(storeReviewRepository.findByPublicStoreReviewId(id)).willReturn(Optional.empty());
+        given(storeReviewRepository.findByPublicId(id)).willReturn(Optional.empty());
 
         // When & Then
         assertThatThrownBy(() -> storeReviewService.findByPublicStoreReviewId(id))
@@ -93,7 +93,7 @@ class StoreReviewServiceTest {
         // Given
         UUID storeId = UUID.randomUUID();
         StoreReview review = StoreReviewFixture.create();
-        given(storeReviewRepository.findByPublicStoreId(storeId)).willReturn(List.of(review));
+        given(storeReviewRepository.findByStorePublicId(storeId)).willReturn(List.of(review));
 
         // When
         List<StoreReview> results = storeReviewService.findByPublicStoreId(storeId);

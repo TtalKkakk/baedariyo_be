@@ -40,7 +40,7 @@ class StoreReviewRepositoryTest {
 
     @Test
     @DisplayName("성공 - publicStoreReviewId 기준 StoreReview 조회")
-    void findByPublicStoreReviewId_Success() {
+    void findByPublicId_Success() {
         // given
         UUID publicStoreReviewId = UUID.randomUUID();
         StoreReview review =
@@ -49,23 +49,23 @@ class StoreReviewRepositoryTest {
 
         // when
         Optional<StoreReview> found =
-                storeReviewRepository.findByPublicStoreReviewId(publicStoreReviewId);
+                storeReviewRepository.findByPublicId(publicStoreReviewId);
 
         // then
         assertThat(found).isPresent();
-        assertThat(found.get().getPublicStoreReviewId())
+        assertThat(found.get().getPublicId())
                 .isEqualTo(publicStoreReviewId);
     }
 
     @Test
     @DisplayName("실패 - publicStoreReviewId 기준 StoreReview 조회 | 결과 없음")
-    void findByPublicStoreReviewId_Error_NotFound() {
+    void findByPublicId_Error_NotFound() {
         // given
         UUID publicStoreReviewId = UUID.randomUUID();
 
         // when
         Optional<StoreReview> found =
-                storeReviewRepository.findByPublicStoreReviewId(publicStoreReviewId);
+                storeReviewRepository.findByPublicId(publicStoreReviewId);
 
         // then
         assertThat(found).isEmpty();
@@ -73,7 +73,7 @@ class StoreReviewRepositoryTest {
 
     @Test
     @DisplayName("성공 - publicStoreReviewId 기준 StoreReview 삭제")
-    void deleteByPublicStoreReviewId_Success() {
+    void deleteByPublicId_Success() {
         // given
         UUID publicStoreReviewId = UUID.randomUUID();
         StoreReview review =
@@ -81,17 +81,17 @@ class StoreReviewRepositoryTest {
         storeReviewRepository.save(review);
 
         // when
-        storeReviewRepository.deleteByPublicStoreReviewId(publicStoreReviewId);
+        storeReviewRepository.deleteByPublicId(publicStoreReviewId);
 
         // then
         assertThat(
-                storeReviewRepository.findByPublicStoreReviewId(publicStoreReviewId)
+                storeReviewRepository.findByPublicId(publicStoreReviewId)
         ).isEmpty();
     }
 
     @Test
     @DisplayName("성공 - storePublicId 기준 StoreReview 목록 조회")
-    void findByPublicStoreId_Success() {
+    void findByStorePublicId_Success() {
         // given
         UUID storePublicId = UUID.randomUUID();
         storeReviewRepository.save(
@@ -103,12 +103,12 @@ class StoreReviewRepositoryTest {
 
         // when
         List<StoreReview> reviews =
-                storeReviewRepository.findByPublicStoreId(storePublicId);
+                storeReviewRepository.findByStorePublicId(storePublicId);
 
         // then
         assertThat(reviews).hasSize(2);
         assertThat(reviews)
-                .extracting(StoreReview::getPublicStoreId)
+                .extracting(StoreReview::getStorePublicId)
                 .containsOnly(storePublicId);
     }
 

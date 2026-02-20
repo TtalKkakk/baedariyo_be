@@ -26,13 +26,13 @@ public class StoreReview extends BaseTimeEntity {
      * 외부 노출용 StoreReview 식별자
      */
     @Column(nullable = false, unique = true)
-    private UUID publicStoreReviewId;
+    private UUID publicId;
 
     /**
      * 리뷰 대상 Store의 외부 식별자
      */
     @Column(nullable = false)
-    private UUID publicStoreId;
+    private UUID storePublicId;
 
     /**
      * 리뷰 작성자 사용자 ID

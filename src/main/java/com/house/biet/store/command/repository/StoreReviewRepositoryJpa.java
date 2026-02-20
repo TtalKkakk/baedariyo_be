@@ -15,14 +15,14 @@ public interface StoreReviewRepositoryJpa
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM StoreReview sr WHERE sr.publicStoreReviewId = :publicStoreReviewId")
-    void deleteByPublicStoreReviewId(UUID publicStoreReviewId);
+    @Query("DELETE FROM StoreReview sr WHERE sr.publicId = :publicId")
+    void deleteByPublicId(UUID publicId);
 
-    @Query("SELECT sr FROM StoreReview sr WHERE sr.publicStoreReviewId = :publicStoreReviewId")
-    Optional<StoreReview> findByPublicStoreReviewId(UUID publicStoreReviewId);
+    @Query("SELECT sr FROM StoreReview sr WHERE sr.publicId = :publicId")
+    Optional<StoreReview> findByPublicId(UUID publicId);
 
-    @Query("SELECT sr FROM StoreReview sr WHERE sr.storeId = :storePublicId")
-    List<StoreReview> findByPublicStoreId(UUID storePublicId);
+    @Query("SELECT sr FROM StoreReview sr WHERE sr.storePublicId = :storePublicId")
+    List<StoreReview> findByStorePublicId(UUID storePublicId);
 
     @Query("SELECT sr FROM StoreReview sr WHERE sr.userId = :userId")
     List<StoreReview> findByUserId(Long userId);

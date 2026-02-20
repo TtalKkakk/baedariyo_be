@@ -30,7 +30,7 @@ public interface StoreReviewRepository {
      *
      * @param publicStoreReviewId 공개 식별자
      */
-    void deleteByPublicStoreReviewId(UUID publicStoreReviewId);
+    void deleteByPublicId(UUID publicStoreReviewId);
 
     /**
      * publicStoreReviewId를 기준으로 StoreReview를 조회한다.
@@ -42,7 +42,7 @@ public interface StoreReviewRepository {
      * @param publicStoreReviewId 공개 식별자
      * @return StoreReview Optional
      */
-    Optional<StoreReview> findByPublicStoreReviewId(UUID publicStoreReviewId);
+    Optional<StoreReview> findByPublicId(UUID publicStoreReviewId);
 
     /**
      * 특정 가게에 속한 StoreReview 목록을 조회한다.
@@ -54,7 +54,7 @@ public interface StoreReviewRepository {
      * @param storePublicId 가게 공개 식별자
      * @return StoreReview 목록
      */
-    List<StoreReview> findByPublicStoreId(UUID storePublicId);
+    List<StoreReview> findByStorePublicId(UUID storePublicId);
 
     /**
      * 특정 사용자가 작성한 StoreReview 목록을 조회한다.
