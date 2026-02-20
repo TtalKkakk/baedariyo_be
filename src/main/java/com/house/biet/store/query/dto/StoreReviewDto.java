@@ -17,6 +17,6 @@ public class StoreReviewDto {
     private String storeName;
     private int rating;
     private LocalDateTime createdAt;
-    private List<String> orderMenuImages;
+    private List<String> StoreReviewImages;
     private String storeReviewComment;
 }
