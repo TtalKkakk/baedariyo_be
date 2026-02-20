@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "store_reviews")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StoreReview extends BaseTimeEntity {
 
     @Id
@@ -68,4 +68,24 @@ public class StoreReview extends BaseTimeEntity {
             column = @Column(name = "store_review_comment", length = 150)
     )
     private StoreReviewComment storeReviewComment;
+
+    public static StoreReview create(
+            UUID storeId,
+            Long userId,
+            Long orderId,
+            int rating,
+            StoreReviewImages storeReviewImages,
+            StoreReviewComment storeReviewComment
+    ) {
+        return new StoreReview(
+                null, // id는 DB에서 생성
+                UUID.randomUUID(), // publicStoreReviewId 자동 생성
+                storeId,
+                userId,
+                orderId,
+                rating,
+                storeReviewImages,
+                storeReviewComment
+        );
+    }
 }

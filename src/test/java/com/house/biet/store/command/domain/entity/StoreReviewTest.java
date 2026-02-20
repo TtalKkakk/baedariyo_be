@@ -5,7 +5,6 @@ import com.house.biet.store.command.domain.vo.StoreReviewImages;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,8 +16,6 @@ class StoreReviewTest {
     @DisplayName("성공 - StoreReview 생성")
     void createStoreReview_Success_AllFields() {
         // given
-        Long id = 1L;
-        UUID publicStoreReviewId = UUID.randomUUID();
         UUID storeId = UUID.randomUUID();
         Long userId = 100L;
         Long orderId = 2L;
@@ -27,9 +24,7 @@ class StoreReviewTest {
         StoreReviewComment comment = new StoreReviewComment("맛있어요");
 
         // when
-        StoreReview storeReview = new StoreReview(
-                id,
-                publicStoreReviewId,
+        StoreReview storeReview = StoreReview.create(
                 storeId,
                 userId,
                 orderId,
@@ -39,8 +34,6 @@ class StoreReviewTest {
         );
 
         // then
-        assertThat(storeReview.getId()).isEqualTo(id);
-        assertThat(storeReview.getPublicStoreReviewId()).isEqualTo(publicStoreReviewId);
         assertThat(storeReview.getStoreId()).isEqualTo(storeId);
         assertThat(storeReview.getUserId()).isEqualTo(userId);
         assertThat(storeReview.getOrderId()).isEqualTo(orderId);
@@ -53,13 +46,10 @@ class StoreReviewTest {
     @DisplayName("성공 - comment 없이 StoreReview 생성")
     void createStoreReview_Success_WithoutComment() {
         // given
-        UUID publicStoreReviewId = UUID.randomUUID();
         UUID storeId = UUID.randomUUID();
 
         // when
-        StoreReview storeReview = new StoreReview(
-                null,
-                publicStoreReviewId,
+        StoreReview storeReview = StoreReview.create(
                 storeId,
                 100L,
                 2L,
@@ -79,9 +69,7 @@ class StoreReviewTest {
         int rating = 3;
 
         // when
-        StoreReview storeReview = new StoreReview(
-                null,
-                UUID.randomUUID(),
+        StoreReview storeReview = StoreReview.create(
                 UUID.randomUUID(),
                 100L,
                 2L,
@@ -101,9 +89,7 @@ class StoreReviewTest {
         StoreReviewComment comment = new StoreReviewComment("괜찮아요");
 
         // when
-        StoreReview storeReview = new StoreReview(
-                null,
-                UUID.randomUUID(),
+        StoreReview storeReview = StoreReview.create(
                 UUID.randomUUID(),
                 100L,
                 2L,
