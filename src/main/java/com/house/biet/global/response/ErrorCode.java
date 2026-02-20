@@ -63,6 +63,7 @@ public enum ErrorCode {
     ORDER_MENU_NOT_FOUND(40404, HttpStatus.NOT_FOUND, "주문 메뉴를 찾을 수 없습니다."),
     ORDER_NOT_FOUND(40405, HttpStatus.NOT_FOUND, "주문을 찾을 수 없습니다."),
     STORE_NOT_FOUND(40406, HttpStatus.NOT_FOUND, "가게를 찾을 수 없습니다."),
+    STORE_REVIEW_NOT_FOUND(40407, HttpStatus.NOT_FOUND, "가게 리뷰를 찾을 수 없습니다."),
     NOT_FOUND(40400, HttpStatus.NOT_FOUND, "찾을 수 없습니다."),
 
     // 409 Conflict
