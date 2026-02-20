@@ -39,10 +39,10 @@ public class UserService {
      * @param nicknameValue   사용자 닉네임
      * @param phoneNumberValue 사용자 전화번호
      */
-    public void save(Account account, String realNameValue, String nicknameValue, String phoneNumberValue) {
+    public User save(Account account, String realNameValue, String nicknameValue, String phoneNumberValue) {
         User user = User.create(account, realNameValue, nicknameValue, phoneNumberValue);
 
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     /**
