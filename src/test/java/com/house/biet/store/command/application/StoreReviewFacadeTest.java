@@ -34,6 +34,9 @@ class StoreReviewFacadeTest {
     @Mock
     private UserQueryService userQueryService;
 
+    @Mock
+    private StoreRatingService storeRatingService;
+
     @InjectMocks
     private StoreReviewFacade storeReviewFacade;
 
@@ -86,6 +89,8 @@ class StoreReviewFacadeTest {
         assertThat(response).isNotNull();
         verify(userQueryService).getUserIdByAccountId(accountId);
         verify(storeReviewService).save(any());
+        verify(storeRatingService)
+                .increaseRating(storeId, requestDto.rating());
     }
 
     @Test
@@ -101,6 +106,8 @@ class StoreReviewFacadeTest {
 
         // then
         verify(storeReviewService).deleteByPublicId(reviewId);
+        verify(storeRatingService)
+                .decreaseRating(review.getStorePublicId(), review.getRating());
     }
 
     @Test

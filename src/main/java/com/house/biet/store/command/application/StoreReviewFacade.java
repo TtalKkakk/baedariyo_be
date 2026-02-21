@@ -19,6 +19,7 @@ public class StoreReviewFacade {
 
     private final StoreReviewService storeReviewService;
     private final UserQueryService userQueryService;
+    private final StoreRatingService storeRatingService;
 
     /**
      * 리뷰 생성
@@ -36,7 +37,11 @@ public class StoreReviewFacade {
                 requestDto.storeReviewComment()
         );
 
-        return StoreReviewCreateResponseDto.fromEntity(storeReviewService.save(storeReview));
+        StoreReview savedStoreReview = storeReviewService.save(storeReview);
+
+        storeRatingService.increaseRating(storePublicId, requestDto.rating());
+
+        return StoreReviewCreateResponseDto.fromEntity(savedStoreReview);
     }
 
     /**
@@ -51,5 +56,7 @@ public class StoreReviewFacade {
         }
 
         storeReviewService.deleteByPublicId(storeReviewPublicId);
+
+        storeRatingService.decreaseRating(review.getStorePublicId(), review.getRating());
     }
 }
