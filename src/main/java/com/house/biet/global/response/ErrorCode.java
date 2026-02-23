@@ -46,6 +46,9 @@ public enum ErrorCode {
     INVALID_RATING_SCORE(40135, HttpStatus.BAD_REQUEST, "올바르지 않은 평점이 입력되었습니다."),
     INVALID_STORE_REVIEW_COMMENT_FORMAT(40136, HttpStatus.BAD_REQUEST, "잘못된 리뷰 댓글 형식입니다"),
     INVALID_STORE_REVIEW_IMAGE_COUNT(40137, HttpStatus.BAD_REQUEST, "가능한 리뷰 사진 개수를 초과하였습니다."),
+    INVALID_PAYMENT_STATUS_TRANSITION(40138, HttpStatus.BAD_REQUEST, "잘못된 결제 상태 전이입니다."),
+    INVALID_TRANSACTION_ID(40139, HttpStatus.BAD_REQUEST, "잘못된 PG 응답 형식입니다."),
+    INVALID_PAYMENT_KEY(40140, HttpStatus.BAD_REQUEST, "잘못된 결제 키 형식입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
