@@ -13,8 +13,7 @@ import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
 @Import(PaymentRepositoryJpaAdapter.class)
@@ -29,6 +28,7 @@ class PaymentRepositoryTest {
         // given
         Payment payment = Payment.create(
                 1L,
+                3L,
                 new Money(10000),
                 new PaymentKey("pk_test_123")
         );
@@ -48,10 +48,13 @@ class PaymentRepositoryTest {
     @DisplayName("paymentKey 기준 조회 테스트")
     void findByPaymentKey() {
         // given
+        Long orderId = 2L;
+        Long userId = 3L;
         String key = "pk_test_456";
 
         Payment payment = Payment.create(
-                2L,
+                orderId,
+                userId,
                 new Money(20000),
                 new PaymentKey(key)
         );
@@ -63,7 +66,8 @@ class PaymentRepositoryTest {
 
         // then
         assertThat(found).isPresent();
-        assertThat(found.get().getOrderId()).isEqualTo(2L);
+        assertThat(found.get().getOrderId()).isEqualTo(orderId);
+        assertThat(found.get().getUserId()).isEqualTo(userId);
     }
 
     @Test
@@ -74,12 +78,14 @@ class PaymentRepositoryTest {
 
         Payment payment1 = Payment.create(
                 3L,
+                4L,
                 new Money(30000),
                 new PaymentKey(key)
         );
 
         Payment payment2 = Payment.create(
                 4L,
+                7L,
                 new Money(40000),
                 new PaymentKey(key)
         );
@@ -99,6 +105,7 @@ class PaymentRepositoryTest {
 
         Payment payment = Payment.create(
                 5L,
+                12L,
                 new Money(50000),
                 new PaymentKey(key)
         );

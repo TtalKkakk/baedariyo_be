@@ -37,12 +37,14 @@ class PaymentQueryRepositoryTest {
         // given
         Payment ready = Payment.create(
                 1L,
+                3L,
                 new Money(10000),
                 new PaymentKey("pk_ready")
         );
 
         Payment approved = Payment.create(
                 2L,
+                4L,
                 new Money(20000),
                 new PaymentKey("pk_approved")
         );
@@ -66,15 +68,18 @@ class PaymentQueryRepositoryTest {
     void findAllByOrderId() {
         // given
         Long orderId = 10L;
+        Long userId = 7L;
 
         Payment payment1 = Payment.create(
                 orderId,
+                userId,
                 new Money(15000),
                 new PaymentKey("pk_order_1")
         );
 
         Payment payment2 = Payment.create(
                 orderId,
+                userId,
                 new Money(25000),
                 new PaymentKey("pk_order_2")
         );

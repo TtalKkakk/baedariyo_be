@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.UUID;
@@ -48,6 +46,7 @@ class PaymentServiceConcurrencyTest extends ServiceConcurrencyTest {
         Payment payment = paymentRepository.save(
                 Payment.create(
                         1L,
+                        2L,
                         new Money(10000),
                         new PaymentKey("pk-concurrency")
                 )

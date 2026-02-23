@@ -23,6 +23,7 @@ class PaymentTest {
     void setup() {
         payment = Payment.create(
                 1L,
+                3L,
                 new Money(10000),
                 new PaymentKey("PAY-KEY-1")
         );
@@ -37,11 +38,12 @@ class PaymentTest {
     void create_Success_InitializeReadyStatus() {
         // given
         Long orderId = 1L;
+        Long userId = 3L;
         Money money = new Money(10000);
         PaymentKey key = new PaymentKey("PAY-KEY-1");
 
         // when
-        Payment payment = Payment.create(orderId, money, key);
+        Payment payment = Payment.create(orderId, userId, money, key);
 
         // then
         assertThat(payment.getOrderId()).isEqualTo(orderId);

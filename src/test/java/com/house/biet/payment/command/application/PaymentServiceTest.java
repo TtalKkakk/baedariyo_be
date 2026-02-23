@@ -42,6 +42,7 @@ class PaymentServiceTest {
 
         Payment savedPayment = Payment.create(
                 1L,
+                2L,
                 new Money(10000),
                 new PaymentKey("pk_1")
         );
@@ -55,6 +56,7 @@ class PaymentServiceTest {
         // when
         Long id = paymentService.createPayment(
                 1L,
+                2L,
                 new Money(10000),
                 "pk_1"
         );
@@ -75,7 +77,7 @@ class PaymentServiceTest {
                 .willReturn(true);
 
         // when & then
-        assertThatThrownBy(() -> paymentService.createPayment(1L, new Money(1000), "dup"))
+        assertThatThrownBy(() -> paymentService.createPayment(1L, 2L, new Money(1000), "dup"))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.DUPLICATE_PAYMENT.getMessage());
     }
@@ -86,6 +88,7 @@ class PaymentServiceTest {
         // given
         Payment payment = Payment.create(
                 1L,
+                2L,
                 new Money(10000),
                 new PaymentKey("pk_approve")
         );

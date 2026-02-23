@@ -49,6 +49,10 @@ public class Payment {
     @Column(nullable = false)
     private Long orderId;
 
+    /** 결제한 사용자 ID 추가 */
+    @Column(nullable = false)
+    private Long userId;
+
     /** 결제 금액 */
     @Embedded
     @AttributeOverride(
@@ -90,8 +94,9 @@ public class Payment {
      * @param money         결제 금액
      * @param paymentKey    결제 식별 key
      */
-    private Payment(Long orderId, Money money, PaymentKey paymentKey) {
+    private Payment(Long orderId, Long userId, Money money, PaymentKey paymentKey) {
         this.orderId = orderId;
+        this.userId = userId;
         this.money = money;
         this.paymentKey = paymentKey;
         this.status = PaymentStatus.READY;
@@ -101,11 +106,12 @@ public class Payment {
      * Payment 생성.
      *
      * @param orderId 주문 ID
+     * @param userId 사용자 ID
      * @param money 결제 금액
      * @param paymentKey 중복 방지 키
      */
-    public static Payment create(Long orderId, Money money, PaymentKey paymentKey) {
-        return new Payment(orderId, money, paymentKey);
+    public static Payment create(Long orderId, Long userId, Money money, PaymentKey paymentKey) {
+        return new Payment(orderId, userId, money, paymentKey);
     }
 
     /** PG 요청 상태로 전이 */

@@ -56,18 +56,20 @@ public class PaymentService {
      * </p>
      *
      * @param orderId 결제가 발생한 주문 ID
+     * @param userId 사용자 ID
      * @param money 결제 금액
      * @param paymentKeyValue 중복 방지를 위한 결제 식별 키
      * @return 생성된 Payment의 식별자(ID)
      * @throws CustomException DUPLICATE_PAYMENT 예외 (중복 결제 시)
      */
-    public Long createPayment(Long orderId, Money money, String paymentKeyValue) {
+    public Long createPayment(Long orderId, Long userId, Money money, String paymentKeyValue) {
         if (paymentRepository.existsByPaymentKey(paymentKeyValue)) {
             throw new CustomException(ErrorCode.DUPLICATE_PAYMENT);
         }
 
         Payment payment = Payment.create(
                 orderId,
+                userId,
                 money,
                 new PaymentKey(paymentKeyValue)
         );

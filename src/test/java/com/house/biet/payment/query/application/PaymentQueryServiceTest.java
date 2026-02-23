@@ -33,6 +33,7 @@ class PaymentQueryServiceTest {
         // given
         Payment payment = Payment.create(
                 1L,
+                2L,
                 new Money(10000),
                 new PaymentKey("pk_status")
         );
@@ -55,6 +56,7 @@ class PaymentQueryServiceTest {
         // given
         Payment payment1 = Payment.create(
                 2L,
+                3L,
                 new Money(1000),
                 new PaymentKey("pk_o1")
         );
