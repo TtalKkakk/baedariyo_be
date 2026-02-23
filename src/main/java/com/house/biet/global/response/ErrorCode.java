@@ -49,6 +49,7 @@ public enum ErrorCode {
     INVALID_PAYMENT_STATUS_TRANSITION(40138, HttpStatus.BAD_REQUEST, "잘못된 결제 상태 전이입니다."),
     INVALID_TRANSACTION_ID(40139, HttpStatus.BAD_REQUEST, "잘못된 PG 응답 형식입니다."),
     INVALID_PAYMENT_KEY(40140, HttpStatus.BAD_REQUEST, "잘못된 결제 키 형식입니다."),
+    DUPLICATE_PAYMENT(40141, HttpStatus.BAD_REQUEST, "중복 결제 오류입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
@@ -67,6 +68,7 @@ public enum ErrorCode {
     ORDER_NOT_FOUND(40405, HttpStatus.NOT_FOUND, "주문을 찾을 수 없습니다."),
     STORE_NOT_FOUND(40406, HttpStatus.NOT_FOUND, "가게를 찾을 수 없습니다."),
     STORE_REVIEW_NOT_FOUND(40407, HttpStatus.NOT_FOUND, "가게 리뷰를 찾을 수 없습니다."),
+    PAYMENT_NOT_FOUND(40408, HttpStatus.NOT_FOUND, "결제를 찾을 수 없습니다."),
     NOT_FOUND(40400, HttpStatus.NOT_FOUND, "찾을 수 없습니다."),
 
     // 409 Conflict
