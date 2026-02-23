@@ -97,4 +97,166 @@ class PaymentQueryRepositoryTest {
                 .extracting(Payment::getOrderId)
                 .containsOnly(orderId);
     }
+
+    @Test
+    @DisplayName("성공 - 특정 사용자의 전체 결제 이력 조회")
+    void findAllByUserId_Success() {
+        // given
+        Long userId = 100L;
+
+        Payment payment1 = Payment.create(
+                1L, userId,
+                new Money(10000),
+                new PaymentKey("pk_user_all_1")
+        );
+
+        Payment payment2 = Payment.create(
+                2L, userId,
+                new Money(20000),
+                new PaymentKey("pk_user_all_2")
+        );
+
+        Payment otherUserPayment = Payment.create(
+                3L, 999L,
+                new Money(30000),
+                new PaymentKey("pk_user_all_other")
+        );
+
+        paymentRepository.save(payment1);
+        paymentRepository.save(payment2);
+        paymentRepository.save(otherUserPayment);
+
+        // when
+        List<Payment> result =
+                paymentQueryRepository.findAllByUserId(userId);
+
+        // then
+        assertThat(result).hasSize(2);
+        assertThat(result)
+                .extracting(Payment::getUserId)
+                .containsOnly(userId);
+    }
+
+
+    @Test
+    @DisplayName("성공 - 특정 사용자의 승인/취소 결제만 조회")
+    void findAllByUserIdAndStatusIn_Success() {
+        // given
+        Long userId = 200L;
+
+        Payment ready = Payment.create(
+                10L, userId,
+                new Money(10000),
+                new PaymentKey("pk_filter_ready")
+        );
+
+        Payment approved = Payment.create(
+                11L, userId,
+                new Money(20000),
+                new PaymentKey("pk_filter_approved")
+        );
+        approved.request();
+        approved.approve(new TransactionId("tx_filter_1"));
+
+        Payment failed = Payment.create(
+                12L, userId,
+                new Money(30000),
+                new PaymentKey("pk_filter_failed")
+        );
+        failed.request();
+        failed.fail();
+
+        paymentRepository.save(ready);
+        paymentRepository.save(approved);
+        paymentRepository.save(failed);
+
+        // when
+        List<Payment> result =
+                paymentQueryRepository.findAllByUserIdAndStatusIn(
+                        userId,
+                        List.of(PaymentStatus.APPROVED, PaymentStatus.CANCELED)
+                );
+
+        // then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getStatus())
+                .isEqualTo(PaymentStatus.APPROVED);
+    }
+
+
+    @Test
+    @DisplayName("성공 - 특정 주문의 승인된 결제 조회")
+    void findApprovedByOrderId_Success() {
+        // given
+        Long orderId = 300L;
+        Long userId = 55L;
+
+        Payment payment = Payment.create(
+                orderId,
+                userId,
+                new Money(50000),
+                new PaymentKey("pk_approved_find")
+        );
+
+        payment.request();
+        payment.approve(new TransactionId("tx_find_approved"));
+
+        paymentRepository.save(payment);
+
+        // when
+        var result =
+                paymentQueryRepository.findApprovedByOrderId(orderId);
+
+        // then
+        assertThat(result).isPresent();
+        assertThat(result.get().getStatus())
+                .isEqualTo(PaymentStatus.APPROVED);
+    }
+
+
+    @Test
+    @DisplayName("성공 - paymentKey 기준 결제 조회")
+    void findByPaymentKey_Success() {
+        // given
+        Payment payment = Payment.create(
+                400L,
+                77L,
+                new Money(70000),
+                new PaymentKey("pk_unique_test")
+        );
+
+        paymentRepository.save(payment);
+
+        // when
+        var result =
+                paymentQueryRepository.findByPaymentKey("pk_unique_test");
+
+        // then
+        assertThat(result).isPresent();
+        assertThat(result.get().getOrderId()).isEqualTo(400L);
+    }
+
+
+    @Test
+    @DisplayName("실패 - 승인된 결제가 존재하지 않으면 빈 Optional 반환")
+    void findApprovedByOrderId_Error_NotFound() {
+        // given
+        Long orderId = 9999L;
+
+        Payment payment = Payment.create(
+                orderId,
+                1L,
+                new Money(10000),
+                new PaymentKey("pk_no_approve")
+        );
+
+        paymentRepository.save(payment);
+
+        // when
+        var result =
+                paymentQueryRepository.findApprovedByOrderId(orderId);
+
+        // then
+        assertThat(result).isEmpty();
+    }
 }

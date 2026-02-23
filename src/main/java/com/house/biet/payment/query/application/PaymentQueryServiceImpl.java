@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,11 +17,39 @@ public class PaymentQueryServiceImpl implements PaymentQueryService {
 
     private final PaymentQueryRepository paymentQueryRepository;
 
+    @Override
     public List<Payment> findByStatus(PaymentStatus status) {
         return paymentQueryRepository.findAllByStatus(status);
     }
 
+    @Override
     public List<Payment> findByOrderId(Long orderId) {
         return paymentQueryRepository.findAllByOrderId(orderId);
+    }
+
+    @Override
+    public List<Payment> findByUserId(Long userId) {
+        return paymentQueryRepository.findAllByUserId(userId);
+    }
+
+    @Override
+    public List<Payment> findByUserIdAndStatuses(
+            Long userId,
+            List<PaymentStatus> statuses
+    ) {
+        return paymentQueryRepository
+                .findAllByUserIdAndStatusIn(userId, statuses);
+    }
+
+    @Override
+    public Optional<Payment> findApprovedByOrderId(Long orderId) {
+        return paymentQueryRepository
+                .findApprovedByOrderId(orderId);
+    }
+
+    @Override
+    public Optional<Payment> findByPaymentKey(String paymentKey) {
+        return paymentQueryRepository
+                .findByPaymentKey(paymentKey);
     }
 }

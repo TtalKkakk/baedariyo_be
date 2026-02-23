@@ -4,6 +4,7 @@ import com.house.biet.common.domain.enums.PaymentStatus;
 import com.house.biet.payment.command.domain.aggregate.Payment;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Payment Query Application Service.
@@ -47,4 +48,40 @@ public interface PaymentQueryService {
      * @return 해당 주문의 결제 목록
      */
     List<Payment> findByOrderId(Long orderId);
+
+    /**
+     * 특정 사용자의 전체 결제 이력을 조회한다.
+     *
+     * @param userId 사용자 ID
+     * @return 해당 사용자의 결제 목록
+     */
+    List<Payment> findByUserId(Long userId);
+
+    /**
+     * 특정 사용자의 특정 상태 결제 목록을 조회한다.
+     *
+     * @param userId 사용자 ID
+     * @param statuses 조회할 결제 상태 목록
+     * @return 조건에 해당하는 결제 목록
+     */
+    List<Payment> findByUserIdAndStatuses(
+            Long userId,
+            List<PaymentStatus> statuses
+    );
+
+    /**
+     * 특정 주문의 승인된 결제를 조회한다.
+     *
+     * @param orderId 주문 ID
+     * @return 승인된 결제 (없을 경우 Optional.empty)
+     */
+    Optional<Payment> findApprovedByOrderId(Long orderId);
+
+    /**
+     * paymentKey를 기준으로 결제를 조회한다.
+     *
+     * @param paymentKey 결제 식별 키
+     * @return 해당 paymentKey의 결제 (없을 경우 Optional.empty)
+     */
+    Optional<Payment> findByPaymentKey(String paymentKey);
 }

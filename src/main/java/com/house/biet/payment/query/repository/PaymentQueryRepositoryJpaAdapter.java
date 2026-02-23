@@ -24,4 +24,24 @@ public class PaymentQueryRepositoryJpaAdapter implements PaymentQueryRepository 
     public List<Payment> findAllByOrderId(Long orderId) {
         return paymentQueryRepositoryJpa.findAllByOrderId(orderId);
     }
+
+    @Override
+    public List<Payment> findAllByUserId(Long userId) {
+        return paymentQueryRepositoryJpa.findAllByUserId(userId);
+    }
+
+    @Override
+    public List<Payment> findAllByUserIdAndStatusIn(Long userId, List<PaymentStatus> statuses) {
+        return paymentQueryRepositoryJpa.findAllByUserIdAndStatusIn(userId, statuses);
+    }
+
+    @Override
+    public Optional<Payment> findApprovedByOrderId(Long orderId) {
+        return paymentQueryRepositoryJpa.findApprovedByOrderId(orderId);
+    }
+
+    @Override
+    public Optional<Payment> findByPaymentKey(String paymentKey) {
+        return paymentQueryRepositoryJpa.findByPaymentKey(paymentKey);
+    }
 }
