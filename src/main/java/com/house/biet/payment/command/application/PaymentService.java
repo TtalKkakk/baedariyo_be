@@ -6,7 +6,9 @@ import com.house.biet.global.response.ErrorCode;
 import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import com.house.biet.payment.command.domain.vo.TransactionId;
+import com.house.biet.payment.command.repository.PaymentRepositoryJpa;
 import lombok.RequiredArgsConstructor;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,8 +104,16 @@ public class PaymentService {
      * @throws CustomException PAYMENT_NOT_FOUND 예외
      */
     public void approve(Long paymentId, String transactionIdValue) {
-        Payment payment = getPayment(paymentId);
-        payment.approve(new TransactionId(transactionIdValue));
+        try {
+            Payment payment = getPayment(paymentId);
+            if (payment.isApproved())
+                throw new CustomException(ErrorCode.ALREADY_APPROVED_PAYMENT);
+
+            payment.approve(new TransactionId(transactionIdValue));
+            paymentRepository.saveAndFlush(payment);
+        } catch (ObjectOptimisticLockingFailureException e) {
+            throw new CustomException(ErrorCode.PAYMENT_CONCURRENCY_CONFLICT);
+        }
     }
 
     /**

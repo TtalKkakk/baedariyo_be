@@ -19,6 +19,11 @@ public class PaymentRepositoryJpaAdapter implements PaymentRepository {
     }
 
     @Override
+    public Payment saveAndFlush(Payment payment) {
+        return paymentRepositoryJpa.saveAndFlush(payment);
+    }
+
+    @Override
     public Optional<Payment> findById(Long id) {
         return paymentRepositoryJpa.findById(id);
     }

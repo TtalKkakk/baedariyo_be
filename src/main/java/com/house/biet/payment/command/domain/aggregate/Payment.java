@@ -41,6 +41,10 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    @Column(nullable = false)
+    private Long version;
+
     /** 결제가 발생한 주문 ID */
     @Column(nullable = false)
     private Long orderId;

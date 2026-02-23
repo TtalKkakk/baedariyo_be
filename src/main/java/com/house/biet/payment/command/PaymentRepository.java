@@ -32,6 +32,20 @@ public interface PaymentRepository {
     Payment save(Payment payment);
 
     /**
+     * Payment Aggregate를 저장하고 즉시 DB와 동기화한다.
+     *
+     * <p>
+     * save와 달리 {@code saveAndFlush}는 즉시 flush를 수행하여
+     * 낙관적 락이나 unique 제약 조건 충돌을 빠르게 검증할 때 사용된다.
+     * 멀티스레드 환경이나 동시성 테스트에서 유용하다.
+     * </p>
+     *
+     * @param payment 저장할 Payment Aggregate
+     * @return 저장된 Payment (식별자 포함)
+     */
+    Payment saveAndFlush(Payment payment);
+
+    /**
      * 식별자로 Payment를 조회한다.
      *
      * @param id Payment ID
