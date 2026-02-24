@@ -2,6 +2,7 @@ package com.house.biet.payment.command.domain.aggregate;
 
 import com.house.biet.common.domain.enums.PaymentStatus;
 import com.house.biet.common.domain.vo.Money;
+import com.house.biet.global.jpa.BaseTimeEntity;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
@@ -35,7 +36,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "payments")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Payment {
+public class Payment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
