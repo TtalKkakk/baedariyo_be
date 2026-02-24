@@ -23,6 +23,11 @@ public class PaymentQueryServiceImpl implements PaymentQueryService {
     }
 
     @Override
+    public Optional<Payment> findById(Long paymentId) {
+        return paymentQueryRepository.findById(paymentId);
+    }
+
+    @Override
     public List<Payment> findByOrderId(Long orderId) {
         return paymentQueryRepository.findAllByOrderId(orderId);
     }

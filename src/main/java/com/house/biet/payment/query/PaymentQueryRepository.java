@@ -25,6 +25,14 @@ public interface PaymentQueryRepository {
     List<Payment> findAllByStatus(PaymentStatus status);
 
     /**
+     * id를 이용하여 결제 조회
+     *
+     * @param paymentId 결제 Id
+     * @return 해당 결제 조회 (없으면 Optional.empty())
+     */
+    Optional<Payment> findById(Long paymentId);
+
+    /**
      * 특정 주문의 결제 이력을 조회한다.
      *
      * @param orderId 주문 ID

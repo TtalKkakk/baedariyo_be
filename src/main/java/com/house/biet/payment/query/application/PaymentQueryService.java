@@ -38,6 +38,15 @@ public interface PaymentQueryService {
     List<Payment> findByStatus(PaymentStatus status);
 
     /**
+     * id를 이용하여 결제 이력을 조회한다
+     * jpa 영속성이 필요없을 때 사용
+     * 
+     * @param paymentId 결제 id
+     * @return 해당 결제 (없으면 Optional.empty())
+     */
+    Optional<Payment> findById(Long paymentId);
+
+    /**
      * 특정 주문에 대한 결제 이력을 조회한다.
      *
      * <p>

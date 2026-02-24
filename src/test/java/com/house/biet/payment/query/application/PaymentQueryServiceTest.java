@@ -48,6 +48,26 @@ class PaymentQueryServiceTest {
     }
 
     @Test
+    @DisplayName("id 기준 조회")
+    void findById_Success() {
+        Payment payment = Payment.create(
+                2L, 3L,
+                new Money(1000),
+                new PaymentKey("pk_o1")
+        );
+
+        given(paymentQueryRepository.findById(2L))
+                .willReturn(Optional.of(payment));
+
+        // when
+        Optional<Payment> result =
+                paymentQueryService.findById(2L);
+
+        // then
+        assertThat(result).isPresent();
+    }
+
+    @Test
     @DisplayName("주문 기준 조회")
     void findByOrderId() {
         Payment payment = Payment.create(

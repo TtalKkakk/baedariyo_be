@@ -64,6 +64,28 @@ class PaymentQueryRepositoryTest {
     }
 
     @Test
+    @DisplayName("id를 이용하여 특정 주문 조회")
+    void findById_Success() {
+        Payment payment = Payment.create(
+                1L,
+                3L,
+                new Money(10000),
+                new PaymentKey("pk_ready")
+        );
+
+        Payment savedPayment = paymentRepository.save(payment);
+        Long paymentId = savedPayment.getId();
+
+        // when
+        Payment foundPayment = paymentQueryRepository.findById(paymentId).orElse(null);
+
+        // then
+        assertThat(foundPayment).isNotNull();
+        assertThat(foundPayment.getId()).isEqualTo(paymentId);
+
+    }
+
+    @Test
     @DisplayName("특정 주문의 결제 이력 조회")
     void findAllByOrderId() {
         // given
