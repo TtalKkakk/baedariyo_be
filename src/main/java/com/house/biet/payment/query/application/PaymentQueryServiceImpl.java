@@ -3,6 +3,8 @@ package com.house.biet.payment.query.application;
 import com.house.biet.common.domain.enums.PaymentStatus;
 import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.query.PaymentQueryRepository;
+import com.house.biet.payment.query.application.dto.MyPaymentDetailResponseDto;
+import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,5 +58,11 @@ public class PaymentQueryServiceImpl implements PaymentQueryService {
     public Optional<Payment> findByPaymentKey(String paymentKey) {
         return paymentQueryRepository
                 .findByPaymentKey(paymentKey);
+    }
+
+    @Override
+    public List<MyPaymentDetailResponseDto> findMyPaymentDetailList(MyPaymentSearchCondition myPaymentSearchCondition) {
+        return paymentQueryRepository
+                .findMyPaymentDetailList(myPaymentSearchCondition);
     }
 }

@@ -2,6 +2,8 @@ package com.house.biet.payment.query;
 
 import com.house.biet.common.domain.enums.PaymentStatus;
 import com.house.biet.payment.command.domain.aggregate.Payment;
+import com.house.biet.payment.query.application.dto.MyPaymentDetailResponseDto;
+import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
 
 import java.util.List;
 import java.util.Optional;
@@ -84,4 +86,17 @@ public interface PaymentQueryRepository {
      * @return 해당 paymentKey의 Payment (없을 경우 Optional.empty)
      */
     Optional<Payment> findByPaymentKey(String paymentKey);
+
+    /**
+     * 특정 사용자의 전체 결제 상세 목록을 조회한다.
+     *
+     * <p>
+     * 조회 전용 DTO를 반환하며,
+     * 화면 표시를 위한 읽기 모델에 해당한다.
+     * </p>
+     *
+     * @param myPaymentSearchCondition 내 결제 검색 조건
+     * @return 해당 사용자의 결제 상세 목록 (없을 경우 빈 리스트 반환)
+     */
+    List<MyPaymentDetailResponseDto> findMyPaymentDetailList(MyPaymentSearchCondition myPaymentSearchCondition);
 }

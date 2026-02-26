@@ -6,6 +6,8 @@ import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import com.house.biet.payment.command.domain.vo.TransactionId;
 import com.house.biet.payment.query.PaymentQueryRepository;
+import com.house.biet.payment.query.application.dto.MyPaymentDetailResponseDto;
+import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -203,5 +205,72 @@ class PaymentQueryServiceTest {
                 paymentQueryService.findByUserId(123L);
 
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("성공 - 나의 결제 상세 목록 조회 - status null")
+    void findMyPaymentDetailList_Success_allStatus() {
+        // given
+        Long userId = 1L;
+
+        MyPaymentSearchCondition condition =
+                new MyPaymentSearchCondition(userId, null);
+
+        MyPaymentDetailResponseDto dto =
+                new MyPaymentDetailResponseDto(
+                        "store1",
+                        PaymentStatus.READY,
+                        null,
+                        List.of(),
+                        null,
+                        List.of(),
+                        10000,
+                        null
+                );
+
+        given(paymentQueryRepository.findMyPaymentDetailList(condition))
+                .willReturn(List.of(dto));
+
+        // when
+        List<MyPaymentDetailResponseDto> result =
+                paymentQueryService.findMyPaymentDetailList(condition);
+
+        // then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).storeName()).isEqualTo("store1");
+    }
+
+    @Test
+    @DisplayName("성공 - 나의 결제 상세 목록 조회 - status 지정")
+    void findMyPaymentDetailList_Success_withStatus() {
+        // given
+        Long userId = 2L;
+
+        MyPaymentSearchCondition condition =
+                new MyPaymentSearchCondition(userId, PaymentStatus.APPROVED);
+
+        MyPaymentDetailResponseDto dto =
+                new MyPaymentDetailResponseDto(
+                        "store2",
+                        PaymentStatus.APPROVED,
+                        5,
+                        List.of(),
+                        "good",
+                        List.of("img1"),
+                        20000,
+                        null
+                );
+
+        given(paymentQueryRepository.findMyPaymentDetailList(condition))
+                .willReturn(List.of(dto));
+
+        // when
+        List<MyPaymentDetailResponseDto> result =
+                paymentQueryService.findMyPaymentDetailList(condition);
+
+        // then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).paymentStatus())
+                .isEqualTo(PaymentStatus.APPROVED);
     }
 }

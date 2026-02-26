@@ -52,6 +52,7 @@ public enum ErrorCode {
     DUPLICATE_PAYMENT(40141, HttpStatus.BAD_REQUEST, "중복 결제 오류입니다."),
     ALREADY_APPROVED_PAYMENT(40142, HttpStatus.BAD_REQUEST, "이미 승인된 결제입니다."),
     PAYMENT_CONCURRENCY_CONFLICT(40143, HttpStatus.BAD_REQUEST, "결제 동시성 충돌이 발생하였습니다."),
+    INVALID_INPUT_USER_ID(40144, HttpStatus.BAD_REQUEST, "사용자 ID는 필수입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized

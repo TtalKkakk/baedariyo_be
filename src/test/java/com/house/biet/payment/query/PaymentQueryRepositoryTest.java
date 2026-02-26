@@ -7,12 +7,18 @@ import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import com.house.biet.payment.command.domain.vo.TransactionId;
 import com.house.biet.payment.command.repository.PaymentRepositoryJpaAdapter;
+import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
 import com.house.biet.payment.query.repository.PaymentQueryRepositoryJpaAdapter;
+import com.house.biet.payment.query.repository.PaymentQueryRepositoryQuerydsl;
+import com.house.biet.store.command.domain.aggregate.Store;
+import com.house.biet.support.config.QueryDslTestConfig;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -21,8 +27,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @Import({
         PaymentRepositoryJpaAdapter.class,
-        PaymentQueryRepositoryJpaAdapter.class
+        PaymentQueryRepositoryJpaAdapter.class,
+        PaymentQueryRepositoryQuerydsl.class,
+        QueryDslTestConfig.class
 })
+@ActiveProfiles("test")
 class PaymentQueryRepositoryTest {
 
     @Autowired
@@ -281,4 +290,5 @@ class PaymentQueryRepositoryTest {
         // then
         assertThat(result).isEmpty();
     }
+
 }

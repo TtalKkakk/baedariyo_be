@@ -3,6 +3,8 @@ package com.house.biet.payment.query.repository;
 import com.house.biet.common.domain.enums.PaymentStatus;
 import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.query.PaymentQueryRepository;
+import com.house.biet.payment.query.application.dto.MyPaymentDetailResponseDto;
+import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class PaymentQueryRepositoryJpaAdapter implements PaymentQueryRepository {
 
     private final PaymentQueryRepositoryJpa paymentQueryRepositoryJpa;
+    private final PaymentQueryRepositoryQuerydsl paymentQueryRepositoryQuerydsl;
 
     @Override
     public List<Payment> findAllByStatus(PaymentStatus status) {
@@ -48,5 +51,10 @@ public class PaymentQueryRepositoryJpaAdapter implements PaymentQueryRepository 
     @Override
     public Optional<Payment> findByPaymentKey(String paymentKey) {
         return paymentQueryRepositoryJpa.findByPaymentKey(paymentKey);
+    }
+
+    @Override
+    public List<MyPaymentDetailResponseDto> findMyPaymentDetailList(MyPaymentSearchCondition myPaymentSearchCondition) {
+        return paymentQueryRepositoryQuerydsl.findMyPaymentDetailList(myPaymentSearchCondition);
     }
 }
