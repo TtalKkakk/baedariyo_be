@@ -30,7 +30,15 @@ public enum SuccessCode {
 
     // Store Review
     STORE_REVIEW_CREATE_SUCCESS(20500, "리뷰가 생성되었습니다."),
-    STORE_REVIEW_DELETE_SUCCESS(20501, "리뷰가 삭제되었습니다.");
+    STORE_REVIEW_DELETE_SUCCESS(20501, "리뷰가 삭제되었습니다."),
+
+    // Payment
+    PAYMENT_CREATE_SUCCESS(20600, "결제가 생성되었습니다."),
+    PAYMENT_APPROVE_SUCCESS(20601, "결제가 승인되었습니다."),
+    PAYMENT_FAIL_SUCCESS(20602, "결제가 실패되었습니다."),
+    PAYMENT_CANCEL_SUCCESS(20603, "결제가 취소되었습니다."),
+    PAYMENT_GET_SUCCESS(20604, "결제 단건 조회 성공하였습니다."),
+    PAYMENT_GET_LIST_SUCCESS(20605, "결제 목록 조회 성공하였습니다.");
 
     private final int code;
     private final String message;
