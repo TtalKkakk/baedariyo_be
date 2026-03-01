@@ -54,6 +54,9 @@ public enum ErrorCode {
     PAYMENT_CONCURRENCY_CONFLICT(40143, HttpStatus.BAD_REQUEST, "결제 동시성 충돌이 발생하였습니다."),
     INVALID_INPUT_USER_ID(40144, HttpStatus.BAD_REQUEST, "사용자 ID는 필수입니다."),
     ORDER_NOT_FOUND_OR_RIDER_NOT_ASSIGNED(40145, HttpStatus.BAD_REQUEST, "주문이 존재하지 않거나 배달원이 배정되지 않았습니다."),
+    ORDER_RIDER_MISMATCH(40146, HttpStatus.BAD_REQUEST, "주문의 배달원과 일치하지 않습니다."),
+    INVALID_DELIVERY_STATUS_TRANSITION(40147, HttpStatus.BAD_REQUEST, "잘못된 배달 상태 전이입니다."),
+    DELIVERY_ALREADY_EXISTS(40148, HttpStatus.BAD_REQUEST, "이미 존재하는 배달입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
@@ -73,6 +76,7 @@ public enum ErrorCode {
     STORE_NOT_FOUND(40406, HttpStatus.NOT_FOUND, "가게를 찾을 수 없습니다."),
     STORE_REVIEW_NOT_FOUND(40407, HttpStatus.NOT_FOUND, "가게 리뷰를 찾을 수 없습니다."),
     PAYMENT_NOT_FOUND(40408, HttpStatus.NOT_FOUND, "결제를 찾을 수 없습니다."),
+    DELIVERY_NOT_FOUND(40409, HttpStatus.NOT_FOUND, "배달을 찾을 수 없습니다."),
     NOT_FOUND(40400, HttpStatus.NOT_FOUND, "찾을 수 없습니다."),
 
     // 409 Conflict
