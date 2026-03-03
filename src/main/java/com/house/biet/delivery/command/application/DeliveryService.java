@@ -5,6 +5,7 @@ import com.house.biet.delivery.command.domain.aggregate.Delivery;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 새로운 배달을 생성한다.
@@ -89,6 +91,10 @@ public class DeliveryService {
         Delivery delivery = getByOrderId(orderId);
 
         delivery.complete();
+
+        deliveryRepository.save(delivery);
+
+        publishEvents(delivery);
     }
 
     /**
@@ -113,5 +119,10 @@ public class DeliveryService {
     public Delivery getByOrderId(Long orderId) {
         return deliveryRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_NOT_FOUND));
+    }
+
+    private void publishEvents(Delivery delivery) {
+        delivery.getDomainEvents().forEach(eventPublisher::publishEvent);
+        delivery.clearDomainEvents();
     }
 }
