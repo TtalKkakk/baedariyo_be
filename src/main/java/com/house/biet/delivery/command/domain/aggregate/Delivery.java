@@ -1,6 +1,7 @@
 package com.house.biet.delivery.command.domain.aggregate;
 
 import com.house.biet.common.domain.enums.DeliveryStatus;
+import com.house.biet.delivery.command.domain.event.DeliveryCompletedEvent;
 import com.house.biet.global.jpa.BaseTimeEntity;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
@@ -10,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "deliveries")
@@ -20,6 +23,9 @@ public class Delivery extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    private Long version;
+
     @Column(nullable = false)
     private Long orderId;
 
@@ -27,11 +33,28 @@ public class Delivery extends BaseTimeEntity {
     private Long riderId;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private DeliveryStatus deliveryStatus;
 
     LocalDateTime deliveryStartedAt;
 
     LocalDateTime deliveryCompleteAt;
+
+    /* =========================
+   상태 이력
+   ========================= */
+
+    @OneToMany(mappedBy = "delivery",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private final List<DeliveryStatusHistory> histories = new ArrayList<>();
+
+    /* =========================
+    도메인 이벤트
+    ========================= */
+
+    @Transient
+    private final List<Object> domainEvents = new ArrayList<>();
 
     /* =========================
        생성자
@@ -58,7 +81,7 @@ public class Delivery extends BaseTimeEntity {
         }
 
         this.riderId = riderId;
-        this.deliveryStatus = DeliveryStatus.ASSIGNED;
+        changeStatus(DeliveryStatus.ASSIGNED);
     }
 
     /* =========================
@@ -68,7 +91,7 @@ public class Delivery extends BaseTimeEntity {
     public void pickup() {
         validateStatus(DeliveryStatus.ASSIGNED);
 
-        this.deliveryStatus = DeliveryStatus.PICKED_UP;
+        changeStatus(DeliveryStatus.PICKED_UP);
     }
 
     /* =========================
@@ -78,8 +101,8 @@ public class Delivery extends BaseTimeEntity {
     public void startDelivery() {
         validateStatus(DeliveryStatus.PICKED_UP);
 
-        this.deliveryStatus = DeliveryStatus.IN_DELIVERY;
         this.deliveryStartedAt = LocalDateTime.now();
+        changeStatus(DeliveryStatus.IN_DELIVERY);
     }
 
     /* =========================
@@ -101,8 +124,10 @@ public class Delivery extends BaseTimeEntity {
     public void complete() {
         validateStatus(DeliveryStatus.IN_DELIVERY);
 
-        this.deliveryStatus = DeliveryStatus.COMPLETED;
         this.deliveryCompleteAt = LocalDateTime.now();
+        changeStatus(DeliveryStatus.COMPLETED);
+
+        domainEvents.add(new DeliveryCompletedEvent(this.id, this.orderId, this.riderId));
     }
 
     /* =========================
@@ -110,19 +135,34 @@ public class Delivery extends BaseTimeEntity {
        ========================= */
 
     public void cancel() {
-        if (this.deliveryStatus == DeliveryStatus.CANCELLED)
+        if (this.deliveryStatus == DeliveryStatus.COMPLETED || this.deliveryStatus == DeliveryStatus.CANCELLED) {
             throw new CustomException(ErrorCode.INVALID_DELIVERY_STATUS_TRANSITION);
+        }
 
         this.deliveryStatus = DeliveryStatus.CANCELLED;
     }
 
     /* =========================
-       상태 검증
+       상태 변경 중앙화
        ========================= */
+
+    private void changeStatus(DeliveryStatus newStatus) {
+        DeliveryStatus oldStatus = this.deliveryStatus;
+        this.deliveryStatus = newStatus;
+
+        this.histories.add(new DeliveryStatusHistory(this, oldStatus, newStatus));
+    }
 
     private void validateStatus(DeliveryStatus expected) {
         if (this.deliveryStatus != expected) {
             throw new CustomException(ErrorCode.INVALID_DELIVERY_STATUS_TRANSITION);
         }
+    }
+
+    /* =========================
+   도메인 이벤트 반환
+   ========================= */
+    public void clearDomainEvents() {
+        domainEvents.clear();
     }
 }
