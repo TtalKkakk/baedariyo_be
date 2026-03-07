@@ -1,8 +1,12 @@
 package com.house.biet.delivery.command.application;
 
 import com.house.biet.delivery.command.domain.aggregate.Delivery;
+import com.house.biet.delivery.infrastructure.redis.DeliveryLocationCache;
 import com.house.biet.delivery.infrastructure.redis.DeliveryLocationRedisRepository;
+import com.house.biet.delivery.query.dto.DeliveryLocationResponseDto;
 import com.house.biet.delivery.websocket.dto.DeliveryLocationMessage;
+import com.house.biet.global.response.CustomException;
+import com.house.biet.global.response.ErrorCode;
 import com.house.biet.rider.query.RiderQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -18,6 +22,9 @@ public class DeliveryLocationService {
     private final DeliveryLocationRedisRepository redisRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
+    /**
+     * 라이더 위치 업데이트 처리
+     */
     @Transactional
     public void handleLocation(DeliveryLocationMessage message, Long accountId) {
 
@@ -43,5 +50,28 @@ public class DeliveryLocationService {
                 "/topic/order/" + message.orderId(),
                 message
         );
+    }
+
+    /**
+     * 현재 배달 위치 조회
+     */
+    @Transactional(readOnly = true)
+    public DeliveryLocationResponseDto getCurrentLocation(Long orderId) {
+        DeliveryLocationCache cache = redisRepository.getLatestLocation(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_LOCATION_NOT_FOUND));
+
+        return new DeliveryLocationResponseDto(
+                cache.latitude(),
+                cache.longitude()
+        );
+    }
+
+
+    /**
+     * 배달 완료 시 위치 삭제
+     */
+    @Transactional
+    public void clearLocation(Long orderId) {
+        redisRepository.delete(orderId);
     }
 }
