@@ -77,6 +77,7 @@ public enum ErrorCode {
     STORE_REVIEW_NOT_FOUND(40407, HttpStatus.NOT_FOUND, "가게 리뷰를 찾을 수 없습니다."),
     PAYMENT_NOT_FOUND(40408, HttpStatus.NOT_FOUND, "결제를 찾을 수 없습니다."),
     DELIVERY_NOT_FOUND(40409, HttpStatus.NOT_FOUND, "배달을 찾을 수 없습니다."),
+    DELIVERY_LOCATION_NOT_FOUND(40410, HttpStatus.NOT_FOUND, "위치 정보를 찾을 수 없습니다."),
     NOT_FOUND(40400, HttpStatus.NOT_FOUND, "찾을 수 없습니다."),
 
     // 409 Conflict
