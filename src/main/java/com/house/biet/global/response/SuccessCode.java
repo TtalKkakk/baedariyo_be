@@ -38,7 +38,16 @@ public enum SuccessCode {
     PAYMENT_FAIL_SUCCESS(20602, "결제가 실패되었습니다."),
     PAYMENT_CANCEL_SUCCESS(20603, "결제가 취소되었습니다."),
     PAYMENT_GET_SUCCESS(20604, "결제 단건 조회 성공하였습니다."),
-    PAYMENT_GET_LIST_SUCCESS(20605, "결제 목록 조회 성공하였습니다.");
+    PAYMENT_GET_LIST_SUCCESS(20605, "결제 목록 조회 성공하였습니다."),
+
+    // Delivery
+    DELIVERY_CREATE_SUCCESS(20700, "배달이 생성되었습니다."),
+    DELIVERY_RIDER_ASSIGN_SUCCESS(20701, "라이더가 배정되었습니다."),
+    DELIVERY_PICKUP_SUCCESS(20702, "픽업이 완료되었습니다."),
+    DELIVERY_START_SUCCESS(20703, "배달이 시작되었습니다."),
+    DELIVERY_COMPLETE_SUCCESS(20704, "배달이 완료되었습니다."),
+    DELIVERY_GET_SUCCESS(20705, "배달 조회에 성공했습니다."),
+    DELIVERY_GET_LIST_SUCCESS(20706, "배달 목록 조회에 성공했습니다.");
 
     private final int code;
     private final String message;
