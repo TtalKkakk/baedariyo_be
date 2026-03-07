@@ -2,6 +2,7 @@ package com.house.biet.delivery.command.application;
 
 import com.house.biet.delivery.command.DeliveryRepository;
 import com.house.biet.delivery.command.domain.aggregate.Delivery;
+import com.house.biet.delivery.infrastructure.redis.DeliveryLocationRedisRepository;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final DeliveryLocationRedisRepository deliveryLocationRedisRepository;
 
     /**
      * 새로운 배달을 생성한다.
@@ -95,6 +97,9 @@ public class DeliveryService {
         deliveryRepository.save(delivery);
 
         publishEvents(delivery);
+
+        // 위치 캐시 삭제
+        deliveryLocationRedisRepository.delete(orderId);
     }
 
     /**
