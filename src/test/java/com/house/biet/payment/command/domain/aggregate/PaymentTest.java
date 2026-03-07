@@ -4,6 +4,7 @@ import com.house.biet.common.domain.enums.PaymentStatus;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
+import com.house.biet.payment.command.application.event.PaymentApprovedEvent;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import com.house.biet.payment.command.domain.vo.TransactionId;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,6 +79,10 @@ class PaymentTest {
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.APPROVED);
         assertThat(payment.getTransactionId()).isEqualTo(transactionId);
         assertThat(payment.isApproved()).isTrue();
+
+        assertThat(payment.getDomainEvents()).hasSize(1);
+        assertThat(payment.getDomainEvents().get(0))
+                .isInstanceOf(PaymentApprovedEvent.class);
     }
 
     @Test

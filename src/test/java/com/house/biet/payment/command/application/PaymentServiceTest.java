@@ -5,7 +5,8 @@ import com.house.biet.common.domain.vo.Money;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.payment.command.PaymentRepository;
-import com.house.biet.payment.command.PaymentService;
+import com.house.biet.payment.command.application.PaymentService;
+import com.house.biet.payment.command.application.event.PaymentApprovedEvent;
 import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -30,6 +32,9 @@ class PaymentServiceTest {
 
     @Mock
     private PaymentRepository paymentRepository;
+
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
     private PaymentService paymentService;
@@ -103,6 +108,7 @@ class PaymentServiceTest {
         // then
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.APPROVED);
         assertThat(payment.getTransactionId()).isNotNull();
+        verify(eventPublisher).publishEvent(any(PaymentApprovedEvent.class));
     }
 
     @Test

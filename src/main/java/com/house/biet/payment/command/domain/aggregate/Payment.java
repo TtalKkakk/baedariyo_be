@@ -3,14 +3,16 @@ package com.house.biet.payment.command.domain.aggregate;
 import com.house.biet.common.domain.enums.PaymentStatus;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.global.jpa.BaseTimeEntity;
-import com.house.biet.global.response.CustomException;
-import com.house.biet.global.response.ErrorCode;
+import com.house.biet.payment.command.application.event.PaymentApprovedEvent;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import com.house.biet.payment.command.domain.vo.TransactionId;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 결제 도메인의 Aggregate Root.
@@ -89,6 +91,9 @@ public class Payment extends BaseTimeEntity {
     )
     private TransactionId transactionId;
 
+    @Transient
+    private final List<Object> domainEvents = new ArrayList<>();
+
     /**
      * 생성자
      * @param orderId       주문 id
@@ -132,6 +137,8 @@ public class Payment extends BaseTimeEntity {
 
         this.transactionId = transactionId;
         this.status = PaymentStatus.APPROVED;
+
+        registerEvent(new PaymentApprovedEvent(this.id, this.orderId));
     }
 
     /** 승인 실패 처리 */
@@ -148,5 +155,13 @@ public class Payment extends BaseTimeEntity {
 
     public boolean isApproved() {
         return this.status == PaymentStatus.APPROVED;
+    }
+
+    public void registerEvent(Object event) {
+        this.domainEvents.add(event);
+    }
+
+    public void clearDomainEvents() {
+        domainEvents.clear();
     }
 }

@@ -1,13 +1,15 @@
-package com.house.biet.payment.command;
+package com.house.biet.payment.command.application;
 
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
+import com.house.biet.payment.command.PaymentRepository;
 import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import com.house.biet.payment.command.domain.vo.TransactionId;
 import com.house.biet.payment.command.repository.PaymentRepositoryJpa;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 새로운 결제를 생성한다.
@@ -113,6 +116,7 @@ public class PaymentService {
 
             payment.approve(new TransactionId(transactionIdValue));
             paymentRepository.saveAndFlush(payment);
+            publishEvents(payment);
         } catch (ObjectOptimisticLockingFailureException e) {
             throw new CustomException(ErrorCode.PAYMENT_CONCURRENCY_CONFLICT);
         }
@@ -156,5 +160,10 @@ public class PaymentService {
     private Payment getPayment(Long paymentId) {
         return paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
+    }
+
+    private void publishEvents(Payment payment) {
+        payment.getDomainEvents().forEach(eventPublisher::publishEvent);
+        payment.clearDomainEvents();
     }
 }
