@@ -1,7 +1,6 @@
 package com.house.biet.payment.command.application;
 
 import com.house.biet.common.domain.vo.Money;
-import com.house.biet.payment.command.PaymentService;
 import com.house.biet.user.query.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

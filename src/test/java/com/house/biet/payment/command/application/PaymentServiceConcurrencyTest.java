@@ -4,7 +4,6 @@ import com.house.biet.common.domain.vo.Money;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.payment.command.PaymentRepository;
-import com.house.biet.payment.command.PaymentService;
 import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import com.house.biet.payment.command.repository.PaymentRepositoryJpa;
