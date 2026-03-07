@@ -39,6 +39,6 @@ class CurrentRiderLocationTest {
     void CreateCurrentRiderLocation_Error_InvalidLongitude() {
         assertThatThrownBy(() -> new CurrentRiderLocation(37.0, 200.0))
                         .isInstanceOf(CustomException.class)
-                        .hasMessage(ErrorCode.INVALID_LATITUDE_RANGE.getMessage());
+                        .hasMessage(ErrorCode.INVALID_LONGITUDE_RANGE.getMessage());
     }
 }

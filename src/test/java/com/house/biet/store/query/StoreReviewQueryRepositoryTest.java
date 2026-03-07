@@ -124,20 +124,16 @@ class StoreReviewQueryRepositoryTest {
         StoreReview review3 = StoreReviewFixture.createWithStoreId(storePublicId);
         StoreReview review4 = StoreReviewFixture.createWithStoreId(storePublicId); // 가장 최근
 
-        // 명확한 시간 세팅 (오름차순)
-        ReflectionTestUtils.setField(review1, "createdAt",
-                LocalDateTime.of(2024, 1, 1, 10, 0));
-        ReflectionTestUtils.setField(review2, "createdAt",
-                LocalDateTime.of(2024, 1, 1, 11, 0));
-        ReflectionTestUtils.setField(review3, "createdAt",
-                LocalDateTime.of(2024, 1, 1, 12, 0));
-        ReflectionTestUtils.setField(review4, "createdAt",
-                LocalDateTime.of(2024, 1, 1, 13, 0));
+        StoreReview saved1 = storeReviewRepository.save(review1);
+        StoreReview saved2 = storeReviewRepository.save(review2);
+        StoreReview saved3 = storeReviewRepository.save(review3);
+        StoreReview saved4 = storeReviewRepository.save(review4);
 
-        storeReviewRepository.save(review1);
-        storeReviewRepository.save(review2);
-        storeReviewRepository.save(review3);
-        storeReviewRepository.save(review4);
+        // 명확한 시간 세팅 (오름차순)
+        ReflectionTestUtils.setField(saved1, "createdAt", LocalDateTime.of(2024,1,1,10,0));
+        ReflectionTestUtils.setField(saved2, "createdAt", LocalDateTime.of(2024,1,1,11,0));
+        ReflectionTestUtils.setField(saved3, "createdAt", LocalDateTime.of(2024,1,1,12,0));
+        ReflectionTestUtils.setField(saved4, "createdAt", LocalDateTime.of(2024,1,1,13,0));
 
         // when
         List<StoreReviewDto> results =

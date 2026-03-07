@@ -57,7 +57,7 @@ public class StoreReviewFixture {
         );
 
         try {
-            Field field = StoreReview.class.getDeclaredField("publicStoreReviewId");
+            Field field = StoreReview.class.getDeclaredField("publicId");
             field.setAccessible(true);
             field.set(review, publicReviewId);
         } catch (NoSuchFieldException | IllegalAccessException e) {
