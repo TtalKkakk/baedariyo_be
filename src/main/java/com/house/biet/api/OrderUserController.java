@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/orders/rider")
+@RequestMapping("/api/orders/users")
 public class OrderUserController {
 
     private final OrderUserFacade orderUserFacade;
