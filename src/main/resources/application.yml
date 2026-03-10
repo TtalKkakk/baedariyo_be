@@ -14,3 +14,7 @@ spring:
     mobility:
       base-url: https://apis-navi:kakaomobility:com/v1/directions
       rest-api-key: ${kakao.mobility.rest-api-key}
+
+  vword:
+    base-url: https://api.vworld.kr/req/address
+    rest-api-key: ${vword.rest-api-key}
