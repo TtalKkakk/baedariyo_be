@@ -57,6 +57,8 @@ public enum ErrorCode {
     ORDER_RIDER_MISMATCH(40146, HttpStatus.BAD_REQUEST, "주문의 배달원과 일치하지 않습니다."),
     INVALID_DELIVERY_STATUS_TRANSITION(40147, HttpStatus.BAD_REQUEST, "잘못된 배달 상태 전이입니다."),
     DELIVERY_ALREADY_EXISTS(40148, HttpStatus.BAD_REQUEST, "이미 존재하는 배달입니다."),
+    ADDRESS_GEOCODING_FAILED(40149, HttpStatus.BAD_REQUEST, "주소를 좌표로 변환할 수 없습니다."),
+    INVALID_ADDRESS_GEOCODING_FORMAT(40150, HttpStatus.BAD_REQUEST, "유효하지 않은 주소 형태입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
@@ -86,7 +88,11 @@ public enum ErrorCode {
 
     // 500 Internal Server Error
 
-    INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러가 발생하였습니다.");
+    INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러가 발생하였습니다."),
+
+    // 502 BAD
+    GEOCODING_API_ERROR(50201, HttpStatus.BAD_GATEWAY, "지오코딩 API 호출 중 에러가 발생하였습니다."),
+    BAD_GATEWAY(50200, HttpStatus.BAD_GATEWAY, "외부 API 호출 중 오류가 발생하였습니다.");
 
     private final int code;
     private final HttpStatus httpStatus;
