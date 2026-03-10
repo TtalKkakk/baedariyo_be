@@ -1,14 +1,19 @@
 package com.house.biet.global.route.infrastructure;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+
 @Component
-@RequiredArgsConstructor
 public class KakaoRouteClient {
 
-    private final WebClient webClient;
+    private final WebClient kakaoWebClient;
+
+    public KakaoRouteClient(@Qualifier("kakaoWebClient") WebClient kakaoWebClient) {
+        this.kakaoWebClient = kakaoWebClient;
+    }
 
     public int requestRouteTime(
             double startLat,
@@ -16,7 +21,7 @@ public class KakaoRouteClient {
             double endLat,
             double endLng
     ) {
-        KakaoDirectionsResponse response = webClient.get()
+        KakaoDirectionsResponse response = kakaoWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/v1/directions")
                         .queryParam("origin", startLng + "," + startLat)
