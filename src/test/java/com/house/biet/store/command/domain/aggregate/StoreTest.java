@@ -1,6 +1,7 @@
 package com.house.biet.store.command.domain.aggregate;
 
 import com.house.biet.common.domain.enums.StoreCategory;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.fixtures.StoreOperationInfoFixture;
 import com.house.biet.global.response.CustomException;
@@ -29,6 +30,8 @@ class StoreTest {
         Store store = Store.create(
                 storeName,
                 category,
+                new Address("roadAddress", "jibunAddress", "detailAddress"),
+                new GeoLocation(37.2123, 129.222),
                 null,
                 null,
                 StoreOperationInfoFixture.aStoreOperationInfo().build(),
@@ -156,6 +159,8 @@ class StoreTest {
         return Store.create(
                 new StoreName("테스트 가게"),
                 StoreCategory.CAFE_DESSERT,
+                new Address("roadAddress", "jibunAddress", "detailAddress"),
+                new GeoLocation(37.2123, 129.222),
                 null,
                 null,
                 StoreOperationInfoFixture.aStoreOperationInfo().build(),

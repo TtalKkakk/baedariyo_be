@@ -10,7 +10,7 @@ import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
-public class DeliveryLocationController {
+public class DeliveryLocationInnerController {
 
     private final DeliveryLocationService locationService;
 

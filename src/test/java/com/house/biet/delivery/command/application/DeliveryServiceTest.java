@@ -4,6 +4,7 @@ import com.house.biet.common.domain.enums.DeliveryStatus;
 import com.house.biet.delivery.command.DeliveryRepository;
 import com.house.biet.delivery.command.domain.aggregate.Delivery;
 import com.house.biet.delivery.command.domain.event.DeliveryCompletedEvent;
+import com.house.biet.delivery.infrastructure.redis.DeliveryLocationRedisRepository;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,9 @@ class DeliveryServiceTest {
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
+
+    @Mock
+    private DeliveryLocationRedisRepository deliveryLocationRedisRepository;
 
     @InjectMocks
     private DeliveryService deliveryService;

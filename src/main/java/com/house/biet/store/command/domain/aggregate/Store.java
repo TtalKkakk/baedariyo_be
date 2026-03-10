@@ -1,6 +1,7 @@
 package com.house.biet.store.command.domain.aggregate;
 
 import com.house.biet.common.domain.enums.StoreCategory;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.store.command.domain.entity.Menu;
 import com.house.biet.store.command.domain.vo.*;
@@ -36,6 +37,21 @@ public class Store {
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private StoreCategory storeCategory;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "roadAddress", column = @Column(name = "store_road_address")),
+            @AttributeOverride(name = "jibunAddress", column = @Column(name = "store_jibun")),
+            @AttributeOverride(name = "detailAddress", column = @Column(name = "store_detail_address"))
+    })
+    private Address storeAddress;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "latitude", column = @Column(name = "store_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "store_longitude"))
+    })
+    private GeoLocation storeGeoLocation;
 
     @Embedded
     @AttributeOverride(
@@ -87,6 +103,8 @@ public class Store {
     private Store(
             StoreName storeName,
             StoreCategory storeCategory,
+            Address storeAddress,
+            GeoLocation storeGeoLocation,
             StoreThumbnail thumbnail,
             BusinessHours businessHours,
             StoreOperationInfo operationInfo,
@@ -96,6 +114,8 @@ public class Store {
         this.publicId = UUID.randomUUID();
         this.storeName = storeName;
         this.storeCategory = storeCategory;
+        this.storeAddress = storeAddress;
+        this.storeGeoLocation = storeGeoLocation;
         this.thumbnail = thumbnail;
         this.businessHours = businessHours;
         this.operationInfo = operationInfo;
@@ -107,6 +127,8 @@ public class Store {
     public static Store create(
             StoreName storeName,
             StoreCategory storeCategory,
+            Address storeAddress,
+            GeoLocation storeGeoLocation,
             StoreThumbnail thumbnail,
             BusinessHours businessHours,
             StoreOperationInfo operationInfo,
@@ -116,6 +138,8 @@ public class Store {
         return new Store(
                 storeName,
                 storeCategory,
+                storeAddress,
+                storeGeoLocation,
                 thumbnail,
                 businessHours,
                 operationInfo,

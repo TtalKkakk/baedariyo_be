@@ -1,12 +1,14 @@
 package com.house.biet.store.command.application;
 
 import com.house.biet.common.domain.enums.StoreCategory;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.fixtures.BusinessHoursFixture;
 import com.house.biet.fixtures.StoreOperationInfoFixture;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.store.command.application.dto.StoreCreateRequestDto;
 import com.house.biet.store.command.application.dto.StoreCreateResponseDto;
+import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.store.query.dto.StoreDetailWithMenuAndReviewResponseDto;
 import com.house.biet.support.config.ServiceIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +29,7 @@ class StoreFacadeIntegrationTest extends ServiceIntegrationTest {
     // 공용 변수
     private String storeName;
     private StoreCategory storeCategory;
+    private Address storeAddress;
     private String thumbnailUrl;
     private Money minimumOrderAmount;
     private Money deliveryFee;
@@ -37,6 +40,7 @@ class StoreFacadeIntegrationTest extends ServiceIntegrationTest {
     void setUp() {
         storeName = "통합테스트가게";
         storeCategory = StoreCategory.CHICKEN;
+        storeAddress = new Address("roadAddress", "jibunAddress", "detailAddress");
         thumbnailUrl = "http://image.com";
         minimumOrderAmount = new Money(15000);
         deliveryFee = new Money(3000);
@@ -44,6 +48,7 @@ class StoreFacadeIntegrationTest extends ServiceIntegrationTest {
         request = new StoreCreateRequestDto(
                 storeName,
                 storeCategory,
+                storeAddress,
                 thumbnailUrl,
                 BusinessHoursFixture.withDefaultWeekdays(),
                 StoreOperationInfoFixture.aStoreOperationInfo().build(),

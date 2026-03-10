@@ -1,6 +1,7 @@
 package com.house.biet.store.command.application.dto;
 
 import com.house.biet.common.domain.enums.StoreCategory;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.store.command.domain.vo.*;
 import jakarta.validation.constraints.*;
@@ -11,6 +12,9 @@ public record StoreCreateRequestDto(
 
         @NotNull
         StoreCategory storeCategory,
+
+        @NotNull
+        Address storeAddress,
 
         String thumbnailUrl,           // nullable 가능
 

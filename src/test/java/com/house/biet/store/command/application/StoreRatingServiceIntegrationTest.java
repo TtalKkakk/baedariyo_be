@@ -1,11 +1,13 @@
 package com.house.biet.store.command.application;
 
 import com.house.biet.common.domain.enums.StoreCategory;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.fixtures.StoreOperationInfoFixture;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.store.command.domain.aggregate.Store;
+import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.store.command.domain.vo.StoreName;
 import com.house.biet.support.config.ServiceIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +37,8 @@ public class StoreRatingServiceIntegrationTest extends ServiceIntegrationTest {
         Store store = Store.create(
                 new StoreName("평점 테스트 가게"),
                 StoreCategory.CAFE_DESSERT,
+                new Address("roadAddress", "jibunAddress", "detailAddress"),
+                new GeoLocation(37.2123, 129.222),
                 null,
                 null,
                 StoreOperationInfoFixture.aStoreOperationInfo().build(),

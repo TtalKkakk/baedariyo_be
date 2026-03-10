@@ -3,6 +3,7 @@ package com.house.biet.store.command.application;
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.common.domain.enums.StoreCategory;
 import com.house.biet.common.domain.enums.UserRole;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.fixtures.BusinessHoursFixture;
 import com.house.biet.fixtures.StoreOperationInfoFixture;
@@ -12,10 +13,7 @@ import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.store.command.application.dto.StoreReviewCreateRequestDto;
 import com.house.biet.store.command.application.dto.StoreReviewCreateResponseDto;
 import com.house.biet.store.command.domain.aggregate.Store;
-import com.house.biet.store.command.domain.vo.StoreName;
-import com.house.biet.store.command.domain.vo.StoreReviewComment;
-import com.house.biet.store.command.domain.vo.StoreReviewImages;
-import com.house.biet.store.command.domain.vo.StoreThumbnail;
+import com.house.biet.store.command.domain.vo.*;
 import com.house.biet.support.config.ServiceIntegrationTest;
 import com.house.biet.user.command.application.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,6 +78,8 @@ class StoreReviewFacadeIntegrationTest extends ServiceIntegrationTest {
         Store store = Store.create(
                 new StoreName("테스트가게"),
                 StoreCategory.CHICKEN,
+                new Address("roadAddress", "jibunAddress", "detailAddress"),
+                new GeoLocation(37.2123, 129.222),
                 new StoreThumbnail("http://image.com"),
                 BusinessHoursFixture.withDefaultWeekdays(),
                 StoreOperationInfoFixture.aStoreOperationInfo().build(),

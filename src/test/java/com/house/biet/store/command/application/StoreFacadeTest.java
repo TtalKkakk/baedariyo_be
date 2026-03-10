@@ -1,16 +1,14 @@
 package com.house.biet.store.command.application;
 
 import com.house.biet.common.domain.enums.StoreCategory;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.common.domain.vo.Money;
 import com.house.biet.fixtures.BusinessHoursFixture;
 import com.house.biet.fixtures.StoreOperationInfoFixture;
 import com.house.biet.store.command.application.dto.StoreCreateRequestDto;
 import com.house.biet.store.command.application.dto.StoreCreateResponseDto;
 import com.house.biet.store.command.domain.aggregate.Store;
-import com.house.biet.store.command.domain.vo.BusinessHours;
-import com.house.biet.store.command.domain.vo.StoreName;
-import com.house.biet.store.command.domain.vo.StoreOperationInfo;
-import com.house.biet.store.command.domain.vo.StoreThumbnail;
+import com.house.biet.store.command.domain.vo.*;
 import com.house.biet.store.query.application.StoreQueryService;
 import com.house.biet.store.query.application.StoreReviewQueryService;
 import com.house.biet.store.query.dto.StoreDetailWithMenuAndReviewResponseDto;
@@ -51,6 +49,8 @@ class StoreFacadeTest {
 
     private String storeName;
     private StoreCategory storeCategory;
+    private Address storeAddress;
+    private GeoLocation storeGeoLocation;
     private String thumbnailUrl;
     private BusinessHours businessHours;
     private StoreOperationInfo operationInfo;
@@ -64,6 +64,8 @@ class StoreFacadeTest {
     void setUp() {
         storeName = "테스트가게";
         storeCategory = StoreCategory.CHICKEN;
+        storeAddress = new Address("roadAddress", "jibunAddress", "detailAddress");
+        storeGeoLocation = new GeoLocation(37.2123, 129.222);
         thumbnailUrl = "http://image.com";
         businessHours = BusinessHoursFixture.withDefaultWeekdays();
         operationInfo = StoreOperationInfoFixture.aStoreOperationInfo().build();
@@ -73,6 +75,7 @@ class StoreFacadeTest {
         request = new StoreCreateRequestDto(
                 storeName,
                 storeCategory,
+                storeAddress,
                 thumbnailUrl,
                 businessHours,
                 operationInfo,
@@ -83,6 +86,8 @@ class StoreFacadeTest {
         store = Store.create(
                 new StoreName(storeName),
                 storeCategory,
+                storeAddress,
+                storeGeoLocation,
                 new StoreThumbnail(thumbnailUrl),
                 businessHours,
                 operationInfo,
