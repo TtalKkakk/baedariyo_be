@@ -9,3 +9,8 @@ spring:
     secret-key: ${jwt.secret-key}
     access-token-validity-seconds: ${jwt.access-token-validity-seconds}
     refresh-token-validity-seconds: ${jwt.refresh-token-validity-seconds}
+
+  kakao:
+    mobility:
+      base-url: https://apis-navi:kakaomobility:com/v1/directions
+      rest-api-key: ${kakao.mobility.rest-api-key}
