@@ -1,6 +1,6 @@
-package com.house.biet.delivery.command.application;
+package com.house.biet.global.route.application;
 
-import com.house.biet.delivery.port.RouteTimePort;
+import com.house.biet.global.route.port.RouteTimePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

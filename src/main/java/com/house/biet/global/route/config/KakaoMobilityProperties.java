@@ -1,4 +1,4 @@
-package com.house.biet.delivery.infrastructure.route.config;
+package com.house.biet.global.route.config;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
-package com.house.biet.delivery.infrastructure.route;
+package com.house.biet.global.route.infrastructure;
 
 import com.house.biet.delivery.infrastructure.redis.RouteTimeCacheRepository;
-import com.house.biet.delivery.port.RouteTimePort;
+import com.house.biet.global.route.port.RouteTimePort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

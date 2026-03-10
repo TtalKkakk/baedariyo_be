@@ -1,4 +1,4 @@
-package com.house.biet.delivery.infrastructure.route;
+package com.house.biet.global.route.infrastructure;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

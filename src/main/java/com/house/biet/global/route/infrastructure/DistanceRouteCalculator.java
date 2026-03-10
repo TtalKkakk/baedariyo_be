@@ -1,4 +1,4 @@
-package com.house.biet.delivery.infrastructure.route;
+package com.house.biet.global.route.infrastructure;
 
 import org.springframework.stereotype.Component;
 

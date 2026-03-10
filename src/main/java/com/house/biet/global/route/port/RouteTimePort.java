@@ -1,4 +1,4 @@
-package com.house.biet.delivery.port;
+package com.house.biet.global.route.port;
 
 public interface RouteTimePort {
 
