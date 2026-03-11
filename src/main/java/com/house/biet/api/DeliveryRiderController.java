@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/deliveries")
+@RequestMapping("/api/deliveries")
 public class DeliveryRiderController {
 
     private final DeliveryOrderFacade deliveryOrderFacade;
@@ -49,4 +49,5 @@ public class DeliveryRiderController {
                 CustomApiResponse.success(SuccessCode.DELIVERY_COMPLETE_SUCCESS)
         );
     }
+
 }
