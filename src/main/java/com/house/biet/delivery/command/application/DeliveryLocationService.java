@@ -3,6 +3,7 @@ package com.house.biet.delivery.command.application;
 import com.house.biet.delivery.command.domain.aggregate.Delivery;
 import com.house.biet.delivery.infrastructure.redis.DeliveryLocationCache;
 import com.house.biet.delivery.infrastructure.redis.DeliveryLocationRedisRepository;
+import com.house.biet.delivery.infrastructure.websocket.DeliveryLocationPublisher;
 import com.house.biet.delivery.query.dto.DeliveryLocationResponseDto;
 import com.house.biet.delivery.websocket.dto.DeliveryLocationMessage;
 import com.house.biet.global.response.CustomException;
@@ -21,6 +22,7 @@ public class DeliveryLocationService {
     private final DeliveryService deliveryService;
     private final DeliveryLocationRedisRepository redisRepository;
     private final SimpMessagingTemplate messagingTemplate;
+    private final DeliveryLocationPublisher publisher;
 
     /**
      * 라이더 위치 업데이트 처리
@@ -73,5 +75,13 @@ public class DeliveryLocationService {
     @Transactional
     public void clearLocation(Long orderId) {
         redisRepository.delete(orderId);
+    }
+
+    @Transactional
+    public void updateLocation(Long orderId, double latitude, double longitude) {
+
+        DeliveryLocationResponseDto location = new DeliveryLocationResponseDto(latitude, longitude);
+
+        publisher.publish(orderId, location);
     }
 }

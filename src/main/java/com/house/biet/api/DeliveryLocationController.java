@@ -3,14 +3,12 @@ package com.house.biet.api;
 import com.house.biet.delivery.command.application.DeliveryLocationService;
 import com.house.biet.delivery.command.application.DeliveryService;
 import com.house.biet.delivery.query.dto.DeliveryLocationResponseDto;
+import com.house.biet.delivery.query.dto.UpdateLocationRequestDto;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,5 +29,20 @@ public class DeliveryLocationController {
         return ResponseEntity.ok(
                 CustomApiResponse.success(SuccessCode.DELIVERY_GET_SUCCESS, responseDto)
         );
+    }
+
+
+    @PostMapping("/{orderId}/location")
+    public ResponseEntity<Void> updateLocation(
+            @PathVariable Long orderId,
+            @RequestBody UpdateLocationRequestDto requestDto
+    ) {
+        deliveryLocationService.updateLocation(
+                orderId,
+                requestDto.latitude(),
+                requestDto.longitude()
+        );
+
+        return ResponseEntity.noContent().build();
     }
 }
