@@ -9,7 +9,10 @@ import com.house.biet.store.command.application.dto.StoreCreateResponseDto;
 import com.house.biet.store.query.application.StoreQueryService;
 import com.house.biet.store.command.domain.aggregate.Store;
 import com.house.biet.store.command.domain.entity.Menu;
+import com.house.biet.store.query.application.StoreSearchQueryService;
 import com.house.biet.store.query.dto.StoreDetailWithMenuAndReviewResponseDto;
+import com.house.biet.store.query.dto.StoreSearchRequestDto;
+import com.house.biet.store.query.dto.StoreSearchResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +25,30 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StoreController {
 
-    private final StoreService storeService;
+    private final StoreSearchQueryService storeSearchQueryService;
     private final StoreQueryService storeQueryService;
     private final StoreFacade storeFacade;
+
+    // ----------------------
+    // Store 검색
+    // ----------------------
+    @GetMapping
+    public ResponseEntity<CustomApiResponse<List<StoreSearchResponseDto>>> searchStores(
+        @ModelAttribute StoreSearchRequestDto requestDto
+    ) {
+        List<StoreSearchResponseDto> responseDto = storeSearchQueryService.searchStores(
+                requestDto.keyword(),
+                requestDto.storeCategory(),
+                requestDto.latitude(),
+                requestDto.longitude(),
+                requestDto.page(),
+                requestDto.size()
+        );
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.STORE_GET_LIST_SUCCESS, responseDto)
+        );
+    }
 
     // ----------------------
     // Store CRUD
