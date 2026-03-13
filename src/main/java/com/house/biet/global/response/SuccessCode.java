@@ -27,6 +27,7 @@ public enum SuccessCode {
     STORE_CREATE_SUCCESS(20400, "가게가 생성되었습니다."),
     STORE_UPDATE_SUCCESS(20401, "가게 정보가 수정되었습니다."),
     STORE_DELETE_SUCCESS(20402, "가게가 삭제되었습니다."),
+    STORE_GET_LIST_SUCCESS(20403, "가게 목록 조회에 성공했습니다."),
 
     // Store Review
     STORE_REVIEW_CREATE_SUCCESS(20500, "리뷰가 생성되었습니다."),
