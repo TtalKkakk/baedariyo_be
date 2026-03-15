@@ -1,20 +1,24 @@
 package com.house.biet.storeSearch.query.autocomplete.infrastructure.redis;
 
+import com.house.biet.storeSearch.query.config.StoreSearchRedisKey;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Range;
-import org.springframework.data.redis.connection.Limit;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,31 +37,65 @@ class AutoCompleteSearchRepositoryRedisAdapterTest {
     @DisplayName("성공 - 자동완성 키워드 저장")
     void saveKeyword_Success() {
         // given
-        String keyword = "치킨";
+        final String PREFIX = StoreSearchRedisKey.autoCompleteSearchKey();
+        String keyword = "페퍼로니피자";
 
         given(redisTemplate.opsForZSet()).willReturn(zSetOperations);
+
+        ArgumentCaptor<String> keyCaptor = ArgumentCaptor.forClass(String.class);
 
         // when
         repository.saveKeyword(keyword);
 
         // then
-        verify(zSetOperations).add(anyString(), eq(keyword), eq(0.0));
+        verify(zSetOperations, times(keyword.length()))
+                .incrementScore(keyCaptor.capture(), eq(keyword), eq(1.0));
+
+        List<String> capturedKeys = keyCaptor.getAllValues();
+
+        List<String> expectedKeys = IntStream.rangeClosed(1, keyword.length())
+                .mapToObj(i -> PREFIX + keyword.substring(0, i))
+                .toList();
+
+        assertThat(capturedKeys)
+                .containsExactlyElementsOf(expectedKeys);
     }
-    
+
     @Test
     @DisplayName("성공 - prefix 기반 자동완성 검색")
     void search_Success() {
         // given
         String prefix = "치";
-        
+
         given(redisTemplate.opsForZSet()).willReturn(zSetOperations);
-        given(zSetOperations.rangeByLex(anyString(), any(Range.class), any(Limit.class)))
+        given(zSetOperations.reverseRange(anyString(), eq(0L), eq(9L)))
                 .willReturn(Set.of("치킨", "치즈볼"));
 
         // when
-        repository.search(prefix);
+        List<String> result = repository.search(prefix);
 
         // then
-        verify(zSetOperations).rangeByLex(anyString(), any(Range.class), any(Limit.class));
+        verify(zSetOperations).reverseRange(anyString(), eq(0L), eq(9L));
+
+        assertThat(result)
+                .hasSize(2)
+                .containsExactlyInAnyOrder("치킨", "치즈볼");
+    }
+
+    @Test
+    @DisplayName("성공 - 자동완성 결과 없을 때 빈 리스트 반환")
+    void search_Success_EmptyResult() {
+        // given
+        String prefix = "피자";
+
+        given(redisTemplate.opsForZSet()).willReturn(zSetOperations);
+        given(zSetOperations.reverseRange(anyString(), eq(0L), eq(9L)))
+                .willReturn(null);
+
+        // when
+        List<String> result = repository.search(prefix);
+
+        // then
+        assertThat(result).isEmpty();
     }
 }
