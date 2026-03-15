@@ -49,7 +49,7 @@ public class StoreSearchQueryServiceImpl implements StoreSearchQueryService {
                 );
 
         Long userId = userQueryService.getUserIdByAccountId(accountId);
-        eventPublisher.publishEvent(new StoreSearchEvent(userId, keyword));
+        eventPublisher.publishEvent(new StoreSearchEvent(userId, keyword, stores.size()));
 
         return stores.stream()
                 .map(store -> {

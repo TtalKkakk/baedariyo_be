@@ -1,7 +1,7 @@
-package com.house.biet.storeSearch.query.popular.listener;
+package com.house.biet.storeSearch.query.autocomplete.event;
 
+import com.house.biet.storeSearch.query.autocomplete.application.AutoCompleteSearchService;
 import com.house.biet.storeSearch.query.event.dto.StoreSearchEvent;
-import com.house.biet.storeSearch.query.popular.application.PopularSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PopularSearchListener {
+public class AutoCompleteListener {
 
-    private final PopularSearchService popularSearchService;
+    private final AutoCompleteSearchService autoCompleteSearchService;
 
     @Async
     @EventListener
@@ -20,7 +20,7 @@ public class PopularSearchListener {
         if (event.resultCount() == 0)
             return;
 
-        popularSearchService.increase(
+        autoCompleteSearchService.registerKeyword(
                 event.keyword()
         );
     }

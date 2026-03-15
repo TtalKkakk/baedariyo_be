@@ -13,7 +13,7 @@ public class RecentSearchListener {
     private final RecentSearchService recentSearchService;
 
     @EventListener
-    public void handle(StoreSearchEvent event) {
+    public void handleStoreSearchEvent(StoreSearchEvent event) {
         recentSearchService.save(
                 event.userId(),
                 event.keyword()
