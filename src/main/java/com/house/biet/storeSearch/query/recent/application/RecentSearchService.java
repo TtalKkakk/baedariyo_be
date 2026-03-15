@@ -1,5 +1,6 @@
 package com.house.biet.storeSearch.query.recent.application;
 
+import com.house.biet.storeSearch.query.common.SearchKeywordNormalizer;
 import com.house.biet.storeSearch.query.recent.port.RecentSearchRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,12 @@ import java.util.List;
 public class RecentSearchService {
 
     private final RecentSearchRepositoryPort repository;
+    private final SearchKeywordNormalizer normalizer;
 
     public void save(Long userId, String keyword) {
-        repository.saveKeyword(userId, keyword);
+        String normalizedKeyword = normalizer.normalize(keyword);
+
+        repository.saveKeyword(userId, normalizedKeyword);
     }
 
     public List<String> getRecentKeywords(Long userId) {
@@ -21,7 +25,9 @@ public class RecentSearchService {
     }
 
     public void deleteKeyword(Long userId, String keyword) {
-        repository.deleteKeyword(userId, keyword);
+        String normalizedKeyword = normalizer.normalize(keyword);
+
+        repository.deleteKeyword(userId, normalizedKeyword);
     }
 
     public void deleteAll(Long userId) {

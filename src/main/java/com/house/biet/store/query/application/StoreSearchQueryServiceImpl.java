@@ -5,6 +5,7 @@ import com.house.biet.global.route.application.RouteTimeService;
 import com.house.biet.store.query.StoreSearchQueryRepository;
 import com.house.biet.store.query.dto.StoreSearchQueryDto;
 import com.house.biet.store.query.dto.StoreSearchResponseDto;
+import com.house.biet.storeSearch.query.common.SearchKeywordNormalizer;
 import com.house.biet.storeSearch.query.event.dto.StoreSearchEvent;
 import com.house.biet.user.query.UserQueryService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 public class StoreSearchQueryServiceImpl implements StoreSearchQueryService {
 
     private final StoreSearchQueryRepository storeSearchQueryRepository;
+    private final SearchKeywordNormalizer normalizer;
     private final RouteTimeService routeTimeService;
     private final UserQueryService userQueryService;
     private final ApplicationEventPublisher eventPublisher;
@@ -33,6 +35,8 @@ public class StoreSearchQueryServiceImpl implements StoreSearchQueryService {
             int size
     ) {
         int offset = page * size;
+
+        keyword = normalizer.normalize(keyword);
 
         List<StoreSearchQueryDto> stores =
                 storeSearchQueryRepository.searchStores(
