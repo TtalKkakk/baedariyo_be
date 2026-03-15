@@ -21,15 +21,11 @@ public class AutoCompleteSearchRepositoryRedisAdapter implements AutoCompleteSea
 
     @Override
     public void saveKeyword(String keyword) {
-        keyword = normalize(keyword);
-
         redisTemplate.opsForZSet().add(KEY, keyword, 0);
     }
 
     @Override
     public List<String> search(String prefix) {
-        prefix = normalize(prefix);
-
         Range<String> range = Range.of(
                 Range.Bound.inclusive(prefix),
                 Range.Bound.inclusive(prefix + "\uffff")
@@ -40,9 +36,5 @@ public class AutoCompleteSearchRepositoryRedisAdapter implements AutoCompleteSea
         Set<String> result = redisTemplate.opsForZSet().rangeByLex(KEY, range, limit);
 
         return result == null ? List.of() : List.copyOf(result);
-    }
-
-    private String normalize(String keyword) {
-        return keyword.trim().toLowerCase();
     }
 }

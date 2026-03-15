@@ -18,8 +18,6 @@ public class PopularSearchRepositoryRedisAdapter implements PopularSearchReposit
 
     @Override
     public void increaseScore(String keyword) {
-        keyword = normalize(keyword);
-
         String key = StoreSearchRedisKey.popularSearchKey();
 
         redisTemplate.opsForZSet().incrementScore(key, keyword, 1);
@@ -32,9 +30,5 @@ public class PopularSearchRepositoryRedisAdapter implements PopularSearchReposit
         Set<String> result = redisTemplate.opsForZSet().reverseRange(key, 0, 9);
 
         return result == null ? List.of() : List.copyOf(result);
-    }
-
-    private String normalize(String keyword) {
-        return keyword.trim().toLowerCase();
     }
 }

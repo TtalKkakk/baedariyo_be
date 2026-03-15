@@ -56,8 +56,4 @@ public class RecentSearchRepositoryRedisAdapter implements RecentSearchRepositor
 
         redisTemplate.delete(key);
     }
-
-    private String normalize(String keyword) {
-        return keyword.trim().toLowerCase();
-    }
 }
