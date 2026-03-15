@@ -48,7 +48,14 @@ public enum SuccessCode {
     DELIVERY_START_SUCCESS(20703, "배달이 시작되었습니다."),
     DELIVERY_COMPLETE_SUCCESS(20704, "배달이 완료되었습니다."),
     DELIVERY_GET_SUCCESS(20705, "배달 조회에 성공했습니다."),
-    DELIVERY_GET_LIST_SUCCESS(20706, "배달 목록 조회에 성공했습니다.");
+    DELIVERY_GET_LIST_SUCCESS(20706, "배달 목록 조회에 성공했습니다."),
+
+    // Store Search
+    SEARCH_AUTOCOMPLETE_SUCCESS(20800, "자동완성 검색에 성공했습니다."),
+    SEARCH_POPULAR_SUCCESS(20801, "인기 검색어 조회에 성공했습니다."),
+    SEARCH_RECENT_SUCCESS(20802, "최근 검색어 조회에 성공했습니다."),
+    SEARCH_RECENT_DELETE_SUCCESS(20803, "최근 검색어 삭제에 성공했습니다."),
+    SEARCH_RECENT_DELETE_ALL_SUCCESS(20804, "최근 검색어 전체 삭제에 성공했습니다.");
 
     private final int code;
     private final String message;
