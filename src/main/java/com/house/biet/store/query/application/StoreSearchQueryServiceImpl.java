@@ -5,7 +5,10 @@ import com.house.biet.global.route.application.RouteTimeService;
 import com.house.biet.store.query.StoreSearchQueryRepository;
 import com.house.biet.store.query.dto.StoreSearchQueryDto;
 import com.house.biet.store.query.dto.StoreSearchResponseDto;
+import com.house.biet.storeSearch.query.event.dto.StoreSearchEvent;
+import com.house.biet.user.query.UserQueryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,16 +19,19 @@ public class StoreSearchQueryServiceImpl implements StoreSearchQueryService {
 
     private final StoreSearchQueryRepository storeSearchQueryRepository;
     private final RouteTimeService routeTimeService;
+    private final UserQueryService userQueryService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public List<StoreSearchResponseDto> searchStores(
+            Long accountId,
             String keyword,
             StoreCategory storeCategory,
             double customerLatitude,
             double customerLongitude,
             int page,
-            int size)
-    {
+            int size
+    ) {
         int offset = page * size;
 
         List<StoreSearchQueryDto> stores =
@@ -37,6 +43,9 @@ public class StoreSearchQueryServiceImpl implements StoreSearchQueryService {
                         offset,
                         size
                 );
+
+        Long userId = userQueryService.getUserIdByAccountId(accountId);
+        eventPublisher.publishEvent(new StoreSearchEvent(userId, keyword));
 
         return stores.stream()
                 .map(store -> {

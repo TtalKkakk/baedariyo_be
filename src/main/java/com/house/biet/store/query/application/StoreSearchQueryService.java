@@ -8,6 +8,7 @@ import java.util.List;
 public interface StoreSearchQueryService {
 
     List<StoreSearchResponseDto> searchStores(
+            Long accountId,
             String keyword,
             StoreCategory storeCategory,
             double customerLatitude,

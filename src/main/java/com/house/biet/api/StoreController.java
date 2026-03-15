@@ -1,5 +1,6 @@
 package com.house.biet.api;
 
+import com.house.biet.auth.infrastructure.security.AuthPrincipal;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
 import com.house.biet.store.command.application.StoreFacade;
@@ -15,6 +16,7 @@ import com.house.biet.store.query.dto.StoreSearchRequestDto;
 import com.house.biet.store.query.dto.StoreSearchResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,9 +36,11 @@ public class StoreController {
     // ----------------------
     @GetMapping
     public ResponseEntity<CustomApiResponse<List<StoreSearchResponseDto>>> searchStores(
-        @ModelAttribute StoreSearchRequestDto requestDto
+            @AuthenticationPrincipal AuthPrincipal principal,
+            @ModelAttribute StoreSearchRequestDto requestDto
     ) {
         List<StoreSearchResponseDto> responseDto = storeSearchQueryService.searchStores(
+                principal.accountId(),
                 requestDto.keyword(),
                 requestDto.storeCategory(),
                 requestDto.latitude(),

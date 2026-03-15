@@ -5,12 +5,14 @@ import com.house.biet.global.route.application.RouteTimeService;
 import com.house.biet.store.query.StoreSearchQueryRepository;
 import com.house.biet.store.query.dto.StoreSearchQueryDto;
 import com.house.biet.store.query.dto.StoreSearchResponseDto;
+import com.house.biet.user.query.UserQueryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 
@@ -25,6 +27,12 @@ class StoreSearchQueryServiceImplTest {
 
     @Mock
     private RouteTimeService routeTimeService;
+
+    @Mock
+    private UserQueryService userQueryService;
+
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
     private StoreSearchQueryServiceImpl storeSearchQueryService;
@@ -43,6 +51,7 @@ class StoreSearchQueryServiceImplTest {
         int page = 0;
         int size = 10;
 
+        Long userId = 1L;
         String storeName = "굽네치킨";
         double storeLatitude = 37.6;
         double storeLongitude = 127.1;
@@ -82,6 +91,7 @@ class StoreSearchQueryServiceImplTest {
         // When
         List<StoreSearchResponseDto> result =
                 storeSearchQueryService.searchStores(
+                        userId,
                         keyword,
                         category,
                         customerLatitude,
