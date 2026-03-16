@@ -18,6 +18,8 @@ public enum SuccessCode {
 
     // User
     USER_UPDATE_SUCCESS(22000, "회원 정보가 수정되었습니다."),
+    USER_NICKNAME_CHANGE_SUCCESS(22001, "닉네임이 변경되었습니다."),
+    USER_PHONE_NUMBER_CHANGE_SUCCESS(22002, "전화번호가 변경되었습니다."),
 
     // Order
     ORDER_CREATE_SUCCESS(20300, "주문이 생성되었습니다."),
