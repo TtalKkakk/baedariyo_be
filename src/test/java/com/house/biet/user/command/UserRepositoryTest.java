@@ -7,7 +7,7 @@ import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.member.command.infrastructure.AccountRepositoryJpaAdapter;
-import com.house.biet.user.command.domain.entity.User;
+import com.house.biet.user.command.domain.aggregate.User;
 import com.house.biet.user.command.infrastructure.UserRepositoryJpaAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

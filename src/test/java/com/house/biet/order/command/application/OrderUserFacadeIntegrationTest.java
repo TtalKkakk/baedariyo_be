@@ -9,7 +9,7 @@ import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.order.command.domain.dto.OrderCreateRequestDto;
 import com.house.biet.common.domain.enums.OrderStatus;
 import com.house.biet.support.config.ServiceIntegrationTest;
-import com.house.biet.user.command.domain.entity.User;
+import com.house.biet.user.command.domain.aggregate.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

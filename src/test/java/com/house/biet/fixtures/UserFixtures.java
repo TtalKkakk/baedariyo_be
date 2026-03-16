@@ -1,7 +1,7 @@
 package com.house.biet.fixtures;
 
 import com.house.biet.member.command.domain.entity.Account;
-import com.house.biet.user.command.domain.entity.User;
+import com.house.biet.user.command.domain.aggregate.User;
 
 public class UserFixtures {
 

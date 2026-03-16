@@ -6,7 +6,7 @@ import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.PhoneNumber;
 import com.house.biet.user.command.UserRepository;
-import com.house.biet.user.command.domain.entity.User;
+import com.house.biet.user.command.domain.aggregate.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

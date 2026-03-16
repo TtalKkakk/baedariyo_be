@@ -7,7 +7,7 @@ import com.house.biet.global.response.ErrorCode;
 import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.user.command.UserRepository;
-import com.house.biet.user.command.domain.entity.User;
+import com.house.biet.user.command.domain.aggregate.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

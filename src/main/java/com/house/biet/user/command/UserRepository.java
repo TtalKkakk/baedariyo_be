@@ -1,7 +1,7 @@
 package com.house.biet.user.command;
 
 import com.house.biet.member.command.domain.vo.Nickname;
-import com.house.biet.user.command.domain.entity.User;
+import com.house.biet.user.command.domain.aggregate.User;
 
 import java.util.Optional;
 

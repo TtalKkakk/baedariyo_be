@@ -1,4 +1,4 @@
-package com.house.biet.user.command.domain.entity;
+package com.house.biet.user.command.domain.aggregate;
 
 import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.member.command.domain.entity.Account;
