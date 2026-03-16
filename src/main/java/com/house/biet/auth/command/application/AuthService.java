@@ -12,6 +12,7 @@ import com.house.biet.member.command.domain.vo.Password;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 인증 및 계정 생명주기(회원가입, 로그인, 탈퇴)를 담당
@@ -131,4 +132,30 @@ public class AuthService {
         );
     }
 
+    /**
+     * 계정의 비밀번호를 변경한다.
+     *
+     * <p>
+     * 전달받은 평문 비밀번호를 {@link PasswordEncoder}를 이용해 암호화한 뒤
+     * {@link Password} Value Object로 변환하여 Account 도메인에 전달한다.
+     * </p>
+     *
+     * <p>
+     * 실제 비밀번호 변경에 대한 상태 변경 책임은
+     * {@link Account#changePassword(Password)} 도메인 메서드에 위임된다.
+     * </p>
+     *
+     * @param accountId 비밀번호를 변경할 계정 ID
+     * @param newPasswordValue 변경할 평문 비밀번호
+     *
+     * @throws CustomException 계정을 찾을 수 없는 경우
+     */
+    @Transactional
+    public void changePassword(Long accountId, String newPasswordValue) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        Password newPassword = Password.encrypt(newPasswordValue, passwordEncoder);
+        account.changePassword(newPassword);
+    }
 }

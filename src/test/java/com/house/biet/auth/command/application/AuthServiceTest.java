@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -166,5 +167,45 @@ class AuthServiceTest {
         assertThatThrownBy(() -> authService.login(givenEmailValue, notCorrectPasswordValue, UserRole.USER))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.NOT_CORRECT_PASSWORD.getMessage());
+    }
+
+    @Test
+    @DisplayName("성공 - 비밀번호 변경")
+    void changePassword_Success() {
+        // given
+        Long accountId = 1L;
+        String newPassword = "newPassword123!";
+
+        ReflectionTestUtils.setField(account, "id", accountId);
+
+        given(accountRepository.findById(accountId))
+                .willReturn(Optional.of(account));
+
+        PasswordEncoder realEncoder = new BCryptPasswordEncoder();
+
+        given(passwordEncoder.encode(newPassword))
+                .willReturn(realEncoder.encode(newPassword));
+
+        // when
+        authService.changePassword(accountId, newPassword);
+
+        // then
+        assertThat(account.matchedPassword(newPassword, realEncoder)).isTrue();
+    }
+
+    @Test
+    @DisplayName("실패 - 존재하지 않는 계정")
+    void changePassword_Error_AccountNotFound() {
+        // given
+        Long accountId = 999L;
+        String newPassword = "newPassword123!";
+
+        given(accountRepository.findById(accountId))
+                .willReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> authService.changePassword(accountId, newPassword))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
     }
 }
