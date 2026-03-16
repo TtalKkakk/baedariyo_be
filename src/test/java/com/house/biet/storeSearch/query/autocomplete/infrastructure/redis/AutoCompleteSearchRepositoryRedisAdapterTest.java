@@ -1,6 +1,7 @@
 package com.house.biet.storeSearch.query.autocomplete.infrastructure.redis;
 
 import com.house.biet.storeSearch.query.config.StoreSearchRedisKey;
+import com.house.biet.storeSearch.query.util.HangulTypingGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,23 +39,25 @@ class AutoCompleteSearchRepositoryRedisAdapterTest {
     void saveKeyword_Success() {
         // given
         final String PREFIX = StoreSearchRedisKey.autoCompleteSearchKey();
-        String keyword = "페퍼로니피자";
+        String keyword = "황금올리브닭다리";
 
         given(redisTemplate.opsForZSet()).willReturn(zSetOperations);
 
         ArgumentCaptor<String> keyCaptor = ArgumentCaptor.forClass(String.class);
 
+        List<String> expectedPrefixes = HangulTypingGenerator.generate(keyword);
+
         // when
         repository.saveKeyword(keyword);
 
         // then
-        verify(zSetOperations, times(keyword.length()))
+        verify(zSetOperations, times(expectedPrefixes.size()))
                 .incrementScore(keyCaptor.capture(), eq(keyword), eq(1.0));
 
         List<String> capturedKeys = keyCaptor.getAllValues();
 
-        List<String> expectedKeys = IntStream.rangeClosed(1, keyword.length())
-                .mapToObj(i -> PREFIX + keyword.substring(0, i))
+        List<String> expectedKeys = expectedPrefixes.stream()
+                .map(prefix -> PREFIX + prefix)
                 .toList();
 
         assertThat(capturedKeys)

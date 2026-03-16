@@ -2,10 +2,13 @@ package com.house.biet.storeSearch.query.autocomplete.infrastructure.redis;
 
 import com.house.biet.storeSearch.query.autocomplete.port.AutoCompleteSearchRepositoryPort;
 import com.house.biet.storeSearch.query.config.StoreSearchRedisKey;
+import com.house.biet.storeSearch.query.util.HangulTypingGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,13 +23,12 @@ public class AutoCompleteSearchRepositoryRedisAdapter implements AutoCompleteSea
     @Override
     public void saveKeyword(String keyword) {
 
-        for (int i = 1; i <= keyword.length(); i++) {
+        ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
 
-            String prefix = keyword.substring(0, i);
+        for (String prefix: HangulTypingGenerator.generate(keyword)) {
             String key = KEY + prefix;
 
-            redisTemplate.opsForZSet()
-                    .incrementScore(key, keyword, 1);
+            zSetOperations.incrementScore(key, keyword, 1.0);
         }
     }
 
