@@ -15,6 +15,7 @@ public enum SuccessCode {
     LOGIN_SUCCESS(21001, "로그인에 성공했습니다."),
     LOGOUT_SUCCESS(21002, "로그아웃 되었습니다."),
     WITHDRAW_SUCCESS(21003, "회원탈퇴가 완료되었습니다."),
+    PASSWORD_CHANGE_SUCCESS(21004, "비밀번호가 변경되었습니다."),
 
     // User
     USER_UPDATE_SUCCESS(22000, "회원 정보가 수정되었습니다."),
