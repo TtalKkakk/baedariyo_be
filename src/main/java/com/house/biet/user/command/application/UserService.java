@@ -10,6 +10,7 @@ import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.PhoneNumber;
 import com.house.biet.user.command.UserRepository;
 import com.house.biet.user.command.domain.aggregate.User;
+import com.house.biet.user.command.domain.vo.AddressAlias;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,7 @@ public class UserService {
      * @param roadAddress       도로명 주소
      * @param jibunAddress      지번 주소
      * @param detailAddress     상세 주소
-     * @param alias             주소 별칭 (예: 집, 회사)
+     * @param aliasValue        주소 별칭 (예: 집, 회사)
      *
      * @return 생성 및 저장된 {@link User}
      *
@@ -81,7 +82,7 @@ public class UserService {
             String roadAddress,
             String jibunAddress,
             String detailAddress,
-            String alias
+            String aliasValue
     ) {
 
         // 1. Address 생성
@@ -95,6 +96,9 @@ public class UserService {
                 point.latitude(),
                 point.longitude()
         );
+
+        // 4. AddressAlias 생성
+        AddressAlias alias = new AddressAlias(aliasValue);
 
         // 4. User 생성 (Address 포함)
         User user = User.create(

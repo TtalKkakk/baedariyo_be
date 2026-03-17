@@ -8,6 +8,7 @@ import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.*;
 import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.domain.entity.UserAddress;
+import com.house.biet.user.command.domain.vo.AddressAlias;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -63,7 +64,7 @@ public class User extends BaseTimeEntity {
             String phoneNumber,
             Address address,
             GeoLocation geoLocation,
-            String alias
+            AddressAlias alias
     ) {
         User user = new User(
                 null,
@@ -93,7 +94,7 @@ public class User extends BaseTimeEntity {
     /**
      * 주소 추가
      */
-    public UserAddress addAddress(Address address, GeoLocation geoLocation, String alias, boolean isDefault) {
+    public UserAddress addAddress(Address address, GeoLocation geoLocation, AddressAlias alias, boolean isDefault) {
 
         // 첫 주소면 무조건 default
         if (addresses.isEmpty()) {

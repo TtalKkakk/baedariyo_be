@@ -4,6 +4,7 @@ import com.house.biet.common.domain.vo.Address;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.domain.aggregate.User;
+import com.house.biet.user.command.domain.vo.AddressAlias;
 
 public class UserFixtures {
 
@@ -17,6 +18,8 @@ public class UserFixtures {
                 126.9220
         );
 
+        AddressAlias alias = new AddressAlias("집");
+
         return User.create(
                 userAccount,
                 "테스트유저",
@@ -24,7 +27,7 @@ public class UserFixtures {
                 "010-0000-0000",
                 address,
                 geoLocation,
-                "집"
+                alias
         );
     }
 }

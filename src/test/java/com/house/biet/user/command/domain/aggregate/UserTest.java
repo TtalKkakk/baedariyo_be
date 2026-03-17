@@ -6,6 +6,7 @@ import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.*;
 import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.domain.entity.UserAddress;
+import com.house.biet.user.command.domain.vo.AddressAlias;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ class UserTest {
 
     Address givenAddress;
     GeoLocation givenGeoLocation;
-    String givenAlias = "집";
+    AddressAlias givenAlias = new AddressAlias("집");
 
     Account account;
 

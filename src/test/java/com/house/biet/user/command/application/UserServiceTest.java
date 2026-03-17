@@ -93,7 +93,7 @@ class UserServiceTest {
         assertThat(address.getAddress().getRoadAddress()).isEqualTo(road);
         assertThat(address.getGeoLocation().getLatitude()).isEqualTo(37.5563);
         assertThat(address.getGeoLocation().getLongitude()).isEqualTo(126.9220);
-        assertThat(address.getAlias()).isEqualTo(alias);
+        assertThat(address.getAlias().getValue()).isEqualTo(alias);
         assertThat(address.isDefault()).isTrue();
     }
 

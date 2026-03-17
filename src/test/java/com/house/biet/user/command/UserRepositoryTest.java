@@ -10,6 +10,7 @@ import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.member.command.infrastructure.AccountRepositoryJpaAdapter;
 import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.domain.aggregate.User;
+import com.house.biet.user.command.domain.vo.AddressAlias;
 import com.house.biet.user.command.infrastructure.UserRepositoryJpaAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -70,6 +71,8 @@ class UserRepositoryTest {
                 126.9220
         );
 
+        AddressAlias alias = new AddressAlias("집");
+
         user = User.create(
                 savedAccount,
                 givenRealName,
@@ -77,7 +80,7 @@ class UserRepositoryTest {
                 givenPhoneNumber,
                 address,
                 geoLocation,
-                "집"
+                alias
         );
     }
 

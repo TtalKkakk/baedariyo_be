@@ -5,6 +5,7 @@ import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.domain.aggregate.User;
+import com.house.biet.user.command.domain.vo.AddressAlias;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,8 +44,9 @@ public class UserAddress {
     private GeoLocation geoLocation;
 
     /* 별칭 (집, 회사 등) */
-    @Column(name = "alias", nullable = false, length = 20)
-    private String alias;
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "alias"))
+    private AddressAlias alias;
 
     /* 대표 배송지 여부 */
     @Column(name = "is_default", nullable = false)
@@ -52,7 +54,7 @@ public class UserAddress {
 
     /* ===== 생성 ===== */
 
-    private UserAddress(User user, Address address, GeoLocation geoLocation, String alias, boolean isDefault) {
+    private UserAddress(User user, Address address, GeoLocation geoLocation, AddressAlias alias, boolean isDefault) {
         this.user = user;
         this.address = address;
         this.geoLocation = geoLocation;
@@ -60,8 +62,7 @@ public class UserAddress {
         this.isDefault = isDefault;
     }
 
-    public static UserAddress create(User user, Address address, GeoLocation geoLocation, String alias, boolean isDefault) {
-        validateAlias(alias);
+    public static UserAddress create(User user, Address address, GeoLocation geoLocation, AddressAlias alias, boolean isDefault) {
         return new UserAddress(user, address, geoLocation, alias, isDefault);
     }
 
@@ -75,8 +76,7 @@ public class UserAddress {
         this.isDefault = false;
     }
 
-    public void changeAlias(String alias) {
-        validateAlias(alias);
+    public void changeAlias(AddressAlias alias) {
         this.alias = alias;
     }
 
