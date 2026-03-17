@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserAddressTest {
 
-    private final User user = User.create(null, "<REAL_NAME>", "<NICKNAME>", "010-1234-5678");
+    private final User user = User.create(null, "<REAL_NAME>", "<NICKNAME>", "010-1234-5678", null, null, null);
     private final Address address = new Address("roadAddress", "jibunAddress", "detailAddress");
     private final GeoLocation geoLocation = new GeoLocation(37.123, 127.123);
 

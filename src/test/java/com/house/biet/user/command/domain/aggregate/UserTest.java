@@ -1,11 +1,11 @@
 package com.house.biet.user.command.domain.aggregate;
 
 import com.house.biet.common.domain.enums.UserRole;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.member.command.domain.entity.Account;
-import com.house.biet.member.command.domain.vo.Email;
-import com.house.biet.member.command.domain.vo.Nickname;
-import com.house.biet.member.command.domain.vo.Password;
-import com.house.biet.member.command.domain.vo.PhoneNumber;
+import com.house.biet.member.command.domain.vo.*;
+import com.house.biet.store.command.domain.vo.GeoLocation;
+import com.house.biet.user.command.domain.entity.UserAddress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +27,10 @@ class UserTest {
     String givenNickNameValue = "<NICK_NAME>";
     String givenPhoneNumberValue = "010-1111-1111";
 
+    Address givenAddress;
+    GeoLocation givenGeoLocation;
+    String givenAlias = "집";
+
     Account account;
 
     @BeforeEach
@@ -36,25 +40,62 @@ class UserTest {
                 Password.encrypt(givenPassword, ENCODER),
                 UserRole.USER
         );
+
+        givenAddress = new Address(
+                "서울특별시 마포구 동교로 34",
+                "서울특별시 마포구 서교동",
+                "101호"
+        );
+
+        givenGeoLocation = new GeoLocation(
+                37.5563,
+                126.9220
+        );
     }
 
     @Test
-    @DisplayName("성공 - 유저 생성 성공")
+    @DisplayName("성공 - 유저 생성 시 기본 배송지 포함")
     void CreateUser_Success() {
         // when
-        User user = User.create(account, givenRealNameValue, givenNickNameValue, givenPhoneNumberValue);
+        User user = User.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenAddress,
+                givenGeoLocation,
+                givenAlias
+        );
 
         // then
         assertThat(user.getRealName().getValue()).isEqualTo(givenRealNameValue);
         assertThat(user.getNickname().getValue()).isEqualTo(givenNickNameValue);
         assertThat(user.getPhoneNumber().getValue()).isEqualTo(givenPhoneNumberValue);
+
+        // 🔥 핵심 검증
+        assertThat(user.getAddresses()).hasSize(1);
+
+        UserAddress address = user.getAddresses().get(0);
+
+        assertThat(address.getAddress()).isEqualTo(givenAddress);
+        assertThat(address.getGeoLocation()).isEqualTo(givenGeoLocation);
+        assertThat(address.getAlias()).isEqualTo(givenAlias);
+        assertThat(address.isDefault()).isTrue();
     }
 
     @Test
     @DisplayName("성공 - 유저 닉네임 변경 성공")
     void changeNickname_Success() {
         // given
-        User user = User.create(account, givenRealNameValue, givenNickNameValue, givenPhoneNumberValue);
+        User user = User.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenAddress,
+                givenGeoLocation,
+                givenAlias
+        );
 
         Nickname newNickname = new Nickname("<NEW_NICKNAME>");
 
@@ -64,12 +105,20 @@ class UserTest {
         // then
         assertThat(user.getNickname()).isEqualTo(newNickname);
     }
-    
+
     @Test
     @DisplayName("성공 - 유저 휴대전화번호 변경 성공")
     void changePhoneNumber_Success() {
         // given
-        User user = User.create(account, givenRealNameValue, givenNickNameValue, givenPhoneNumberValue);
+        User user = User.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenAddress,
+                givenGeoLocation,
+                givenAlias
+        );
 
         PhoneNumber newPhoneNumber = new PhoneNumber("010-1111-1112");
 

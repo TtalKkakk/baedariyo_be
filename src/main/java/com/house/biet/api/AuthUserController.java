@@ -30,7 +30,17 @@ public class AuthUserController {
             @RequestBody @Valid UserSignupRequestDto requestDto
     ) {
 
-        userSignupService.signup(requestDto);
+        userSignupService.signup(
+                requestDto.email(),
+                requestDto.password(),
+                requestDto.name(),
+                requestDto.nickname(),
+                requestDto.phoneNumber(),
+                requestDto.roadAddress(),
+                requestDto.jibunAddress(),
+                requestDto.detailAddress(),
+                requestDto.addressAlias()
+        );
 
         return ResponseEntity.ok(
                 CustomApiResponse.success(SuccessCode.SIGNUP_SUCCESS)

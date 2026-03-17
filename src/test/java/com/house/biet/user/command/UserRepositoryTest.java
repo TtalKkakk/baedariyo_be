@@ -1,12 +1,14 @@
 package com.house.biet.user.command;
 
 import com.house.biet.common.domain.enums.UserRole;
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.member.command.AccountRepository;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.Password;
 import com.house.biet.member.command.infrastructure.AccountRepositoryJpaAdapter;
+import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.domain.aggregate.User;
 import com.house.biet.user.command.infrastructure.UserRepositoryJpaAdapter;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,8 +59,26 @@ class UserRepositoryTest {
                 UserRole.USER
         ));
 
-        user = User.create(savedAccount, givenRealName, givenNickname, givenPhoneNumber);
+        Address address = new Address(
+                "서울특별시 마포구 동교로 34",
+                "서울특별시 마포구 서교동",
+                "101호"
+        );
 
+        GeoLocation geoLocation = new GeoLocation(
+                37.5563,
+                126.9220
+        );
+
+        user = User.create(
+                savedAccount,
+                givenRealName,
+                givenNickname,
+                givenPhoneNumber,
+                address,
+                geoLocation,
+                "집"
+        );
     }
 
     @Test

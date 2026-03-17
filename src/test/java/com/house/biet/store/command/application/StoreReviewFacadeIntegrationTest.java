@@ -65,14 +65,22 @@ class StoreReviewFacadeIntegrationTest extends ServiceIntegrationTest {
                 savedAccount1,
                 "RealName1",
                 "Nickname1",
-                "010-0000-0001"
+                "010-0000-0001",
+                "서울시 마포구 동교로 1",
+                "서울시 마포구 서교동",
+                "101호",
+                "집"
         );
 
         userService.save(
                 savedAccount2,
                 "RealName2",
                 "Nickname2",
-                "010-0000-0002"
+                "010-0000-0002",
+                "서울시 강남구 테헤란로 1",
+                "서울시 강남구 역삼동",
+                "202호",
+                "회사"
         );
 
         Store store = Store.create(

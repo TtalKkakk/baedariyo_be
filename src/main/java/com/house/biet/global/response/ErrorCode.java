@@ -59,6 +59,7 @@ public enum ErrorCode {
     DELIVERY_ALREADY_EXISTS(40148, HttpStatus.BAD_REQUEST, "이미 존재하는 배달입니다."),
     ADDRESS_GEOCODING_FAILED(40149, HttpStatus.BAD_REQUEST, "주소를 좌표로 변환할 수 없습니다."),
     INVALID_ADDRESS_GEOCODING_FORMAT(40150, HttpStatus.BAD_REQUEST, "유효하지 않은 주소 형태입니다."),
+    INVALID_ADDRESS_ALIAS_FORMAT(40151, HttpStatus.BAD_REQUEST, "유효하지 않은 주소 별칭 형식입니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized
@@ -80,6 +81,7 @@ public enum ErrorCode {
     PAYMENT_NOT_FOUND(40408, HttpStatus.NOT_FOUND, "결제를 찾을 수 없습니다."),
     DELIVERY_NOT_FOUND(40409, HttpStatus.NOT_FOUND, "배달을 찾을 수 없습니다."),
     DELIVERY_LOCATION_NOT_FOUND(40410, HttpStatus.NOT_FOUND, "위치 정보를 찾을 수 없습니다."),
+    DELIVERY_ADDRESS_NOT_FOUND(40411, HttpStatus.NOT_FOUND, "배달 주소를 찾을 수 없습니다."),
     NOT_FOUND(40400, HttpStatus.NOT_FOUND, "찾을 수 없습니다."),
 
     // 409 Conflict

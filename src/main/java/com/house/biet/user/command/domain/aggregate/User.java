@@ -1,10 +1,18 @@
 package com.house.biet.user.command.domain.aggregate;
 
+import com.house.biet.common.domain.vo.Address;
 import com.house.biet.global.jpa.BaseTimeEntity;
+import com.house.biet.global.response.CustomException;
+import com.house.biet.global.response.ErrorCode;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.*;
+import com.house.biet.store.command.domain.vo.GeoLocation;
+import com.house.biet.user.command.domain.entity.UserAddress;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -41,15 +49,38 @@ public class User extends BaseTimeEntity {
     )
     private PhoneNumber phoneNumber;
 
-    public static User create(Account account, String realName, String nickname, String phoneNumber) {
-        return new User(
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<UserAddress> addresses = new ArrayList<>();
+
+    public static User create(
+            Account account,
+            String realName,
+            String nickname,
+            String phoneNumber,
+            Address address,
+            GeoLocation geoLocation,
+            String alias
+    ) {
+        User user = new User(
                 null,
                 account,
                 new RealName(realName),
                 new Nickname(nickname),
-                new PhoneNumber(phoneNumber)
+                new PhoneNumber(phoneNumber),
+                new ArrayList<>()
         );
+
+        // 기본 주소 무조건 추가
+        user.addAddress(address, geoLocation, alias, true);
+
+        return user;
     }
+
+    /* ===== 도메인 로직 ===== */
 
     public void changeNickname(Nickname nickname) {
         this.nickname = nickname;
@@ -57,5 +88,62 @@ public class User extends BaseTimeEntity {
 
     public void changePhoneNumber(PhoneNumber phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * 주소 추가
+     */
+    public UserAddress addAddress(Address address, GeoLocation geoLocation, String alias, boolean isDefault) {
+
+        // 첫 주소면 무조건 default
+        if (addresses.isEmpty()) {
+            isDefault = true;
+        }
+
+        // default 설정이면 기존 default 제거
+        if (isDefault) {
+            addresses.forEach(UserAddress::unsetDefault);
+        }
+
+        UserAddress userAddress =
+                UserAddress.create(this, address, geoLocation, alias, isDefault);
+
+        addresses.add(userAddress);
+
+        return userAddress;
+    }
+
+    /**
+     * 기본 배송지 변경
+     */
+    public void changeDefaultAddress(Long addressId) {
+
+        UserAddress target = addresses.stream()
+                .filter(addr -> addr.getId().equals(addressId))
+                .findFirst()
+                .orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_ADDRESS_NOT_FOUND));
+
+        addresses.forEach(UserAddress::unsetDefault);
+        target.setAsDefault();
+    }
+
+    /**
+     * 주소 삭제
+     */
+    public void removeAddress(Long addressId) {
+
+        UserAddress target = addresses.stream()
+                .filter(addr -> addr.getId().equals(addressId))
+                .findFirst()
+                .orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_ADDRESS_NOT_FOUND));
+
+        boolean wasDefault = target.isDefault();
+
+        addresses.remove(target);
+
+        // default였으면 다른 주소를 default로 설정
+        if (wasDefault && !addresses.isEmpty()) {
+            addresses.get(0).setAsDefault();
+        }
     }
 }

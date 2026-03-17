@@ -17,8 +17,28 @@ public class UserSignupService {
     private final AuthService authService;
     private final UserService userService;
 
-    public void signup(UserSignupRequestDto dto) {
-        Account account = authService.signup(dto.email(), dto.password(), UserRole.USER);
-        userService.save(account, dto.name(), dto.nickname(), dto.phoneNumber());
+    public void signup(
+            String email,
+            String password,
+            String name,
+            String nickname,
+            String phoneNumber,
+            String roadAddress,
+            String jibunAddress,
+            String detailAddress,
+            String addressAlias
+    ) {
+        Account account = authService.signup(email, password, UserRole.USER);
+
+        userService.save(
+                account,
+                name,
+                nickname,
+                phoneNumber,
+                roadAddress,
+                jibunAddress,
+                detailAddress,
+                addressAlias
+        );
     }
 }

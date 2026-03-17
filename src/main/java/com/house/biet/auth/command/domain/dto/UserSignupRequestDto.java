@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record UserSignupRequestDto(
+
         @NotBlank
         @Email
         String email,
@@ -18,6 +19,19 @@ public record UserSignupRequestDto(
         String nickname,
 
         @NotBlank
-        String phoneNumber
+        String phoneNumber,
+
+        @NotBlank
+        String roadAddress,
+
+        @NotBlank
+        String jibunAddress,
+
+        @NotBlank
+        String detailAddress,
+
+        @NotBlank
+        String addressAlias
+
 ) {
 }
