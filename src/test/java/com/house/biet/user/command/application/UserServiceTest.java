@@ -432,4 +432,39 @@ class UserServiceTest {
         assertThat(user.getAddresses())
                 .noneMatch(addr -> removeAddressAliasValue.equals(addr.getAlias().getValue()));
     }
+
+    @Test
+    @DisplayName("성공 - 배송지 별칭 변경")
+    void changeAddressAlias_Success() {
+        // given
+        Long userId = 1L;
+        String addressAlias = "집";
+        String newAddressAlias = "우리집";
+
+        User user = mock(User.class);
+
+        given(userRepository.findById(userId))
+                .willReturn(Optional.of(user));
+
+        // when
+        userService.changeAddressAlias(userId, addressAlias, newAddressAlias);
+
+        // then
+        verify(user).changeAddressAlias(addressAlias, newAddressAlias);
+    }
+
+    @Test
+    @DisplayName("실패 - 사용자 없음")
+    void changeAddressAlias_Error_UserNotFound() {
+        // given
+        Long userId = 1L;
+
+        given(userRepository.findById(userId))
+                .willReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> userService.changeAddressAlias(userId, "집", "회사"))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
+    }
 }

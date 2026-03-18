@@ -126,4 +126,24 @@ class UserCommandFacadeTest {
         // then
         verify(userService).removeAddress(userId, addressAlias);
     }
+
+    @Test
+    @DisplayName("성공 - 배송지 별칭 변경")
+    void changeAddressAlias_Success() {
+        // given
+        Long accountId = 1L;
+        Long userId = 100L;
+        String addressAlias = "집";
+        String newAddressAlias = "우리집";
+
+        given(userQueryService.getUserIdByAccountId(accountId))
+                .willReturn(userId);
+
+        // when
+        facade.changeAddressAlias(accountId, addressAlias, newAddressAlias);
+
+        // then
+        verify(userQueryService).getUserIdByAccountId(accountId);
+        verify(userService).changeAddressAlias(userId, addressAlias, newAddressAlias);
+    }
 }

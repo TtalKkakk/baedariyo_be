@@ -1,9 +1,12 @@
 package com.house.biet.user.command.application;
 
+import com.house.biet.user.command.domain.entity.UserAddress;
 import com.house.biet.user.query.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 사용자(User) 도메인의 Command 유스케이스를 조합하여 처리하는 Facade.
@@ -148,6 +151,29 @@ public class UserCommandFacade {
         Long userId = getUserId(accountId);
 
         userService.removeAddress(userId, addressAlias);
+    }
+
+    /**
+     * 사용자의 배송지 별칭을 변경한다.
+     *
+     * <p>
+     * 외부에서 전달받은 Account ID를 기반으로 User ID를 조회한 뒤,
+     * 지정된 배송지의 별칭을 새로운 값으로 변경한다.
+     * </p>
+     *
+     * <p>
+     * 실제 별칭 변경 로직은 {@link UserService} 및 도메인(User)에 위임되며,
+     * 별칭 중복 여부 및 존재 여부 검증 또한 도메인에서 처리된다.
+     * </p>
+     *
+     * @param accountId        계정 ID (인증 주체)
+     * @param addressAlias     기존 배송지 별칭
+     * @param newAddressAlias  변경할 새로운 별칭
+     */
+    public void changeAddressAlias(Long accountId, String addressAlias, String newAddressAlias) {
+        Long userId = getUserId(accountId);
+
+        userService.changeAddressAlias(userId, addressAlias, newAddressAlias);
     }
 
     /**

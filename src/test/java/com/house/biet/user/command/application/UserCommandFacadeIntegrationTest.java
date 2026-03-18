@@ -152,4 +152,28 @@ class UserCommandFacadeIntegrationTest extends ServiceIntegrationTest {
         assertThat(savedUser.getAddresses())
                 .noneMatch(addr -> addr.getAlias().getValue().equals("회사"));
     }
+
+    @Test
+    @DisplayName("성공 - 배송지 별칭 변경")
+    void changeAddressAlias_Integration_Success() {
+        // given
+        String oldAlias = "집";
+        String newAlias = "우리집";
+
+        // when
+        userCommandFacade.changeAddressAlias(
+                account.getId(),
+                oldAlias,
+                newAlias
+        );
+
+        // then
+        User savedUser = userRepository.findById(user.getId()).orElseThrow();
+
+        assertThat(savedUser.getAddresses())
+                .anyMatch(addr -> addr.getAlias().getValue().equals(newAlias));
+
+        assertThat(savedUser.getAddresses())
+                .noneMatch(addr -> addr.getAlias().getValue().equals(oldAlias));
+    }
 }

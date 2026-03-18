@@ -281,12 +281,58 @@ public class UserService {
         user.removeAddress(addressAlias);
     }
 
-    public List<UserAddress> getAllAddress(Long userId) {
+    /**
+     * 사용자의 모든 배송지를 조회한다.
+     *
+     * <p>
+     * 사용자에 등록된 배송지 목록을 반환한다.
+     * </p>
+     *
+     * <p>
+     * 반환되는 값은 도메인 엔티티(UserAddress)이며,
+     * 외부 계층에서는 DTO로 변환하여 사용하는 것을 권장한다.
+     * </p>
+     *
+     * @param userId 사용자 ID
+     * @return 배송지 목록
+     *
+     * @throws CustomException 사용자를 찾을 수 없는 경우
+     */
+    public List<UserAddress> getAllAddresses(Long userId) {
         User user = getUserOrThrow(userId);
 
         return user.getAddresses();
     }
 
+    /**
+     * 배송지 별칭을 변경한다.
+     *
+     * <p>
+     * 전달받은 기존 주소 별칭(addressAlias)에 해당하는 배송지를 찾아,
+     * 새로운 별칭(newAddressAlias)으로 변경한다.
+     * </p>
+     *
+     * <p>
+     * 별칭은 사용자 내에서 고유해야 하며,
+     * 중복되는 별칭으로 변경 시 예외가 발생할 수 있다.
+     * </p>
+     *
+     * @param userId            사용자 ID
+     * @param addressAlias      기존 주소 별칭
+     * @param newAddressAlias   변경할 새로운 별칭
+     *
+     * @throws CustomException 다음과 같은 경우 발생한다:
+     * <ul>
+     *     <li>사용자를 찾을 수 없는 경우</li>
+     *     <li>해당 배송지를 찾을 수 없는 경우</li>
+     *     <li>별칭이 중복되는 경우</li>
+     * </ul>
+     */
+    public void changeAddressAlias(Long userId, String addressAlias, String newAddressAlias) {
+        User user = getUserOrThrow(userId);
+
+        user.changeAddressAlias(addressAlias, newAddressAlias);
+    }
 
     @Transactional(readOnly = true)
     private User getUserOrThrow(Long userId) {

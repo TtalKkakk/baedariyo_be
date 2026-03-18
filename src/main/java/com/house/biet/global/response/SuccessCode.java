@@ -24,6 +24,8 @@ public enum SuccessCode {
     USER_ADDRESS_ADD_SUCCESS(22003, "배송지가 추가되었습니다."),
     USER_DEFAULT_ADDRESS_CHANGE_SUCCESS(22004, "기본 배송지가 변경되었습니다."),
     USER_ADDRESS_REMOVE_SUCCESS(22005, "배송지가 삭제되었습니다."),
+    USER_ADDRESS_LIST_SUCCESS(22006, "모든 배송지가 조회되었습니다."),
+    USER_ADDRESS_ALIAS_CHANGE_SUCCESS(22007, "배송지 별명이 변경되었습니다."),
 
     // Order
     ORDER_CREATE_SUCCESS(20300, "주문이 생성되었습니다."),
