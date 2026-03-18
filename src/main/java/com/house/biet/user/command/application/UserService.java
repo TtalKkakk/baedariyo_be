@@ -12,9 +12,9 @@ import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.UserRepository;
 import com.house.biet.user.command.domain.aggregate.User;
 import com.house.biet.user.command.domain.vo.AddressAlias;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 사용자(User) 도메인의 상태 변경을 담당하는 Application Service.
@@ -151,8 +151,7 @@ public class UserService {
      * </ul>
      */
     public void changeNicknameByUserId(Long userId, String newNicknameValue) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = getUserOrThrow(userId);
 
         user.changeNickname(new Nickname(newNicknameValue));
     }
@@ -169,9 +168,114 @@ public class UserService {
      * </ul>
      */
     public void changePhoneNumberByUserId(Long userId, String newPhoneNumberValue) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = getUserOrThrow(userId);
 
         user.changePhoneNumber(new PhoneNumber(newPhoneNumberValue));
+    }
+
+    /**
+     * 사용자에게 새로운 배송지를 추가한다.
+     *
+     * <p>
+     * 전달받은 주소 정보를 기반으로 Geocoding을 수행하여 위도/경도(GeoLocation)를 생성한 뒤,
+     * 사용자에게 배송지로 등록한다.
+     * </p>
+     *
+     * <p>
+     * 기본 배송지로 설정(isDefault = true)할 경우,
+     * 기존 기본 배송지는 자동으로 해제된다.
+     * </p>
+     *
+     * <p>
+     * 사용자의 첫 번째 주소인 경우, isDefault 값과 관계없이 자동으로 기본 배송지로 설정된다.
+     * </p>
+     *
+     * @param userId        사용자 ID
+     * @param roadAddress   도로명 주소
+     * @param jibunAddress  지번 주소
+     * @param detailAddress 상세 주소
+     * @param aliasValue    주소 별칭 (예: 집, 회사)
+     * @param isDefault     기본 배송지 여부
+     *
+     * @throws CustomException 다음과 같은 경우 발생한다:
+     * <ul>
+     *     <li>사용자를 찾을 수 없는 경우</li>
+     *     <li>Geocoding에 실패한 경우</li>
+     * </ul>
+     */
+    public void addAddress(
+            Long userId,
+            String roadAddress,
+            String jibunAddress,
+            String detailAddress,
+            String aliasValue,
+            boolean isDefault
+    ) {
+        User user = getUserOrThrow(userId);
+
+        Address address = new Address(roadAddress, jibunAddress, detailAddress);
+
+        GeoPoint point = geocodingService.geocode(address.getRoadAddress());
+
+        GeoLocation geoLocation = new GeoLocation(
+                point.latitude(),
+                point.longitude()
+        );
+
+        AddressAlias alias = new AddressAlias(aliasValue);
+
+        user.addAddress(address, geoLocation, alias, isDefault);
+    }
+
+    /**
+     * 사용자의 기본 배송지를 변경한다.
+     *
+     * <p>
+     * 전달받은 addressId에 해당하는 배송지를 기본 배송지로 설정하며,
+     * 기존 기본 배송지는 자동으로 해제된다.
+     * </p>
+     *
+     * @param userId    사용자 ID
+     * @param addressId 변경할 배송지 ID
+     *
+     * @throws CustomException 다음과 같은 경우 발생한다:
+     * <ul>
+     *     <li>사용자를 찾을 수 없는 경우</li>
+     *     <li>해당 배송지를 찾을 수 없는 경우</li>
+     * </ul>
+     */
+    public void changeDefaultAddress(Long userId, Long addressId) {
+        User user = getUserOrThrow(userId);
+
+        user.changeDefaultAddress(addressId);
+    }
+
+    /**
+     * 사용자의 배송지를 삭제한다.
+     *
+     * <p>
+     * 삭제 대상이 기본 배송지인 경우,
+     * 남아있는 배송지 중 첫 번째 주소가 자동으로 기본 배송지로 설정된다.
+     * </p>
+     *
+     * @param userId    사용자 ID
+     * @param addressId 삭제할 배송지 ID
+     *
+     * @throws CustomException 다음과 같은 경우 발생한다:
+     * <ul>
+     *     <li>사용자를 찾을 수 없는 경우</li>
+     *     <li>해당 배송지를 찾을 수 없는 경우</li>
+     * </ul>
+     */
+    public void removeAddress(Long userId, Long addressId) {
+        User user = getUserOrThrow(userId);
+
+        user.removeAddress(addressId);
+    }
+
+    @Transactional(readOnly = true)
+    private User getUserOrThrow(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }
