@@ -60,7 +60,7 @@ class AddressAliasTest {
     @DisplayName("실패 - 길이 초과 시 예외 발생")
     void createAddressAlias_Error_LengthExceeded() {
         // given
-        String value = "12345678901"; // 11자
+        String value = "1".repeat(51); // 51자
 
         // when & then
         assertThatThrownBy(() -> new AddressAlias(value))

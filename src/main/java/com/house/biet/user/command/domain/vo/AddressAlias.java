@@ -15,7 +15,7 @@ public class AddressAlias {
     private String value;
 
     public AddressAlias(String value) {
-        if (value == null || value.isBlank() || value.length() > 10) {
+        if (value == null || value.isBlank() || value.length() > 50) {
             throw new CustomException(ErrorCode.INVALID_ADDRESS_ALIAS_FORMAT);
         }
 
