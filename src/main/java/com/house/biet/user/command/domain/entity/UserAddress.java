@@ -12,7 +12,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user_addresses")
+@Table(
+        name = "user_addresses",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_user_address_alias",
+                        columnNames = {"user_id", "alias"}
+                )
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserAddress {
@@ -45,7 +53,7 @@ public class UserAddress {
 
     /* 별칭 (집, 회사 등) */
     @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "alias"))
+    @AttributeOverride(name = "value", column = @Column(name = "alias", unique = true, nullable = false))
     private AddressAlias alias;
 
     /* 대표 배송지 여부 */

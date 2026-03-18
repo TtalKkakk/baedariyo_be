@@ -11,6 +11,7 @@ import com.house.biet.member.command.domain.vo.*;
 import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.UserRepository;
 import com.house.biet.user.command.domain.aggregate.User;
+import com.house.biet.user.command.domain.entity.UserAddress;
 import com.house.biet.user.command.domain.vo.AddressAlias;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -225,13 +226,54 @@ class UserServiceTest {
         // then
         assertThat(user.getAddresses()).hasSize(2);
 
-        var added = user.getAddresses().get(1);
+        UserAddress added = user.getAddresses().get(1);
 
         assertThat(added.getAddress().getRoadAddress()).isEqualTo(newRoadAddress);
         assertThat(added.getAddress().getJibunAddress()).isEqualTo(newJibunAddress);
         assertThat(added.getAddress().getDetailAddress()).isEqualTo(newDetailAddress);
         assertThat(added.getGeoLocation().getLatitude()).isEqualTo(37.1);
         assertThat(added.getAlias().getValue()).isEqualTo("회사");
+    }
+
+    @Test
+    @DisplayName("성공 - 주소 별명이 null")
+    void addAddress_Success_NullAddressAlias() {
+        // given
+        User user = User.create(
+                account,
+                "홍길동",
+                "<NICKNAME>",
+                "010-1111-1111",
+                new Address("roadAddress", "jibunAddress", "detailAddress"),
+                new GeoLocation(1.0, 1.0),
+                new AddressAlias("집")
+        );
+
+        given(userRepository.findById(anyLong()))
+                .willReturn(Optional.of(user));
+
+        given(geocodingService.geocode(anyString()))
+                .willReturn(new GeoPoint(37.1, 127.1));
+
+        String newRoadAddress = "newRoadAddress";
+        String newJibunAddress = "newJibunAddress";
+        String newDetailAddress = "newDetailAddress";
+
+        // when
+        userService.addAddress(
+                1L,
+                newRoadAddress,
+                newJibunAddress,
+                newDetailAddress,
+                null,
+                false
+        );
+
+        // then
+        assertThat(user.getAddresses()).hasSize(2);
+
+        UserAddress added = user.getAddresses().get(1);
+        assertThat(added.getAlias().getValue()).isEqualTo(newRoadAddress + " " + newDetailAddress);
     }
 
     @Test
@@ -306,7 +348,7 @@ class UserServiceTest {
                 new AddressAlias("집")
         );
 
-        var newAddress = user.addAddress(
+        UserAddress newAddress = user.addAddress(
                 new Address("새", "지번", "상세"),
                 new GeoLocation(2.0, 2.0),
                 new AddressAlias("회사"),
@@ -320,10 +362,36 @@ class UserServiceTest {
         ReflectionTestUtils.setField(newAddress, "id", 2L);
 
         // when
-        userService.changeDefaultAddress(1L, newAddress.getId());
+        userService.changeDefaultAddress(1L, newAddress.getAlias().getValue());
 
         // then
         assertThat(newAddress.isDefault()).isTrue();
+    }
+
+    @Test
+    @DisplayName("실패 - 중복된 기본 배송지 별명 추가")
+    void changeDefaultAddress_Error_DuplicatedAddressAlias() {
+        // given
+        User user = User.create(
+                account,
+                "홍길동",
+                "<NICKNAME>",
+                "010-1111-1111",
+                new Address("roadAddress", "jibunAddress", "detailAddress"),
+                new GeoLocation(37.0, 127.0),
+                new AddressAlias("집")
+        );
+
+        // when & then
+        assertThatThrownBy(
+                () -> user.addAddress(
+                new Address("새", "지번", "상세"),
+                new GeoLocation(2.0, 2.0),
+                new AddressAlias("집"),
+                false)
+        )
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.DUPLICATE_ADDRESS_ALIAS.getMessage());
     }
 
     @Test
@@ -340,10 +408,12 @@ class UserServiceTest {
                 new AddressAlias("집")
         );
 
-        var address = user.addAddress(
+        String removeAddressAliasValue = "회사";
+
+        UserAddress address = user.addAddress(
                 new Address("삭제대상", "지번", "상세"),
                 new GeoLocation(2.0, 2.0),
-                new AddressAlias("회사"),
+                new AddressAlias(removeAddressAliasValue),
                 false
         );
 
@@ -354,12 +424,12 @@ class UserServiceTest {
                 .willReturn(Optional.of(user));
 
         // when
-        userService.removeAddress(1L, 1L);
+        userService.removeAddress(1L, removeAddressAliasValue);
 
         // then
         assertThat(user.getAddresses()).hasSize(1);
 
         assertThat(user.getAddresses())
-                .noneMatch(addr -> "회사".equals(addr.getAlias().getValue()));
+                .noneMatch(addr -> removeAddressAliasValue.equals(addr.getAlias().getValue()));
     }
 }

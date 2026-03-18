@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.*;
 class AddressAliasTest {
 
     @Test
-    @DisplayName("성공 - 정상적인 값으로 AddressAlias 생성")
+    @DisplayName("성공 - 정상적인 값으로 addressAlias 생성")
     void createAddressAlias_Success() {
         // given
         String value = "집";

@@ -2,6 +2,8 @@ package com.house.biet.user.command.domain.aggregate;
 
 import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.common.domain.vo.Address;
+import com.house.biet.global.response.CustomException;
+import com.house.biet.global.response.ErrorCode;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.*;
 import com.house.biet.store.command.domain.vo.GeoLocation;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class UserTest {
 
@@ -128,5 +131,156 @@ class UserTest {
 
         // then
         assertThat(user.getPhoneNumber()).isEqualTo(newPhoneNumber);
+    }
+
+    @Test
+    @DisplayName("성공 - 주소 추가 시 기본 배송지 해제 및 새 주소 default 설정")
+    void addAddress_Success_DefaultSwitch() {
+        // given
+        User user = User.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenAddress,
+                givenGeoLocation,
+                givenAlias
+        );
+
+        // when
+        user.addAddress(
+                new Address("새 도로", "새 지번", "새 상세"),
+                givenGeoLocation,
+                new AddressAlias("회사"),
+                true
+        );
+
+        // then
+        assertThat(user.getAddresses()).hasSize(2);
+
+        assertThat(user.getAddresses())
+                .filteredOn(UserAddress::isDefault)
+                .hasSize(1)
+                .first()
+                .extracting(addr -> addr.getAlias().getValue())
+                .isEqualTo("회사");
+    }
+
+    @Test
+    @DisplayName("실패 - 주소 alias 중복")
+    void addAddress_Error_DuplicateAlias() {
+        // given
+        User user = User.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenAddress,
+                givenGeoLocation,
+                givenAlias
+        );
+
+        // when & then
+        assertThatThrownBy(() ->
+                user.addAddress(
+                        new Address("다른 주소", "지번", "상세"),
+                        givenGeoLocation,
+                        new AddressAlias("집"), // 이미 있음
+                        false
+                )
+        )
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.DUPLICATE_ADDRESS_ALIAS.getMessage());
+    }
+
+    @Test
+    @DisplayName("성공 - 배송지 별명 변경")
+    void changeAddressAlias_Success() {
+        // given
+        User user = User.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenAddress,
+                givenGeoLocation,
+                givenAlias
+        );
+
+        user.addAddress(
+                new Address("회사 주소", "지번", "상세"),
+                givenGeoLocation,
+                new AddressAlias("회사"),
+                false
+        );
+
+        // when
+        user.changeAddressAlias("회사", "회사2");
+
+        // then
+        assertThat(user.getAddresses())
+                .extracting(addr -> addr.getAlias().getValue())
+                .contains("회사2")
+                .doesNotContain("회사");
+    }
+
+    @Test
+    @DisplayName("실패 - 변경할 배송지 별명 중복")
+    void changeAddressAlias_Error_DuplicateAlias() {
+        // given
+        User user = User.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenAddress,
+                givenGeoLocation,
+                givenAlias
+        );
+
+        user.addAddress(
+                new Address("회사 주소", "지번", "상세"),
+                givenGeoLocation,
+                new AddressAlias("회사"),
+                false
+        );
+
+        // when & then
+        assertThatThrownBy(() ->
+                user.changeAddressAlias("회사", "집") // 이미 존재
+        ).isInstanceOf(CustomException.class);
+    }
+
+    @Test
+    @DisplayName("성공 - 기본 배송지 변경")
+    void changeDefaultAddress_Success() {
+        // given
+        User user = User.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenAddress,
+                givenGeoLocation,
+                givenAlias
+        );
+
+        user.addAddress(
+                new Address("회사 주소", "지번", "상세"),
+                givenGeoLocation,
+                new AddressAlias("회사"),
+                false
+        );
+
+        // when
+        user.changeDefaultAddress("회사");
+
+        // then
+        assertThat(user.getAddresses())
+                .filteredOn(UserAddress::isDefault)
+                .hasSize(1)
+                .first()
+                .extracting(addr -> addr.getAlias().getValue())
+                .isEqualTo("회사");
     }
 }

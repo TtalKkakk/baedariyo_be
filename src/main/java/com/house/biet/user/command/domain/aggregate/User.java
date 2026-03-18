@@ -94,7 +94,8 @@ public class User extends BaseTimeEntity {
     /**
      * 주소 추가
      */
-    public UserAddress addAddress(Address address, GeoLocation geoLocation, AddressAlias alias, boolean isDefault) {
+    public UserAddress addAddress(Address address, GeoLocation geoLocation, AddressAlias addressAlias, boolean isDefault) {
+        validateAliasNotDuplicate(addressAlias.getValue());
 
         // 첫 주소면 무조건 default
         if (addresses.isEmpty()) {
@@ -107,7 +108,7 @@ public class User extends BaseTimeEntity {
         }
 
         UserAddress userAddress =
-                UserAddress.create(this, address, geoLocation, alias, isDefault);
+                UserAddress.create(this, address, geoLocation, addressAlias, isDefault);
 
         addresses.add(userAddress);
 
@@ -115,12 +116,25 @@ public class User extends BaseTimeEntity {
     }
 
     /**
-     * 기본 배송지 변경
+     * 배송지 별명 변경
      */
-    public void changeDefaultAddress(Long addressId) {
+    public void changeAddressAlias(String addressAlias, String newAddressAlias) {
+        validateAliasNotDuplicate(newAddressAlias);
 
         UserAddress target = addresses.stream()
-                .filter(addr -> addr.getId().equals(addressId))
+                .filter(addr -> addr.getAlias().getValue().equals(addressAlias))
+                .findFirst()
+                .orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_ADDRESS_NOT_FOUND));
+
+        target.changeAlias(new AddressAlias(newAddressAlias));
+    }
+
+    /**
+     * 기본 배송지 변경
+     */
+    public void changeDefaultAddress(String addressAlias) {
+        UserAddress target = addresses.stream()
+                .filter(addr -> addr.getAlias().getValue().equals(addressAlias))
                 .findFirst()
                 .orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_ADDRESS_NOT_FOUND));
 
@@ -131,10 +145,9 @@ public class User extends BaseTimeEntity {
     /**
      * 주소 삭제
      */
-    public void removeAddress(Long addressId) {
-
+    public void removeAddress(String addressAlias) {
         UserAddress target = addresses.stream()
-                .filter(addr -> addr.getId().equals(addressId))
+                .filter(addr -> addr.getAlias().getValue().equals(addressAlias))
                 .findFirst()
                 .orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_ADDRESS_NOT_FOUND));
 
@@ -145,6 +158,15 @@ public class User extends BaseTimeEntity {
         // default였으면 다른 주소를 default로 설정
         if (wasDefault && !addresses.isEmpty()) {
             addresses.get(0).setAsDefault();
+        }
+    }
+
+    private void validateAliasNotDuplicate(String addressAlias) {
+        boolean exists = addresses.stream()
+                .anyMatch(addr -> addr.getAlias().getValue().equals(addressAlias));
+
+        if (exists) {
+            throw new CustomException(ErrorCode.DUPLICATE_ADDRESS_ALIAS);
         }
     }
 }

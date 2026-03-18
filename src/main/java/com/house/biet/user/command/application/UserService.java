@@ -11,10 +11,13 @@ import com.house.biet.member.command.domain.vo.PhoneNumber;
 import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.UserRepository;
 import com.house.biet.user.command.domain.aggregate.User;
+import com.house.biet.user.command.domain.entity.UserAddress;
 import com.house.biet.user.command.domain.vo.AddressAlias;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 사용자(User) 도메인의 상태 변경을 담당하는 Application Service.
@@ -98,7 +101,7 @@ public class UserService {
                 point.longitude()
         );
 
-        // 4. AddressAlias 생성
+        // 4. addressAlias 생성
         AddressAlias alias = new AddressAlias(aliasValue);
 
         // 4. User 생성 (Address 포함)
@@ -222,6 +225,11 @@ public class UserService {
                 point.longitude()
         );
 
+        // 별명을 설정하지 않았으면 도로명 + 상세 주소
+        if (aliasValue == null) {
+            aliasValue = roadAddress + " " + detailAddress;
+        }
+
         AddressAlias alias = new AddressAlias(aliasValue);
 
         user.addAddress(address, geoLocation, alias, isDefault);
@@ -236,7 +244,7 @@ public class UserService {
      * </p>
      *
      * @param userId    사용자 ID
-     * @param addressId 변경할 배송지 ID
+     * @param addressAlias 변경할 배송지 별명
      *
      * @throws CustomException 다음과 같은 경우 발생한다:
      * <ul>
@@ -244,10 +252,10 @@ public class UserService {
      *     <li>해당 배송지를 찾을 수 없는 경우</li>
      * </ul>
      */
-    public void changeDefaultAddress(Long userId, Long addressId) {
+    public void changeDefaultAddress(Long userId, String addressAlias) {
         User user = getUserOrThrow(userId);
 
-        user.changeDefaultAddress(addressId);
+        user.changeDefaultAddress(addressAlias);
     }
 
     /**
@@ -259,7 +267,7 @@ public class UserService {
      * </p>
      *
      * @param userId    사용자 ID
-     * @param addressId 삭제할 배송지 ID
+     * @param addressAlias 삭제할 배송지 ID
      *
      * @throws CustomException 다음과 같은 경우 발생한다:
      * <ul>
@@ -267,11 +275,18 @@ public class UserService {
      *     <li>해당 배송지를 찾을 수 없는 경우</li>
      * </ul>
      */
-    public void removeAddress(Long userId, Long addressId) {
+    public void removeAddress(Long userId, String addressAlias) {
         User user = getUserOrThrow(userId);
 
-        user.removeAddress(addressId);
+        user.removeAddress(addressAlias);
     }
+
+    public List<UserAddress> getAllAddress(Long userId) {
+        User user = getUserOrThrow(userId);
+
+        return user.getAddresses();
+    }
+
 
     @Transactional(readOnly = true)
     private User getUserOrThrow(Long userId) {

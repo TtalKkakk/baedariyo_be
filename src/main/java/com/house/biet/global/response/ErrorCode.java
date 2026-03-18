@@ -60,6 +60,7 @@ public enum ErrorCode {
     ADDRESS_GEOCODING_FAILED(40149, HttpStatus.BAD_REQUEST, "주소를 좌표로 변환할 수 없습니다."),
     INVALID_ADDRESS_GEOCODING_FORMAT(40150, HttpStatus.BAD_REQUEST, "유효하지 않은 주소 형태입니다."),
     INVALID_ADDRESS_ALIAS_FORMAT(40151, HttpStatus.BAD_REQUEST, "유효하지 않은 주소 별칭 형식입니다."),
+    DUPLICATE_ADDRESS_ALIAS(40152, HttpStatus.BAD_REQUEST, "중복된 주소 별명입니다,"),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized

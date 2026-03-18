@@ -127,7 +127,7 @@ public class UserController {
     ) {
         userCommandFacade.changeDefaultAddress(
                 principal.accountId(),
-                requestDto.addressId()
+                requestDto.addressAlias()
         );
 
         return ResponseEntity.ok(
@@ -153,7 +153,7 @@ public class UserController {
     ) {
         userCommandFacade.removeAddress(
                 principal.accountId(),
-                requestDto.addressId()
+                requestDto.addressAlias()
         );
 
         return ResponseEntity.ok(

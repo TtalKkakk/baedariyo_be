@@ -120,12 +120,12 @@ public class UserCommandFacade {
      * </p>
      *
      * @param accountId 계정 ID (인증 주체)
-     * @param addressId 기본 배송지로 설정할 주소 ID
+     * @param addressAlias 기본 배송지로 설정할 주소 별명
      */
-    public void changeDefaultAddress(Long accountId, Long addressId) {
+    public void changeDefaultAddress(Long accountId, String addressAlias) {
         Long userId = getUserId(accountId);
 
-        userService.changeDefaultAddress(userId, addressId);
+        userService.changeDefaultAddress(userId, addressAlias);
     }
 
     /**
@@ -142,12 +142,12 @@ public class UserCommandFacade {
      * </p>
      *
      * @param accountId 계정 ID (인증 주체)
-     * @param addressId 삭제할 배송지 ID
+     * @param addressAlias 삭제할 배송지 별명
      */
-    public void removeAddress(Long accountId, Long addressId) {
+    public void removeAddress(Long accountId, String addressAlias) {
         Long userId = getUserId(accountId);
 
-        userService.removeAddress(userId, addressId);
+        userService.removeAddress(userId, addressAlias);
     }
 
     /**
