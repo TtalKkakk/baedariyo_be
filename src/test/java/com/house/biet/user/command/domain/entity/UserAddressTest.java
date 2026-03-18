@@ -13,7 +13,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class UserAddressTest {
 
-    private final User user = User.create(null, "<REAL_NAME>", "<NICKNAME>", "010-1234-5678", null, null, null);
+    private final User user = User.create(null, "<REAL_NAME>", "<NICKNAME>", "010-1234-5678", null, null, new AddressAlias("집"));
     private final Address address = new Address("roadAddress", "jibunAddress", "detailAddress");
     private final GeoLocation geoLocation = new GeoLocation(37.123, 127.123);
     private final AddressAlias alias = new AddressAlias("집");
