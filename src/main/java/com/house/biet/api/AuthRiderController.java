@@ -3,6 +3,7 @@ package com.house.biet.api;
 import com.house.biet.auth.command.application.AuthService;
 import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.auth.command.domain.dto.LoginRequestDto;
+import com.house.biet.auth.command.dto.ChangePasswordRequestDto;
 import com.house.biet.auth.infrastructure.security.AuthPrincipal;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
@@ -54,6 +55,18 @@ public class AuthRiderController {
 
         return ResponseEntity.ok(
                 CustomApiResponse.success(SuccessCode.LOGIN_SUCCESS, resultDto)
+        );
+    }
+
+    @PatchMapping("/password")
+    public ResponseEntity<CustomApiResponse<Void>> changePassword(
+            @AuthenticationPrincipal AuthPrincipal principal,
+            @RequestBody @Valid ChangePasswordRequestDto requestDto
+    ) {
+        authService.changePassword(principal.accountId(), requestDto.password());
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.PASSWORD_CHANGE_SUCCESS)
         );
     }
 }
