@@ -1,6 +1,7 @@
 package com.house.biet.storeSearch.query.autocomplete.application;
 
 import com.house.biet.storeSearch.query.autocomplete.port.AutoCompleteSearchRepositoryPort;
+import com.house.biet.storeSearch.query.common.SearchKeywordNormalizer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,9 @@ class AutoCompleteSearchServiceTest {
     @Mock
     private AutoCompleteSearchRepositoryPort repository;
 
+    @Mock
+    private SearchKeywordNormalizer normalizer;
+
     @InjectMocks
     private AutoCompleteSearchService service;
 
@@ -28,6 +32,8 @@ class AutoCompleteSearchServiceTest {
 
         // given
         String keyword = "치킨";
+
+        given(normalizer.normalize(keyword)).willReturn(keyword);
 
         // when
         service.registerKeyword(keyword);
@@ -45,6 +51,8 @@ class AutoCompleteSearchServiceTest {
         List<String> expected = List.of("치킨", "치즈볼");
 
         given(repository.search(prefix)).willReturn(expected);
+
+        given(normalizer.normalize(prefix)).willReturn(prefix);
 
         // when
         List<String> result = service.search(prefix);

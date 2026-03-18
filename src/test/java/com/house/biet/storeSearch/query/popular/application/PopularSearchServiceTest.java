@@ -1,5 +1,6 @@
 package com.house.biet.storeSearch.query.popular.application;
 
+import com.house.biet.storeSearch.query.common.SearchKeywordNormalizer;
 import com.house.biet.storeSearch.query.popular.port.PopularSearchRepositoryPort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,9 @@ class PopularSearchServiceTest {
     @Mock
     private PopularSearchRepositoryPort repository;
 
+    @Mock
+    private SearchKeywordNormalizer normalizer;
+
     @InjectMocks
     private PopularSearchService service;
 
@@ -28,6 +32,8 @@ class PopularSearchServiceTest {
 
         // given
         String keyword = "치킨";
+
+        given(normalizer.normalize(keyword)).willReturn(keyword);
 
         // when
         service.increase(keyword);

@@ -5,6 +5,7 @@ import com.house.biet.global.route.application.RouteTimeService;
 import com.house.biet.store.query.StoreSearchQueryRepository;
 import com.house.biet.store.query.dto.StoreSearchQueryDto;
 import com.house.biet.store.query.dto.StoreSearchResponseDto;
+import com.house.biet.storeSearch.query.common.SearchKeywordNormalizer;
 import com.house.biet.user.query.UserQueryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,9 @@ class StoreSearchQueryServiceImplTest {
 
     @Mock
     private RouteTimeService routeTimeService;
+
+    @Mock
+    private SearchKeywordNormalizer normalizer;
 
     @Mock
     private UserQueryService userQueryService;
@@ -80,6 +84,8 @@ class StoreSearchQueryServiceImplTest {
                 0,
                 size
         )).willReturn(List.of(store));
+
+        given(normalizer.normalize(keyword)).willReturn(keyword);
 
         given(routeTimeService.calculateEstimatedDeliveryMinutes(
                 storeLatitude,

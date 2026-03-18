@@ -1,5 +1,6 @@
 package com.house.biet.storeSearch.query.recent.application;
 
+import com.house.biet.storeSearch.query.common.SearchKeywordNormalizer;
 import com.house.biet.storeSearch.query.recent.port.RecentSearchRepositoryPort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,9 @@ class RecentSearchServiceTest {
     @Mock
     private RecentSearchRepositoryPort repository;
 
+    @Mock
+    private SearchKeywordNormalizer normalizer;
+
     @InjectMocks
     private RecentSearchService service;
 
@@ -29,6 +33,8 @@ class RecentSearchServiceTest {
         // given
         Long userId = 1L;
         String keyword = "치킨";
+
+        given(normalizer.normalize(keyword)).willReturn(keyword);
 
         // when
         service.save(userId, keyword);
@@ -62,6 +68,8 @@ class RecentSearchServiceTest {
         // given
         Long userId = 1L;
         String keyword = "치킨";
+
+        given(normalizer.normalize(keyword)).willReturn(keyword);
 
         // when
         service.deleteKeyword(userId, keyword);
