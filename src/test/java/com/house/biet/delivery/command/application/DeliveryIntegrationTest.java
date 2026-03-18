@@ -6,6 +6,7 @@ import com.house.biet.common.domain.enums.OrderStatus;
 import com.house.biet.common.domain.enums.PaymentMethod;
 import com.house.biet.common.domain.vo.Address;
 import com.house.biet.common.domain.vo.Money;
+import com.house.biet.delivery.infrastructure.redis.DeliveryLocationRedisRepository;
 import com.house.biet.fixtures.AddressFixtures;
 import com.house.biet.fixtures.DeliveryLocationFixtures;
 import com.house.biet.fixtures.OrderFixtures;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,6 +38,9 @@ class DeliveryIntegrationTest {
     @Autowired OrderService orderService;
     @Autowired PaymentService paymentService;
     @Autowired DeliveryService deliveryService;
+
+    @MockitoBean
+    private DeliveryLocationRedisRepository deliveryLocationRedisRepository;
 
     @DisplayName("성공 - 주문부터 배달 완료까지 전체 흐름 성공")
     @Test
