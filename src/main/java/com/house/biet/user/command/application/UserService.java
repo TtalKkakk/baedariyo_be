@@ -8,6 +8,7 @@ import com.house.biet.global.response.ErrorCode;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.PhoneNumber;
+import com.house.biet.store.command.domain.vo.GeoLocation;
 import com.house.biet.user.command.UserRepository;
 import com.house.biet.user.command.domain.aggregate.User;
 import com.house.biet.user.command.domain.vo.AddressAlias;
@@ -92,7 +93,7 @@ public class UserService {
         GeoPoint point = geocodingService.geocode(address.getRoadAddress());
 
         // 3. GeoLocation 생성
-        var geoLocation = new com.house.biet.store.command.domain.vo.GeoLocation(
+        var geoLocation = new GeoLocation(
                 point.latitude(),
                 point.longitude()
         );
