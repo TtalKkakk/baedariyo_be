@@ -1,6 +1,8 @@
 package com.house.biet.rider.command.domain.entity;
 
 import com.house.biet.common.domain.enums.UserRole;
+import com.house.biet.global.response.CustomException;
+import com.house.biet.global.response.ErrorCode;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Email;
 import com.house.biet.member.command.domain.vo.Nickname;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class RiderTest {
 
@@ -122,8 +125,8 @@ class RiderTest {
     }
 
     @Test
-    @DisplayName("성공 - 라이더 근무 상태 변경 성공")
-    void ChangeRiderWorkingStatus_Success() {
+    @DisplayName("성공 - 오프라인 상태에서 온라인 전환")
+    void GoOnline_Success() {
         // given
         Rider rider = Rider.create(
                 account,
@@ -132,12 +135,146 @@ class RiderTest {
                 givenPhoneNumberValue,
                 givenVehicleType
         );
-        RiderWorkingStatus newStatus = RiderWorkingStatus.WORKING;
 
         // when
-        rider.changeRiderWorkingStatus(newStatus);
+        rider.goOnline();
 
         // then
-        assertThat(rider.getRiderWorkingStatus()).isEqualTo(newStatus);
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.ONLINE);
+    }
+
+    @Test
+    @DisplayName("실패 - 오프라인이 아닌 상태에서 온라인 전환")
+    void GoOnline_Error_NotOffline() {
+        // given
+        Rider rider = Rider.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType
+        );
+        rider.goOnline();
+
+        // when & then
+        assertThatThrownBy(rider::goOnline)
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.RIDER_MUST_BE_OFFLINE_TO_GO_ONLINE.getMessage());
+    }
+
+    @Test
+    @DisplayName("성공 - 온라인 상태에서 배달 시작")
+    void StartDelivery_Success() {
+        // given
+        Rider rider = Rider.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType
+        );
+        rider.goOnline();
+
+        // when
+        rider.startDelivery();
+
+        // then
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.WORKING);
+    }
+
+    @Test
+    @DisplayName("실패 - 오프라인 상태에서 바로 배달 시작 시 예외")
+    void StartDelivery_Error_NotOnline() {
+        // given
+        Rider rider = Rider.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType
+        );
+
+        // when & then
+        assertThatThrownBy(rider::startDelivery)
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.RIDER_MUST_BE_ONLINE_TO_START_WORK.getMessage());
+    }
+
+    @Test
+    @DisplayName("성공 - 배달 중 상태에서 배달 완료")
+    void CompleteDelivery_Success() {
+        // given
+        Rider rider = Rider.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType
+        );
+        rider.goOnline();
+        rider.startDelivery();
+
+        // when
+        rider.completeDelivery();
+
+        // then
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.ONLINE);
+    }
+
+    @Test
+    @DisplayName("실패 - 배달 중이 아닐 때 완료 시 예외")
+    void CompleteDelivery_Error_NotWorking() {
+        // given
+        Rider rider = Rider.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType
+        );
+        rider.goOnline();
+
+        // when & then
+        assertThatThrownBy(rider::completeDelivery)
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.RIDER_MUST_BE_WORKING_TO_COMPLETE.getMessage());
+    }
+
+    @Test
+    @DisplayName("성공 - 온라인 상태에서 오프라인 전환")
+    void GoOffline_Success() {
+        // given
+        Rider rider = Rider.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType
+        );
+        rider.goOnline();
+
+        // when
+        rider.goOffline();
+
+        // then
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.OFFLINE);
+    }
+
+    @Test
+    @DisplayName("실패 - 온라인 상태가 아닐 때 오프라인 전환 시 예외")
+    void GoOffline_Error_NotOnline() {
+        // given
+        Rider rider = Rider.create(
+                account,
+                givenRealNameValue,
+                givenNickNameValue,
+                givenPhoneNumberValue,
+                givenVehicleType
+        );
+
+        // when & then
+        assertThatThrownBy(rider::goOffline)
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.RIDER_MUST_BE_ONLINE_TO_GO_OFFLINE.getMessage());
     }
 }

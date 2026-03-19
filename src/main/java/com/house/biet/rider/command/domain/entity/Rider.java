@@ -1,6 +1,8 @@
 package com.house.biet.rider.command.domain.entity;
 
 import com.house.biet.global.jpa.BaseTimeEntity;
+import com.house.biet.global.response.CustomException;
+import com.house.biet.global.response.ErrorCode;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.member.command.domain.vo.Nickname;
 import com.house.biet.member.command.domain.vo.PhoneNumber;
@@ -81,7 +83,33 @@ public class Rider extends BaseTimeEntity {
         this.vehicleType = vehicleType;
     }
 
-    public void changeRiderWorkingStatus(RiderWorkingStatus riderWorkingStatus) {
-        this.riderWorkingStatus = riderWorkingStatus;
+    // 근무 상태 변경
+
+    public void goOnline() {
+        if (this.riderWorkingStatus != RiderWorkingStatus.OFFLINE) {
+            throw new CustomException(ErrorCode.RIDER_MUST_BE_OFFLINE_TO_GO_ONLINE);
+        }
+        this.riderWorkingStatus = RiderWorkingStatus.ONLINE;
+    }
+
+    public void startDelivery() {
+        if (this.riderWorkingStatus != RiderWorkingStatus.ONLINE) {
+            throw new CustomException(ErrorCode.RIDER_MUST_BE_ONLINE_TO_START_WORK);
+        }
+        this.riderWorkingStatus = RiderWorkingStatus.WORKING;
+    }
+
+    public void completeDelivery() {
+        if (this.riderWorkingStatus != RiderWorkingStatus.WORKING) {
+            throw new CustomException(ErrorCode.RIDER_MUST_BE_WORKING_TO_COMPLETE);
+        }
+        this.riderWorkingStatus = RiderWorkingStatus.ONLINE;
+    }
+
+    public void goOffline() {
+        if (this.riderWorkingStatus != RiderWorkingStatus.ONLINE) {
+            throw new CustomException(ErrorCode.RIDER_MUST_BE_ONLINE_TO_GO_OFFLINE);
+        }
+        this.riderWorkingStatus = RiderWorkingStatus.OFFLINE;
     }
 }

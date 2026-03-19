@@ -70,7 +70,10 @@ public enum SuccessCode {
     RIDER_PHONE_NUMBER_CHANGE_SUCCESS(20901, "라이더 전화번호가 변경되었습니다"),
     RIDER_VEHICLE_TYPE_CHANGE_SUCCESS(20902, "라이더 차량 타입이 변경되었습니다"),
     RIDER_WORKING_STATUS_CHANGE_SUCCESS(20903, "라이더 근무 상태가 변경되었습니다"),
-    RIDER_ONLINE_CHANGE_SUCCESS(20904, "라이더 온라인 상태가 변경되었습니다");
+    RIDER_ONLINE_CHANGE_SUCCESS(20904, "라이더 온라인 상태가 변경되었습니다"),
+    RIDER_START_DELIVERY_SUCCESS(20905, "라이더 배달 상태가 변경되었습니다."),
+    RIDER_COMPLETE_DELIVERY_SUCCESS(20906, "라이더 배달이 완료되었습니다."),
+    RIDER_OFFLINE_CHANGE_SUCCESS(20907, "라이더 오프라인 상태가 변경되었습니다.");
 
     private final int code;
     private final String message;

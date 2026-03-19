@@ -1,6 +1,5 @@
 package com.house.biet.rider.command.application;
 
-import com.house.biet.common.domain.enums.RiderWorkingStatus;
 import com.house.biet.common.domain.enums.VehicleType;
 import com.house.biet.rider.query.RiderQueryService;
 import jakarta.transaction.Transactional;
@@ -13,6 +12,11 @@ import org.springframework.stereotype.Service;
  * <p>
  * AccountId를 기반으로 RiderId를 조회한 뒤,
  * 실제 비즈니스 로직은 {@link RiderService}에 위임합니다.
+ * </p>
+ *
+ * <p>
+ * 본 Facade는 상태 값을 직접 전달하지 않고,
+ * 도메인 행위 단위의 메서드를 호출하여 상태 전이를 수행합니다.
  * </p>
  *
  * <p>
@@ -39,7 +43,6 @@ public class RiderCommandFacade {
      */
     public void changeNicknameByRiderId(Long accountId, String newNicknameValue) {
         Long riderId = riderQueryService.getRiderIdByAccountId(accountId);
-
         riderService.changeNicknameByRiderId(riderId, newNicknameValue);
     }
 
@@ -68,25 +71,62 @@ public class RiderCommandFacade {
     }
 
     /**
-     * 라이더의 근무 상태를 변경합니다.
+     * 라이더를 온라인 상태로 전환합니다.
+     *
+     * <p>
+     * OFFLINE 상태에서만 ONLINE으로 전환 가능합니다.
+     * </p>
      *
      * @param accountId 계정 ID
-     * @param newRiderWorkingStatus 변경할 근무 상태
      */
-    public void changeRiderWorkingStatus(Long accountId, RiderWorkingStatus newRiderWorkingStatus) {
+    public void goOnline(Long accountId) {
         Long riderId = riderQueryService.getRiderIdByAccountId(accountId);
 
-        riderService.changeRiderWorkingStatus(riderId, newRiderWorkingStatus);
+        riderService.goOnline(riderId);
     }
 
     /**
-     * 현재 오프라인 상태라면 온라인으로 변경합니다.
+     * 배달을 시작하여 WORKING 상태로 전환합니다.
+     *
+     * <p>
+     * ONLINE 상태에서만 배달을 시작할 수 있습니다.
+     * </p>
      *
      * @param accountId 계정 ID
      */
-    public void markOnlineIfOffline(Long accountId) {
+    public void startDelivery(Long accountId) {
         Long riderId = riderQueryService.getRiderIdByAccountId(accountId);
 
-        riderService.markOnlineIfOffline(riderId);
+        riderService.startDelivery(riderId);
+    }
+
+    /**
+     * 배달을 완료하여 ONLINE 상태로 전환합니다.
+     *
+     * <p>
+     * WORKING 상태에서만 완료할 수 있습니다.
+     * </p>
+     *
+     * @param accountId 계정 ID
+     */
+    public void completeDelivery(Long accountId) {
+        Long riderId = riderQueryService.getRiderIdByAccountId(accountId);
+
+        riderService.completeDelivery(riderId);
+    }
+
+    /**
+     * 라이더를 오프라인 상태로 전환합니다.
+     *
+     * <p>
+     * ONLINE 상태에서만 OFFLINE으로 전환 가능합니다.
+     * </p>
+     *
+     * @param accountId 계정 ID
+     */
+    public void goOffline(Long accountId) {
+        Long riderId = riderQueryService.getRiderIdByAccountId(accountId);
+
+        riderService.goOffline(riderId);
     }
 }

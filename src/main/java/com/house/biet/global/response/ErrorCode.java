@@ -61,6 +61,10 @@ public enum ErrorCode {
     INVALID_ADDRESS_GEOCODING_FORMAT(40150, HttpStatus.BAD_REQUEST, "유효하지 않은 주소 형태입니다."),
     INVALID_ADDRESS_ALIAS_FORMAT(40151, HttpStatus.BAD_REQUEST, "유효하지 않은 주소 별칭 형식입니다."),
     DUPLICATE_ADDRESS_ALIAS(40152, HttpStatus.BAD_REQUEST, "중복된 주소 별명입니다,"),
+    RIDER_MUST_BE_OFFLINE_TO_GO_ONLINE(40153, HttpStatus.BAD_REQUEST, "오프라인 상태에서만 온라인 전환이 가능합니다."),
+    RIDER_MUST_BE_ONLINE_TO_START_WORK(40154, HttpStatus.BAD_REQUEST, "온라인 상태에서만 배달을 시작할 수 있습니다."),
+    RIDER_MUST_BE_WORKING_TO_COMPLETE(40155, HttpStatus.BAD_REQUEST, "배달 중일 때만 완료할 수 있습니다."),
+    RIDER_MUST_BE_ONLINE_TO_GO_OFFLINE(40156, HttpStatus.BAD_REQUEST, "온라인 상태에서만 오프라인 전환이 가능합니다."),
     BAD_REQUEST(40100, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // 401 Unauthorized

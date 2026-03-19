@@ -18,7 +18,7 @@ public class RiderLoginService {
 
     public LoginResultDto login(LoginRequestDto requestDto) {
         AuthLoginResultDto authLoginResultDto = authService.login(requestDto.email(), requestDto.password(), UserRole.RIDER);
-        riderService.markOnlineIfOffline(authLoginResultDto.accountId());
+        riderService.goOnline(authLoginResultDto.accountId());
 
         return new LoginResultDto(
                 authLoginResultDto.accessToken(),

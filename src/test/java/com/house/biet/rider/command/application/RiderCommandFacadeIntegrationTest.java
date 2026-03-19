@@ -1,7 +1,6 @@
 package com.house.biet.rider.command.application;
 
 import com.house.biet.auth.command.application.AuthService;
-import com.house.biet.common.domain.enums.RiderWorkingStatus;
 import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.common.domain.enums.VehicleType;
 import com.house.biet.fixtures.RiderFixtures;
@@ -9,7 +8,6 @@ import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.rider.command.RiderRepository;
 import com.house.biet.rider.command.domain.entity.Rider;
 import com.house.biet.support.config.ServiceIntegrationTest;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,14 +45,13 @@ public class RiderCommandFacadeIntegrationTest extends ServiceIntegrationTest {
     void changeNickname_Success() {
         // given
         Long accountId = rider.getAccount().getId();
-        String newNickname = "newNick";
 
         // when
-        facade.changeNicknameByRiderId(accountId, newNickname);
+        facade.changeNicknameByRiderId(accountId, "newNick");
 
         // then
         Rider updated = riderRepository.findById(rider.getId()).orElseThrow();
-        assertThat(updated.getNickname().getValue()).isEqualTo(newNickname);
+        assertThat(updated.getNickname().getValue()).isEqualTo("newNick");
     }
 
     @Test
@@ -72,31 +69,47 @@ public class RiderCommandFacadeIntegrationTest extends ServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("성공 - 근무 상태 변경")
-    void changeWorkingStatus_Success() {
+    @DisplayName("성공 - OFFLINE → ONLINE 전환")
+    void goOnline_Success() {
         // given
         Long accountId = rider.getAccount().getId();
 
         // when
-        facade.changeRiderWorkingStatus(accountId, RiderWorkingStatus.ONLINE);
+        facade.goOnline(accountId);
 
         // then
         Rider updated = riderRepository.findById(rider.getId()).orElseThrow();
-        assertThat(updated.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.ONLINE);
+        assertThat(updated.getRiderWorkingStatus().name()).isEqualTo("ONLINE");
     }
 
     @Test
-    @DisplayName("성공 - 오프라인이면 온라인으로 변경")
-    void markOnlineIfOffline_Success() {
+    @DisplayName("성공 - ONLINE → WORKING → ONLINE 전체 시나리오")
+    void deliveryFlow_Success() {
         // given
         Long accountId = rider.getAccount().getId();
-        rider.changeRiderWorkingStatus(RiderWorkingStatus.OFFLINE);
 
         // when
-        facade.markOnlineIfOffline(accountId);
+        facade.goOnline(accountId);
+        facade.startDelivery(accountId);
+        facade.completeDelivery(accountId);
 
         // then
         Rider updated = riderRepository.findById(rider.getId()).orElseThrow();
-        assertThat(updated.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.ONLINE);
+        assertThat(updated.getRiderWorkingStatus().name()).isEqualTo("ONLINE");
+    }
+
+    @Test
+    @DisplayName("성공 - ONLINE → OFFLINE 전환")
+    void goOffline_Success() {
+        // given
+        Long accountId = rider.getAccount().getId();
+        facade.goOnline(accountId);
+
+        // when
+        facade.goOffline(accountId);
+
+        // then
+        Rider updated = riderRepository.findById(rider.getId()).orElseThrow();
+        assertThat(updated.getRiderWorkingStatus().name()).isEqualTo("OFFLINE");
     }
 }

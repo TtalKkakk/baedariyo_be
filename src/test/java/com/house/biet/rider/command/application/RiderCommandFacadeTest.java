@@ -1,6 +1,5 @@
 package com.house.biet.rider.command.application;
 
-import com.house.biet.common.domain.enums.RiderWorkingStatus;
 import com.house.biet.common.domain.enums.VehicleType;
 import com.house.biet.rider.query.RiderQueryService;
 import org.junit.jupiter.api.DisplayName;
@@ -56,6 +55,7 @@ class RiderCommandFacadeTest {
         facade.changePhoneNumberByRiderId(accountId, phone);
 
         // then
+        then(riderQueryService).should().getRiderIdByAccountId(accountId);
         then(riderService).should().changePhoneNumberByRiderId(riderId, phone);
     }
 
@@ -73,29 +73,30 @@ class RiderCommandFacadeTest {
         facade.changeVehicleType(accountId, type);
 
         // then
+        then(riderQueryService).should().getRiderIdByAccountId(accountId);
         then(riderService).should().changeVehicleType(riderId, type);
     }
 
     @Test
-    @DisplayName("성공 - 근무 상태 변경")
-    void changeRiderWorkingStatus_Success() {
+    @DisplayName("성공 - 온라인 전환")
+    void goOnline_Success() {
         // given
         Long accountId = 1L;
         Long riderId = 10L;
-        RiderWorkingStatus status = RiderWorkingStatus.ONLINE;
 
         given(riderQueryService.getRiderIdByAccountId(accountId)).willReturn(riderId);
 
         // when
-        facade.changeRiderWorkingStatus(accountId, status);
+        facade.goOnline(accountId);
 
         // then
-        then(riderService).should().changeRiderWorkingStatus(riderId, status);
+        then(riderQueryService).should().getRiderIdByAccountId(accountId);
+        then(riderService).should().goOnline(riderId);
     }
 
     @Test
-    @DisplayName("성공 - 오프라인이면 온라인으로 변경")
-    void markOnlineIfOffline_Success() {
+    @DisplayName("성공 - 배달 시작")
+    void startDelivery_Success() {
         // given
         Long accountId = 1L;
         Long riderId = 10L;
@@ -103,9 +104,44 @@ class RiderCommandFacadeTest {
         given(riderQueryService.getRiderIdByAccountId(accountId)).willReturn(riderId);
 
         // when
-        facade.markOnlineIfOffline(accountId);
+        facade.startDelivery(accountId);
 
         // then
-        then(riderService).should().markOnlineIfOffline(riderId);
+        then(riderQueryService).should().getRiderIdByAccountId(accountId);
+        then(riderService).should().startDelivery(riderId);
+    }
+
+    @Test
+    @DisplayName("성공 - 배달 완료")
+    void completeDelivery_Success() {
+        // given
+        Long accountId = 1L;
+        Long riderId = 10L;
+
+        given(riderQueryService.getRiderIdByAccountId(accountId)).willReturn(riderId);
+
+        // when
+        facade.completeDelivery(accountId);
+
+        // then
+        then(riderQueryService).should().getRiderIdByAccountId(accountId);
+        then(riderService).should().completeDelivery(riderId);
+    }
+
+    @Test
+    @DisplayName("성공 - 오프라인 전환")
+    void goOffline_Success() {
+        // given
+        Long accountId = 1L;
+        Long riderId = 10L;
+
+        given(riderQueryService.getRiderIdByAccountId(accountId)).willReturn(riderId);
+
+        // when
+        facade.goOffline(accountId);
+
+        // then
+        then(riderQueryService).should().getRiderIdByAccountId(accountId);
+        then(riderService).should().goOffline(riderId);
     }
 }

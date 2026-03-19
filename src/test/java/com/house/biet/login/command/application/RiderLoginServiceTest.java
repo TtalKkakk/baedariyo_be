@@ -64,7 +64,7 @@ class RiderLoginServiceTest {
                 .login(requestDto.email(), requestDto.password(), UserRole.RIDER);
 
         then(riderService).should()
-                .markOnlineIfOffline(1L);
+                .goOnline(1L);
 
         assertThat(result.accessToken()).isEqualTo("access-token");
         assertThat(result.refreshToken()).isEqualTo("refresh-token");

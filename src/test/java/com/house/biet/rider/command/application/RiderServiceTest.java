@@ -23,11 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,137 +53,137 @@ class RiderServiceTest {
                 UserRole.RIDER
         );
 
-        String givenRealName = "<REAL-NAME>";
-        String givenNickname = "<NICKNAME>";
-        String givenPhoneNumber = "010-1111-1111";
-        VehicleType givenVehicleType = VehicleType.MOTORCYCLE;
-
-        rider = Rider.create(account, givenRealName, givenNickname, givenPhoneNumber, givenVehicleType);
+        rider = Rider.create(
+                account,
+                "<REAL-NAME>",
+                "<NICKNAME>",
+                "010-1111-1111",
+                VehicleType.MOTORCYCLE
+        );
     }
 
     @Test
     @DisplayName("성공 - rider 저장")
     void save_success() {
-        // Given
-        String realName = "<REAL-NAME>";
-        String nickname = "<NICKNAME>";
-        String phoneNumber = "010-1111-1111";
-        VehicleType vehicleType = VehicleType.MOTORCYCLE;
+        // when
+        riderService.save(account, "<REAL-NAME>", "<NICKNAME>", "010-1111-1111", VehicleType.MOTORCYCLE);
 
-        // When
-        riderService.save(account, realName, nickname, phoneNumber, vehicleType);
-
-        // Then
-        verify(riderRepository, times(1)).save(any(Rider.class));
+        // then
+        verify(riderRepository).save(any(Rider.class));
     }
 
     @Test
-    @DisplayName("성공 - rider 닉네임 변경")
+    @DisplayName("성공 - 닉네임 변경")
     void changeNickname_success() {
-        // Given
+        // given
         Long riderId = 1L;
-        String newNickname = "<NEW-NICKNAME>";
         given(riderRepository.findById(riderId)).willReturn(Optional.of(rider));
 
-        // When
-        riderService.changeNicknameByRiderId(riderId, newNickname);
+        // when
+        riderService.changeNicknameByRiderId(riderId, "<NEW>");
 
-        // Then
-        assertThat(rider.getNickname().getValue()).isEqualTo(newNickname);
+        // then
+        assertThat(rider.getNickname().getValue()).isEqualTo("<NEW>");
     }
 
     @Test
-    @DisplayName("성공 - rider 전화번호 변경")
+    @DisplayName("성공 - 전화번호 변경")
     void changePhoneNumber_success() {
-        // Given
+        // given
         Long riderId = 1L;
-        String newPhoneNumber = "010-2222-2222";
         given(riderRepository.findById(riderId)).willReturn(Optional.of(rider));
 
-        // When
-        riderService.changePhoneNumberByRiderId(riderId, newPhoneNumber);
+        // when
+        riderService.changePhoneNumberByRiderId(riderId, "010-2222-2222");
 
-        // Then
-        assertThat(rider.getPhoneNumber().getValue()).isEqualTo(newPhoneNumber);
+        // then
+        assertThat(rider.getPhoneNumber().getValue()).isEqualTo("010-2222-2222");
     }
 
     @Test
-    @DisplayName("성공 - rider 이동 수단 변경")
+    @DisplayName("성공 - 차량 타입 변경")
     void changeVehicleType_success() {
-        // Given
+        // given
         Long riderId = 1L;
-        VehicleType newVehicleType = VehicleType.BICYCLE;
         given(riderRepository.findById(riderId)).willReturn(Optional.of(rider));
 
-        // When
-        riderService.changeVehicleType(riderId, newVehicleType);
+        // when
+        riderService.changeVehicleType(riderId, VehicleType.BICYCLE);
 
-        // Then
-        assertThat(rider.getVehicleType()).isEqualTo(newVehicleType);
+        // then
+        assertThat(rider.getVehicleType()).isEqualTo(VehicleType.BICYCLE);
     }
 
     @Test
-    @DisplayName("성공 - rider 근무 상태 변경")
-    void changeRiderWorkingStatus_success() {
-        // Given
+    @DisplayName("성공 - OFFLINE → ONLINE 전환")
+    void goOnline_success() {
+        // given
         Long riderId = 1L;
-        RiderWorkingStatus newStatus = RiderWorkingStatus.WORKING;
         given(riderRepository.findById(riderId)).willReturn(Optional.of(rider));
 
-        // When
-        riderService.changeRiderWorkingStatus(riderId, newStatus);
+        // when
+        riderService.goOnline(riderId);
 
-        // Then
-        assertThat(rider.getRiderWorkingStatus()).isEqualTo(newStatus);
+        // then
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.ONLINE);
     }
 
     @Test
-    @DisplayName("에러 - rider 미존재 시 예외 발생")
-    void changeNickname_fail_notFound() {
-        // Given
+    @DisplayName("성공 - ONLINE → WORKING 전환")
+    void startDelivery_success() {
+        // given
+        Long riderId = 1L;
+        rider.goOnline();
+        given(riderRepository.findById(riderId)).willReturn(Optional.of(rider));
+
+        // when
+        riderService.startDelivery(riderId);
+
+        // then
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.WORKING);
+    }
+
+    @Test
+    @DisplayName("성공 - WORKING → ONLINE 전환")
+    void completeDelivery_success() {
+        // given
+        Long riderId = 1L;
+        rider.goOnline();
+        rider.startDelivery();
+        given(riderRepository.findById(riderId)).willReturn(Optional.of(rider));
+
+        // when
+        riderService.completeDelivery(riderId);
+
+        // then
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.ONLINE);
+    }
+
+    @Test
+    @DisplayName("성공 - ONLINE → OFFLINE 전환")
+    void goOffline_success() {
+        // given
+        Long riderId = 1L;
+        rider.goOnline();
+        given(riderRepository.findById(riderId)).willReturn(Optional.of(rider));
+
+        // when
+        riderService.goOffline(riderId);
+
+        // then
+        assertThat(rider.getRiderWorkingStatus()).isEqualTo(RiderWorkingStatus.OFFLINE);
+    }
+
+    @Test
+    @DisplayName("실패 - 라이더 없음")
+    void getRider_Error_NotFound() {
+        // given
         Long riderId = 99L;
         given(riderRepository.findById(riderId)).willReturn(Optional.empty());
 
-        // When & Then
-        assertThatThrownBy(() -> riderService.changeNicknameByRiderId(riderId, "<NEW-NICKNAME>"))
+        // when & then
+        assertThatThrownBy(() -> riderService.goOnline(riderId))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.RIDER_NOT_FOUND.getMessage());
     }
-
-    @Test
-    @DisplayName("성공 - OFFLINE 라이더 로그인 시 ONLINE으로 변경")
-    void markOnlineIfOffline_whenOffline() {
-        // given
-        Long riderId = 1L;
-        rider.changeRiderWorkingStatus(RiderWorkingStatus.OFFLINE);
-
-        given(riderRepository.findById(riderId))
-                .willReturn(Optional.of(rider));
-
-        // when
-        riderService.markOnlineIfOffline(riderId);
-
-        // then
-        assertThat(rider.getRiderWorkingStatus())
-                .isEqualTo(RiderWorkingStatus.ONLINE);
-    }
-
-    @Test
-    @DisplayName("성공 - 이미 ONLINE 상태면 변경하지 않는다")
-    void markOnlineIfOffline_whenAlreadyOnline() {
-        // given
-        Long riderId = 1L;
-        rider.changeRiderWorkingStatus(RiderWorkingStatus.ONLINE);
-
-        given(riderRepository.findById(riderId))
-                .willReturn(Optional.of(rider));
-
-        // when
-        riderService.markOnlineIfOffline(riderId);
-
-        // then
-        assertThat(rider.getRiderWorkingStatus())
-                .isEqualTo(RiderWorkingStatus.ONLINE);
-    }
-
 }

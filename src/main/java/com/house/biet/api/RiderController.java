@@ -7,7 +7,6 @@ import com.house.biet.rider.command.application.RiderCommandFacade;
 import com.house.biet.rider.command.dto.ChangeNicknameRequestDto;
 import com.house.biet.rider.command.dto.ChangePhoneNumberRequestDto;
 import com.house.biet.rider.command.dto.ChangeVehicleTypeRequestDto;
-import com.house.biet.rider.command.dto.ChangeWorkingStatusRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,11 @@ import org.springframework.web.bind.annotation.*;
  *
  * <p>
  * 인증된 사용자의 Account ID를 기반으로,
- * 라이더 정보 변경(Command) 요청을 처리한다.
+ * 라이더 정보 변경 및 상태 전이 요청을 처리한다.
+ * </p>
+ *
+ * <p>
+ * 상태 변경은 단순 값 변경이 아닌 "도메인 행위" 기반으로 수행된다.
  * </p>
  *
  * <p>
@@ -36,10 +39,6 @@ public class RiderController {
 
     /**
      * 라이더 닉네임 변경 API
-     *
-     * @param principal 인증된 사용자 정보
-     * @param requestDto 변경할 닉네임 정보
-     * @return 성공 응답
      */
     @PatchMapping("/nickname")
     public ResponseEntity<CustomApiResponse<Void>> changeNickname(
@@ -58,10 +57,6 @@ public class RiderController {
 
     /**
      * 라이더 전화번호 변경 API
-     *
-     * @param principal 인증된 사용자 정보
-     * @param requestDto 변경할 전화번호 정보
-     * @return 성공 응답
      */
     @PatchMapping("/phoneNumber")
     public ResponseEntity<CustomApiResponse<Void>> changePhoneNumber(
@@ -80,10 +75,6 @@ public class RiderController {
 
     /**
      * 라이더 차량 타입 변경 API
-     *
-     * @param principal 인증된 사용자 정보
-     * @param requestDto 변경할 차량 타입 정보
-     * @return 성공 응답
      */
     @PatchMapping("/vehicle")
     public ResponseEntity<CustomApiResponse<Void>> changeVehicleType(
@@ -101,47 +92,74 @@ public class RiderController {
     }
 
     /**
-     * 라이더 근무 상태 변경 API
+     * 라이더를 ONLINE 상태로 전환
      *
-     * @param principal 인증된 사용자 정보
-     * @param requestDto 변경할 근무 상태 정보
-     * @return 성공 응답
+     * <p>
+     * OFFLINE 상태에서만 가능
+     * </p>
      */
-    @PatchMapping("/working-status")
-    public ResponseEntity<CustomApiResponse<Void>> changeWorkingStatus(
-            @AuthenticationPrincipal AuthPrincipal principal,
-            @RequestBody @Valid ChangeWorkingStatusRequestDto requestDto
+    @PatchMapping("/online")
+    public ResponseEntity<CustomApiResponse<Void>> goOnline(
+            @AuthenticationPrincipal AuthPrincipal principal
     ) {
-        riderCommandFacade.changeRiderWorkingStatus(
-                principal.accountId(),
-                requestDto.workingStatus()
-        );
+        riderCommandFacade.goOnline(principal.accountId());
 
         return ResponseEntity.ok(
-                CustomApiResponse.success(SuccessCode.RIDER_WORKING_STATUS_CHANGE_SUCCESS)
+                CustomApiResponse.success(SuccessCode.RIDER_ONLINE_CHANGE_SUCCESS)
         );
     }
 
     /**
-     * 라이더 온라인 상태 전환 API
+     * 배달 시작 (WORKING 상태 전환)
      *
      * <p>
-     * 현재 OFFLINE 상태인 경우 ONLINE으로 변경한다.
+     * ONLINE 상태에서만 가능
      * </p>
-     *
-     * @param principal 인증된 사용자 정보
-     * @return 성공 응답
      */
-    @PatchMapping("/online")
-    public ResponseEntity<CustomApiResponse<Void>> markOnlineIfOffline(
+    @PatchMapping("/deliveries/start")
+    public ResponseEntity<CustomApiResponse<Void>> startDelivery(
             @AuthenticationPrincipal AuthPrincipal principal
     ) {
-        riderCommandFacade.markOnlineIfOffline(
-                principal.accountId()
-        );
+        riderCommandFacade.startDelivery(principal.accountId());
 
         return ResponseEntity.ok(
-                CustomApiResponse.success(SuccessCode.RIDER_ONLINE_CHANGE_SUCCESS)
+                CustomApiResponse.success(SuccessCode.RIDER_START_DELIVERY_SUCCESS)
+        );
+    }
+
+    /**
+     * 배달 완료 (ONLINE 상태 전환)
+     *
+     * <p>
+     * WORKING 상태에서만 가능
+     * </p>
+     */
+    @PatchMapping("/deliveries/complete")
+    public ResponseEntity<CustomApiResponse<Void>> completeDelivery(
+            @AuthenticationPrincipal AuthPrincipal principal
+    ) {
+        riderCommandFacade.completeDelivery(principal.accountId());
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.RIDER_COMPLETE_DELIVERY_SUCCESS)
+        );
+    }
+
+    /**
+     * 라이더를 OFFLINE 상태로 전환
+     *
+     * <p>
+     * ONLINE 상태에서만 가능
+     * </p>
+     */
+    @PatchMapping("/offline")
+    public ResponseEntity<CustomApiResponse<Void>> goOffline(
+            @AuthenticationPrincipal AuthPrincipal principal
+    ) {
+        riderCommandFacade.goOffline(principal.accountId());
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.RIDER_OFFLINE_CHANGE_SUCCESS)
         );
     }
 }
