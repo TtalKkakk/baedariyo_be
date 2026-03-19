@@ -63,7 +63,14 @@ public enum SuccessCode {
     SEARCH_POPULAR_SUCCESS(20801, "인기 검색어 조회에 성공했습니다."),
     SEARCH_RECENT_SUCCESS(20802, "최근 검색어 조회에 성공했습니다."),
     SEARCH_RECENT_DELETE_SUCCESS(20803, "최근 검색어 삭제에 성공했습니다."),
-    SEARCH_RECENT_DELETE_ALL_SUCCESS(20804, "최근 검색어 전체 삭제에 성공했습니다.");
+    SEARCH_RECENT_DELETE_ALL_SUCCESS(20804, "최근 검색어 전체 삭제에 성공했습니다."),
+
+    // Rider
+    RIDER_NICKNAME_CHANGE_SUCCESS(20900, "라이더 닉네임이 변경되었습니다"),
+    RIDER_PHONE_NUMBER_CHANGE_SUCCESS(20901, "라이더 전화번호가 변경되었습니다"),
+    RIDER_VEHICLE_TYPE_CHANGE_SUCCESS(20902, "라이더 차량 타입이 변경되었습니다"),
+    RIDER_WORKING_STATUS_CHANGE_SUCCESS(20903, "라이더 근무 상태가 변경되었습니다"),
+    RIDER_ONLINE_CHANGE_SUCCESS(20904, "라이더 온라인 상태가 변경되었습니다");
 
     private final int code;
     private final String message;
