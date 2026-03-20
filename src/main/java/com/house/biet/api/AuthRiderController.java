@@ -5,6 +5,7 @@ import com.house.biet.auth.command.domain.dto.LoginResultDto;
 import com.house.biet.auth.command.domain.dto.LoginRequestDto;
 import com.house.biet.auth.command.dto.ChangePasswordRequestDto;
 import com.house.biet.auth.infrastructure.security.AuthPrincipal;
+import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
 import com.house.biet.login.command.application.RiderLoginService;
@@ -67,6 +68,17 @@ public class AuthRiderController {
 
         return ResponseEntity.ok(
                 CustomApiResponse.success(SuccessCode.PASSWORD_CHANGE_SUCCESS)
+        );
+    }
+
+    @GetMapping("/email/duplicate")
+    public ResponseEntity<CustomApiResponse<Boolean>> checkEmailDuplicate(
+            @RequestParam String email
+    ) {
+        boolean isDuplicated = authService.isDuplicatedEmailAndRole(email, UserRole.RIDER);
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.EMAIL_DUPLICATE_SEARCH_SUCCESS, isDuplicated)
         );
     }
 }

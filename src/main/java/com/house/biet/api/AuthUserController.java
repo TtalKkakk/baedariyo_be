@@ -89,4 +89,15 @@ public class AuthUserController {
                 CustomApiResponse.success(SuccessCode.PASSWORD_CHANGE_SUCCESS)
         );
     }
+
+    @GetMapping("/email/duplicate")
+    public ResponseEntity<CustomApiResponse<Boolean>> checkEmailDuplicate(
+            @RequestParam String email
+    ) {
+        boolean isDuplicated = authService.isDuplicatedEmailAndRole(email, UserRole.USER);
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.EMAIL_DUPLICATE_SEARCH_SUCCESS, isDuplicated)
+        );
+    }
 }
