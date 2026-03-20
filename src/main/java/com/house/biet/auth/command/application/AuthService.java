@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthService {
 
     private final JwtProvider jwtProvider;
@@ -150,12 +151,35 @@ public class AuthService {
      *
      * @throws CustomException 계정을 찾을 수 없는 경우
      */
-    @Transactional
     public void changePassword(Long accountId, String newPasswordValue) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         Password newPassword = Password.encrypt(newPasswordValue, passwordEncoder);
         account.changePassword(newPassword);
+    }
+
+    /**
+     * 이메일과 사용자 역할(UserRole)의 중복 여부를 확인한다.
+     *
+     * <p>
+     * 전달받은 이메일을 {@link Email} Value Object로 변환한 뒤,
+     * 동일한 이메일과 역할을 가진 계정이 존재하는지 조회한다.
+     * </p>
+     *
+     * <p>
+     * 회원가입 시 중복 계정 검증 또는
+     * 이메일 사용 가능 여부 확인에 사용된다.
+     * </p>
+     *
+     * @param email     확인할 이메일 (평문)
+     * @param userRole  사용자 역할
+     *
+     * @return true  - 동일한 이메일 + 역할을 가진 계정이 존재하는 경우 (중복)
+     *         false - 존재하지 않는 경우 (사용 가능)
+     */
+    @Transactional(readOnly = true)
+    public boolean isDuplicatedEmailAndRole(String email, UserRole userRole) {
+        return accountRepository.existsByEmailAndRole(new Email(email), userRole);
     }
 }

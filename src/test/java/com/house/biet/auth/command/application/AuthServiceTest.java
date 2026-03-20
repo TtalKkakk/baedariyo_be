@@ -208,4 +208,38 @@ class AuthServiceTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
     }
+
+    @Test
+    @DisplayName("성공 - 이메일과 역할이 이미 존재하면 true 반환")
+    void isDuplicatedEmailAndRole_Success_Exists() {
+        // given
+        String email = "test@test.com";
+        UserRole role = UserRole.USER;
+
+        given(accountRepository.existsByEmailAndRole(new Email(email), role))
+                .willReturn(true);
+
+        // when
+        boolean result = authService.isDuplicatedEmailAndRole(email, role);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("성공 - 이메일과 역할이 존재하지 않으면 false 반환")
+    void isDuplicatedEmailAndRole_Success_NotExists() {
+        // given
+        String email = "test@test.com";
+        UserRole role = UserRole.USER;
+
+        given(accountRepository.existsByEmailAndRole(new Email(email), role))
+                .willReturn(false);
+
+        // when
+        boolean result = authService.isDuplicatedEmailAndRole(email, role);
+
+        // then
+        assertThat(result).isFalse();
+    }
 }
