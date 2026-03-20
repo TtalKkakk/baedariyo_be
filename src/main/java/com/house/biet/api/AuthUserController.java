@@ -12,6 +12,8 @@ import com.house.biet.global.response.SuccessCode;
 import com.house.biet.common.domain.enums.UserRole;
 import com.house.biet.signup.command.application.UserSignupService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -92,7 +94,7 @@ public class AuthUserController {
 
     @GetMapping("/email/duplicate")
     public ResponseEntity<CustomApiResponse<Boolean>> checkEmailDuplicate(
-            @RequestParam String email
+            @RequestParam @Email @NotBlank String email
     ) {
         boolean isDuplicated = authService.isDuplicatedEmailAndRole(email, UserRole.USER);
 

@@ -12,6 +12,8 @@ import com.house.biet.login.command.application.RiderLoginService;
 import com.house.biet.signup.command.application.RiderSignupService;
 import com.house.biet.auth.command.domain.dto.RiderSignupRequestDto;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -73,7 +75,7 @@ public class AuthRiderController {
 
     @GetMapping("/email/duplicate")
     public ResponseEntity<CustomApiResponse<Boolean>> checkEmailDuplicate(
-            @RequestParam String email
+            @RequestParam @Email @NotBlank String email
     ) {
         boolean isDuplicated = authService.isDuplicatedEmailAndRole(email, UserRole.RIDER);
 
