@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("rabbit")
+//@Profile("rabbit")
 @RequiredArgsConstructor
 public class RabbitRiderCallSender implements RiderCallSender {
 

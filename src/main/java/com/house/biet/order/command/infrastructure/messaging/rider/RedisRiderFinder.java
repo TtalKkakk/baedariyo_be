@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Profile("redis")
+//@Profile("redis")
 @RequiredArgsConstructor
 public class RedisRiderFinder implements RiderFinder {
 
