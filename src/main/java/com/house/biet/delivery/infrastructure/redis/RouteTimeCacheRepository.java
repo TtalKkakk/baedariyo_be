@@ -18,10 +18,15 @@ public class RouteTimeCacheRepository {
 
         Object value = redisTemplate.opsForValue().get(key);
 
-        if (value == null)
+        if (value == null) {
             return null;
+        }
 
-        return (Integer) value;
+        if (value instanceof Number number) {
+            return number.intValue();
+        }
+
+        return Integer.valueOf(String.valueOf(value));
     }
 
     public void save(String key, int minutes) {

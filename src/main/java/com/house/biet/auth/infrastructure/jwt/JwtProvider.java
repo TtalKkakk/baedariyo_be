@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
@@ -23,7 +24,7 @@ public class JwtProvider {
     private final long refreshTokenValiditySeconds;
 
     public JwtProvider(JwtProperties properties) {
-        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        this.secretKey = Keys.hmacShaKeyFor(properties.getSecretKey().getBytes(StandardCharsets.UTF_8));
         this.accessTokenValiditySeconds = properties.getAccessTokenValiditySeconds();
         this.refreshTokenValiditySeconds = properties.getRefreshTokenValiditySeconds();
     }
