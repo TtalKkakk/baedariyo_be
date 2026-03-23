@@ -7,10 +7,13 @@ import com.house.biet.payment.command.PaymentRepository;
 import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import com.house.biet.payment.command.domain.vo.TransactionId;
-import com.house.biet.payment.command.repository.PaymentRepositoryJpa;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,18 +111,24 @@ public class PaymentService {
      * @param transactionIdValue PG 승인 트랜잭션 ID
      * @throws CustomException PAYMENT_NOT_FOUND 예외
      */
+    @Retryable(
+            retryFor = {
+                    ObjectOptimisticLockingFailureException.class,
+                    OptimisticLockException.class
+            },
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 50, multiplier = 2.0)
+    )
     public void approve(Long paymentId, String transactionIdValue) {
-        try {
-            Payment payment = getPayment(paymentId);
-            if (payment.isApproved())
-                throw new CustomException(ErrorCode.ALREADY_APPROVED_PAYMENT);
+        Payment payment = getPayment(paymentId);
 
-            payment.approve(new TransactionId(transactionIdValue));
-            paymentRepository.saveAndFlush(payment);
-            publishEvents(payment);
-        } catch (ObjectOptimisticLockingFailureException e) {
-            throw new CustomException(ErrorCode.PAYMENT_CONCURRENCY_CONFLICT);
+        if (payment.isApproved()) {
+            throw new CustomException(ErrorCode.ALREADY_APPROVED_PAYMENT);
         }
+
+        payment.approve(new TransactionId(transactionIdValue));
+        paymentRepository.saveAndFlush(payment);
+        publishEvents(payment);
     }
 
     /**
@@ -148,6 +157,16 @@ public class PaymentService {
     public void cancel(Long paymentId) {
         Payment payment = getPayment(paymentId);
         payment.cancel();
+    }
+
+    @Recover
+    public void recover(ObjectOptimisticLockingFailureException e, Long paymentId, String transactionIdValue) {
+        throw new CustomException(ErrorCode.PAYMENT_CONCURRENCY_CONFLICT);
+    }
+
+    @Recover
+    public void recover(OptimisticLockException e, Long paymentId, String transactionIdValue) {
+        throw new CustomException(ErrorCode.PAYMENT_CONCURRENCY_CONFLICT);
     }
 
     /**

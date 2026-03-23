@@ -38,6 +38,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-authorization-server'
 	implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework:spring-aspects'
 	implementation 'org.springframework.integration:spring-integration-amqp'
 	implementation 'org.springframework.integration:spring-integration-http'
 	implementation 'org.springframework.integration:spring-integration-jpa'
@@ -73,6 +74,7 @@ dependencies {
 
 	// @Valid 사용
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.retry:spring-retry:2.0.12'
 
 	// test containers
 	testImplementation("org.testcontainers:junit-jupiter:1.20.1")

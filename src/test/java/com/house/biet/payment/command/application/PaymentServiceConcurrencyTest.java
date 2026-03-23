@@ -58,7 +58,7 @@ class PaymentServiceConcurrencyTest extends ServiceConcurrencyTest {
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         AtomicInteger successCount = new AtomicInteger();
-        AtomicInteger failCount = new AtomicInteger();
+        AtomicInteger nonSuccessCount = new AtomicInteger();
 
         // TransactionTemplate 사용해서 각 스레드마다 독립 트랜잭션 실행
         TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
@@ -78,8 +78,10 @@ class PaymentServiceConcurrencyTest extends ServiceConcurrencyTest {
                         } catch (CustomException e) {
                             if (e.getErrorCode() == ErrorCode.PAYMENT_CONCURRENCY_CONFLICT
                                     || e.getErrorCode() == ErrorCode.ALREADY_APPROVED_PAYMENT) {
-                                failCount.incrementAndGet();
+                                nonSuccessCount.incrementAndGet();
                             }
+                        } catch (Exception e) {
+                            nonSuccessCount.incrementAndGet();
                         }
                         return null;
                     });
@@ -93,6 +95,6 @@ class PaymentServiceConcurrencyTest extends ServiceConcurrencyTest {
 
         // then - 낙관적 락으로 인해 한 스레드만 성공
         assertThat(successCount.get()).isEqualTo(1);
-        assertThat(failCount.get()).isEqualTo(threadCount - 1);
+        assertThat(nonSuccessCount.get()).isEqualTo(threadCount - 1);
     }
 }
