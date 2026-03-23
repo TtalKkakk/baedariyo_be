@@ -38,3 +38,8 @@ out/
 
 ### application secret
 application-secret*.*
+
+###
+.gradle/
+.gradle-home/
+.vs/
