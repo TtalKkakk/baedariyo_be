@@ -7,7 +7,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Import(TestRiderCallSenderConfig.class)
+@Import({
+        TestRiderCallSenderConfig.class,
+        TestRedisConfig.class
+})
 @Transactional
 public abstract class ServiceIntegrationTest {
 }
