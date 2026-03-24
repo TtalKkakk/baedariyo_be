@@ -24,7 +24,7 @@ class PaymentRepositoryTest {
 
     @Test
     @DisplayName("Payment 저장 및 ID 조회 테스트")
-    void save_and_findById() {
+    void save_Success_And_FindById() {
         // given
         Payment payment = Payment.create(
                 1L,
@@ -46,7 +46,7 @@ class PaymentRepositoryTest {
 
     @Test
     @DisplayName("paymentKey 기준 조회 테스트")
-    void findByPaymentKey() {
+    void findByPaymentKey_Success() {
         // given
         Long orderId = 2L;
         Long userId = 3L;
@@ -72,7 +72,7 @@ class PaymentRepositoryTest {
 
     @Test
     @DisplayName("paymentKey 중복 저장 시 예외 발생")
-    void duplicate_paymentKey_should_throw_exception() {
+    void duplicate_Error_PaymentKey_Should_Throw_Exception() {
         // given
         String key = "pk_test_duplicate";
 
@@ -99,7 +99,7 @@ class PaymentRepositoryTest {
 
     @Test
     @DisplayName("existsByPaymentKey 테스트")
-    void existsByPaymentKey() {
+    void existsByPaymentKey_Success() {
         // given
         String key = "pk_test_exists";
 

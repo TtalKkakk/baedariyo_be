@@ -24,7 +24,7 @@ class StoreThumbnailTest {
 
     @Test
     @DisplayName("성공 - 썸네일이 없는 경우(null) 허용")
-    void createStoreThumbnail_null_allowed() {
+    void createStoreThumbnail_Error_Null_Allowed() {
         // when
         StoreThumbnail thumbnail = StoreThumbnail.of(null);
 
@@ -34,7 +34,7 @@ class StoreThumbnailTest {
 
     @Test
     @DisplayName("실패 - 빈 문자열은 허용되지 않음")
-    void createStoreThumbnail_blank_throwsException() {
+    void createStoreThumbnail_Error_Blank_ThrowsException() {
         // given
         String blankUrl = "   ";
 

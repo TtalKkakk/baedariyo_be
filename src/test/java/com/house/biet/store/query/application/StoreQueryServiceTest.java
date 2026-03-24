@@ -25,33 +25,35 @@ class StoreQueryServiceTest {
     private StoreQueryRepository storeQueryRepository;
 
     @Test
-    @DisplayName("gets menus by store id")
+    @DisplayName("성공 - 가게 ID로 메뉴 목록을 조회한다")
     void getMenusByStoreId_Success() {
+        // given
         Long storeId = 1L;
         List<StoreMenuQueryDto> menus = List.of(
                 new StoreMenuQueryDto(1L, "menu1", 10000, "desc1"),
                 new StoreMenuQueryDto(2L, "menu2", 20000, "desc2")
         );
-
         given(storeQueryRepository.findMenusById(storeId)).willReturn(menus);
 
+        // when
         List<StoreMenuQueryDto> result = storeQueryService.getMenusByStoreId(storeId);
 
+        // then
         assertThat(result).isEqualTo(menus);
     }
 
     @Test
-    @DisplayName("gets menus by public store id")
+    @DisplayName("성공 - 가게 Public ID로 메뉴 목록을 조회한다")
     void getMenusByPublicId_Success() {
+        // given
         UUID publicStoreId = UUID.randomUUID();
-        List<StoreMenuQueryDto> menus = List.of(
-                new StoreMenuQueryDto(1L, "menu1", 10000, "desc1")
-        );
-
+        List<StoreMenuQueryDto> menus = List.of(new StoreMenuQueryDto(1L, "menu1", 10000, "desc1"));
         given(storeQueryRepository.findMenusByPublicId(publicStoreId)).willReturn(menus);
 
+        // when
         List<StoreMenuQueryDto> result = storeQueryService.getMenusByPublicId(publicStoreId);
 
+        // then
         assertThat(result).isEqualTo(menus);
     }
 }

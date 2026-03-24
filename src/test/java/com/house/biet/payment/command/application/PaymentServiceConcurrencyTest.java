@@ -38,10 +38,9 @@ class PaymentServiceConcurrencyTest extends ServiceConcurrencyTest {
     private PlatformTransactionManager transactionManager;
 
     @Test
-    @DisplayName("성공 - 낙관적락 동시 승인 충돌 제어")
-    void approveConcurrency_OptimisticLock() throws InterruptedException {
-
-        // given - 테스트용 Payment 생성
+    @DisplayName("성공 - approve 동시 요청 시 한 건만 승인한다")
+    void approvePayment_Success_WhenConcurrentRequestsOccur() throws InterruptedException {
+        // given
         Payment payment = paymentRepository.save(
                 Payment.create(
                         1L,
@@ -56,11 +55,9 @@ class PaymentServiceConcurrencyTest extends ServiceConcurrencyTest {
         int threadCount = 3;
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
-
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger nonSuccessCount = new AtomicInteger();
 
-        // TransactionTemplate 사용해서 각 스레드마다 독립 트랜잭션 실행
         TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
         transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
@@ -70,10 +67,7 @@ class PaymentServiceConcurrencyTest extends ServiceConcurrencyTest {
                 try {
                     transactionTemplate.execute(status -> {
                         try {
-                            paymentService.approve(
-                                    payment.getId(),
-                                    UUID.randomUUID().toString()
-                            );
+                            paymentService.approve(payment.getId(), UUID.randomUUID().toString());
                             successCount.incrementAndGet();
                         } catch (CustomException e) {
                             if (e.getErrorCode() == ErrorCode.PAYMENT_CONCURRENCY_CONFLICT
@@ -92,8 +86,9 @@ class PaymentServiceConcurrencyTest extends ServiceConcurrencyTest {
         }
 
         latch.await();
+        executor.shutdown();
 
-        // then - 낙관적 락으로 인해 한 스레드만 성공
+        // then
         assertThat(successCount.get()).isEqualTo(1);
         assertThat(nonSuccessCount.get()).isEqualTo(threadCount - 1);
     }

@@ -25,7 +25,7 @@ class MenuNameTest {
 
     @Test
     @DisplayName("에러 - 메뉴 이름이 null")
-    void createMenuName_nameIsNull() {
+    void createMenuName_Error_NameIsNull() {
         // given
         String givenName = null;
 
@@ -37,7 +37,7 @@ class MenuNameTest {
 
     @Test
     @DisplayName("에러 - 메뉴 이름이 빈 문자열")
-    void createMenuName_nameIsBlank() {
+    void createMenuName_Error_NameIsBlank() {
         // given
         String givenName = "   ";
 
@@ -49,7 +49,7 @@ class MenuNameTest {
 
     @Test
     @DisplayName("에러 - 메뉴 이름 길이 초과")
-    void createMenuName_lengthExceeded() {
+    void createMenuName_Error_LengthExceeded() {
         // given
         String givenName = "a".repeat(51);
 
@@ -61,7 +61,7 @@ class MenuNameTest {
 
     @Test
     @DisplayName("동등성 - 같은 값이면 같은 MenuName")
-    void equalsAndHashCode_sameValue() {
+    void equalsAndHashCode_Success_SameValue() {
         // given
         MenuName menuName1 = new MenuName("치킨");
         MenuName menuName2 = new MenuName("치킨");

@@ -30,7 +30,7 @@ class BusinessHourTest {
 
     @Test
     @DisplayName("실패 - 오픈 시간이 마감 시간보다 늦으면 예외 발생")
-    void createBusinessHour_Fail_OpenAfterClose() {
+    void createBusinessHour_Error_OpenAfterClose() {
         // given
         LocalTime open = LocalTime.of(23, 0);
         LocalTime close = LocalTime.of(22, 30);
@@ -47,7 +47,7 @@ class BusinessHourTest {
 
     @Test
     @DisplayName("성공 - 현재 시간이 운영시간 내에 있으면 true")
-    void isOpen_True_WhenWithinBusinessHour() {
+    void isOpen_Success_True_WhenWithinBusinessHour() {
         // given
         BusinessHour businessHour = BusinessHourFixture.aBusinessHour().build();
         LocalTime now = LocalTime.of(14, 0);
@@ -61,7 +61,7 @@ class BusinessHourTest {
 
     @Test
     @DisplayName("성공 - 현재 시간이 오픈 시간 이전이면 false")
-    void isOpen_False_WhenBeforeOpenTime() {
+    void isOpen_Success_False_WhenBeforeOpenTime() {
         // given
         BusinessHour businessHour = BusinessHourFixture.aBusinessHour().build();
         LocalTime time = LocalTime.of(3, 0);
@@ -75,7 +75,7 @@ class BusinessHourTest {
 
     @Test
     @DisplayName("성공 - 현재 시간이 마감 시간 이후면 false")
-    void isOpen_False_WhenAfterCloseTime() {
+    void isOpen_Success_False_WhenAfterCloseTime() {
         // given
         BusinessHour businessHour = BusinessHourFixture.aBusinessHour().build();
         LocalTime time = LocalTime.of(23, 0);

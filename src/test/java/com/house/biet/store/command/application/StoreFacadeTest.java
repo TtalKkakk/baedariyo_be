@@ -106,29 +106,34 @@ class StoreFacadeTest {
     }
 
     @Test
-    @DisplayName("creates store")
+    @DisplayName("성공 - 가게를 생성한다")
     void createStore_Success() {
+        // given
         given(storeService.save(any(Store.class))).willReturn(store);
         given(geocodingService.geocode(any())).willReturn(new GeoPoint(37.0, 127.0));
 
+        // when
         StoreCreateResponseDto response = storeFacade.createStore(request);
 
+        // then
         assertThat(response).isNotNull();
         verify(storeService).save(any(Store.class));
     }
 
     @Test
-    @DisplayName("maps store create request")
+    @DisplayName("성공 - 요청값을 가게 엔티티로 매핑한다")
     void createStoreMapping_Success() {
+        // given
         ArgumentCaptor<Store> captor = ArgumentCaptor.forClass(Store.class);
         given(storeService.save(any(Store.class))).willReturn(store);
         given(geocodingService.geocode(any())).willReturn(new GeoPoint(37.0, 127.0));
 
+        // when
         storeFacade.createStore(request);
 
+        // then
         verify(storeService).save(captor.capture());
         Store captured = captor.getValue();
-
         assertThat(captured.getStoreName().getValue()).isEqualTo(storeName);
         assertThat(captured.getStoreCategory()).isEqualTo(storeCategory);
         assertThat(captured.getThumbnail().getImageUrl()).isEqualTo(thumbnailUrl);
@@ -137,18 +142,18 @@ class StoreFacadeTest {
     }
 
     @Test
-    @DisplayName("gets store detail with query dto menus")
+    @DisplayName("성공 - 가게 상세를 조회한다")
     void getStoreDetail_Success() {
+        // given
         UUID storeId = UUID.randomUUID();
-
         given(storeService.getStoreByPublicId(storeId)).willReturn(store);
-        given(storeQueryService.getMenusByPublicId(storeId)).willReturn(
-                List.of(new StoreMenuQueryDto(1L, "menu1", 10000, "desc1"))
-        );
+        given(storeQueryService.getMenusByPublicId(storeId)).willReturn(List.of(new StoreMenuQueryDto(1L, "menu1", 10000, "desc1")));
         given(storeReviewQueryService.findTop3PhotoReviewsByStore(storeId)).willReturn(List.of());
 
+        // when
         StoreDetailWithMenuAndReviewResponseDto response = storeFacade.getStoreDetail(storeId);
 
+        // then
         assertThat(response).isNotNull();
         assertThat(response.storePublicId()).isEqualTo(store.getPublicId());
         assertThat(response.storeName()).isEqualTo(storeName);
@@ -159,12 +164,13 @@ class StoreFacadeTest {
     }
 
     @Test
-    @DisplayName("throws when store is not found")
-    void getStoreDetail_Error_StoreNotFound() {
+    @DisplayName("실패 - 존재하지 않는 가게 상세를 조회할 때 에러")
+    void getStoreDetail_Error_RuntimeException() {
+        // given
         UUID storeId = UUID.randomUUID();
         given(storeService.getStoreByPublicId(storeId)).willThrow(new RuntimeException("STORE_NOT_FOUND"));
 
-        assertThatThrownBy(() -> storeFacade.getStoreDetail(storeId))
-                .isInstanceOf(RuntimeException.class);
+        // when & then
+        assertThatThrownBy(() -> storeFacade.getStoreDetail(storeId)).isInstanceOf(RuntimeException.class);
     }
 }

@@ -21,8 +21,8 @@ class RouteTimeCacheRepositoryTest {
     private ValueOperations<String, Object> valueOperations;
 
     @Test
-    @DisplayName("reads numeric redis values safely")
-    void getReadsNumericValueSafely() {
+    @DisplayName("성공 - 숫자 타입 캐시 값을 안전하게 읽는다")
+    void get_Success_NumericValueCached() {
         // given
         RouteTimeCacheRepository repository = new RouteTimeCacheRepository(redisTemplate);
         given(redisTemplate.opsForValue()).willReturn(valueOperations);
@@ -36,8 +36,8 @@ class RouteTimeCacheRepositoryTest {
     }
 
     @Test
-    @DisplayName("reads string redis values safely")
-    void getReadsStringValueSafely() {
+    @DisplayName("성공 - 문자열 타입 캐시 값을 정수로 변환해 읽는다")
+    void get_Success_StringValueCached() {
         // given
         RouteTimeCacheRepository repository = new RouteTimeCacheRepository(redisTemplate);
         given(redisTemplate.opsForValue()).willReturn(valueOperations);

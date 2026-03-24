@@ -153,7 +153,7 @@ class AuthServiceTest {
 
     @Test
     @DisplayName("에러 - 로그인 실패")
-    void login_InvalidUserInformation() {
+    void login_Error_InvalidUserInformation() {
         // given
         String notCorrectPasswordValue = "Kwo87x37T3vjSD!20HY@VeAC4#5DNbT6wuY";
 

@@ -9,8 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JwtProviderConsistencyTest {
 
     @Test
-    @DisplayName("tokens remain valid across providers with the same secret")
-    void tokenCanBeValidatedAcrossProvidersWithSameSecret() {
+    @DisplayName("성공 - 같은 시크릿 키로 발급한 토큰을 다른 Provider에서도 검증한다")
+    void validateTokenAcrossProvidersWithSameSecret_Success() {
         // given
         JwtProvider issuer = new JwtProvider(jwtProperties("abcdefghijklmnopqrstuvwxyz0123456789"));
         JwtProvider verifier = new JwtProvider(jwtProperties("abcdefghijklmnopqrstuvwxyz0123456789"));

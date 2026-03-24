@@ -173,7 +173,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("실패 - 존재하지 않는 accountId로 조회 시 empty 반환")
-    void findUserIdByAccountId_notFound() {
+    void findUserIdByAccountId_Error_NotFound() {
         // given
         userRepository.save(user);
         Long invalidAccountId = 9999L;

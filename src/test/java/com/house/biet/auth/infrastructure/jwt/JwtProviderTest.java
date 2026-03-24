@@ -39,7 +39,7 @@ class JwtProviderTest {
 
     @Test
     @DisplayName("성공 - access token 파싱 검증")
-    void parseAccessToken_Claims() {
+    void parseAccessToken_Success_Claims() {
         // given
         Long accountId = 1L;
         String role = UserRole.USER.toString();

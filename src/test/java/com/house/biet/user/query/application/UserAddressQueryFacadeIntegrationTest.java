@@ -73,7 +73,7 @@ class UserAddressQueryFacadeIntegrationTest extends ServiceIntegrationTest {
 
     @Test
     @DisplayName("성공 - 사용자 배송지 조회 Integration")
-    void getAllAddresses_Integration_Success() {
+    void getAllAddressesIntegration_Success() {
         // when
         List<com.house.biet.user.command.dto.AddressResponseDto> addresses =
                 userAddressQueryFacade.getAllAddresses(account.getId());

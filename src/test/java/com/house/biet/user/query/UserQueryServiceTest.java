@@ -61,7 +61,7 @@ class UserQueryServiceTest {
 
     @Test
     @DisplayName("실패 - accountId에 해당하는 User 없음")
-    void getUserIdByAccountId_Fail() {
+    void getUserIdByAccountId_Error() {
         // given
         Long accountId = 99L;
 

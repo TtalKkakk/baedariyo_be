@@ -84,7 +84,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("에러 - 주문이 존재하지 않으면 예외 발생")
-    void getOrder_Fail_OrderNotFound() {
+    void getOrder_Error_OrderNotFound() {
         // given
         Long orderId = 999L;
         when(orderRepository.findById(orderId))
@@ -131,7 +131,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("실패 - 주문 메뉴 제거 시 주문 없음")
-    void removeMenu_fail_orderNotFound() {
+    void removeMenu_Error_OrderNotFound() {
         // given
         OrderMenu menu = mock(OrderMenu.class);
 
@@ -177,7 +177,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("실패 - 잘못된 상태 전이")
-    void orderStatusFlow_Fail() {
+    void orderStatusFlow_Error() {
         // given
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
 
@@ -209,7 +209,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("실패 - 배달 중 주문 취소")
-    void cancelOrder_fail_invalidStatus() {
+    void cancelOrder_Error_InvalidStatus() {
         // given
         Order order = OrderFixtures.order(1L);
         order.markPaid();

@@ -11,7 +11,7 @@ class HangulTypingGeneratorTest {
 
     @Test
     @DisplayName("성공 - 일반 한글 타이핑 prefix 생성")
-    void generateTypingPrefix_NormalHangul_Success() {
+    void generateTypingPrefix_Success_NormalHangul() {
 
         // given
         String keyword = "치킨";
@@ -31,7 +31,7 @@ class HangulTypingGeneratorTest {
 
     @Test
     @DisplayName("성공 - 받침 없는 한글 처리")
-    void generateTypingPrefix_NoJong_Success() {
+    void generateTypingPrefix_Success_NoJong() {
 
         // given
         String keyword = "가";
@@ -48,7 +48,7 @@ class HangulTypingGeneratorTest {
 
     @Test
     @DisplayName("성공 - 받침 있는 한글 처리")
-    void generateTypingPrefix_WithJong_Success() {
+    void generateTypingPrefixWithJong_Success() {
 
         // given
         String keyword = "각";
@@ -66,7 +66,7 @@ class HangulTypingGeneratorTest {
 
     @Test
     @DisplayName("성공 - 쌍받침 처리")
-    void generateTypingPrefix_DoubleJong_Success() {
+    void generateTypingPrefix_Success_DoubleJong() {
 
         // given
         String keyword = "값";
@@ -84,7 +84,7 @@ class HangulTypingGeneratorTest {
 
     @Test
     @DisplayName("성공 - 여러 글자 한글 처리")
-    void generateTypingPrefix_MultiHangul_Success() {
+    void generateTypingPrefix_Success_MultiHangul() {
 
         // given
         String keyword = "치즈";
@@ -103,7 +103,7 @@ class HangulTypingGeneratorTest {
 
     @Test
     @DisplayName("성공 - 한글과 영어 혼합 처리")
-    void generateTypingPrefix_HangulEnglishMix_Success() {
+    void generateTypingPrefix_Success_HangulEnglishMix() {
 
         // given
         String keyword = "치킨A";
@@ -124,7 +124,7 @@ class HangulTypingGeneratorTest {
 
     @Test
     @DisplayName("성공 - 특수 유니코드 한글 처리")
-    void generateTypingPrefix_RareHangul_Success() {
+    void generateTypingPrefix_Success_RareHangul() {
 
         // given
         String keyword = "꿿떊";
@@ -139,7 +139,7 @@ class HangulTypingGeneratorTest {
 
     @Test
     @DisplayName("성공 - 긴 단어 prefix 생성")
-    void generateTypingPrefix_LongWord_Success() {
+    void generateTypingPrefix_Success_LongWord() {
 
         // given
         String keyword = "치킨치즈버거";

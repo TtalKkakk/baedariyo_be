@@ -27,7 +27,7 @@ class OrderRiderAssignServiceConcurrencyTest extends ServiceConcurrencyTest {
 
     @Test
     @DisplayName("여러 라이더가 동시에 주문을 수락하면 한 명만 성공한다")
-    void assignRider_concurrent_only_one_success() throws Exception {
+    void assignRiderOnlyOne_Success_Concurrent() throws Exception {
         // given
         Order order = OrderFixtures.order(1L);
         order.markPaid();  // 주문 결제

@@ -50,7 +50,7 @@ class OrderMenuTest {
 
     @Test
     @DisplayName("실패 - 주문 수량이 0 이하이면 예외 발생")
-    void createOrderMenu_Fail_InvalidQuantity() {
+    void createOrderMenu_Error_InvalidQuantity() {
         // given
         int invalidQuantity = 0;
 
@@ -68,7 +68,7 @@ class OrderMenuTest {
 
     @Test
     @DisplayName("성공 - 주문 메뉴 총 가격 계산 (수량 반영)")
-    void totalPrice_reflectsQuantity() {
+    void totalPrice_Success_ReflectsQuantity() {
         // given
         int quantity = 3;
         OrderMenu orderMenu = new OrderMenu(
@@ -88,7 +88,7 @@ class OrderMenuTest {
 
     @Test
     @DisplayName("성공 - OrderMenu equals/hashCode는 quantity 무시하고 비교")
-    void equals_ignoreQuantity() {
+    void equals_Success_IgnoreQuantity() {
         // given
         OrderMenu menu1 = new OrderMenu(givenStoreId, givenMenuId, givenOrderMenuName, 2, givenMoney);
         OrderMenu menu2 = new OrderMenu(givenStoreId, givenMenuId, givenOrderMenuName, 5, givenMoney);
@@ -101,7 +101,7 @@ class OrderMenuTest {
 
     @Test
     @DisplayName("성공 - 새로운 수량 합산 후 totalPrice 계산")
-    void mergeQuantity_totalPrice() {
+    void mergeQuantity_Success_TotalPrice() {
         // given
         int originalQuantity = 2;
         int addedQuantity = 3;

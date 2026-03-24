@@ -36,7 +36,7 @@ class BusinessHoursTest {
 
     @Test
     @DisplayName("성공 - 영업 중인 시간에는 true 반환")
-    void isOpen_true_whenWithinBusinessHour() {
+    void isOpen_Success_True_WhenWithinBusinessHour() {
         // given
         BusinessHours businessHours = BusinessHoursFixture.withDefaultWeekdays();
 
@@ -52,7 +52,7 @@ class BusinessHoursTest {
 
     @Test
     @DisplayName("성공 - 영업 종료 시간 이후에는 false 반환")
-    void isOpen_false_whenOutsideBusinessHour() {
+    void isOpen_Success_False_WhenOutsideBusinessHour() {
         // given
         BusinessHours businessHours = BusinessHoursFixture.withDefaultWeekdays();
 
@@ -68,7 +68,7 @@ class BusinessHoursTest {
 
     @Test
     @DisplayName("성공 - 해당 요일 영업시간이 없으면 false 반환")
-    void isOpen_false_whenDayNotExists() {
+    void isOpen_Error_False_WhenDayNotExists() {
         // given
         BusinessHours businessHours = BusinessHoursFixture.onlyWeekday(DayOfWeek.MONDAY);
 
@@ -84,7 +84,7 @@ class BusinessHoursTest {
 
     @Test
     @DisplayName("에러 - hours가 null이면 예외 발생")
-    void createBusinessHours_fail_whenHoursNull() {
+    void createBusinessHours_Error_WhenHoursNull() {
         // given
         Map<DayOfWeek, BusinessHour> hours = null;
 
@@ -96,7 +96,7 @@ class BusinessHoursTest {
 
     @Test
     @DisplayName("에러 - hours가 비어있으면 예외 발생")
-    void createBusinessHours_fail_whenHoursEmpty() {
+    void createBusinessHours_Error_WhenHoursEmpty() {
         // given
         Map<DayOfWeek, BusinessHour> hours = new EnumMap<>(DayOfWeek.class);
 

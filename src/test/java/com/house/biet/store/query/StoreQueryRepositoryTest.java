@@ -46,38 +46,44 @@ class StoreQueryRepositoryTest {
     }
 
     @Test
-    @DisplayName("finds menu query dtos by store id")
+    @DisplayName("성공 - 가게 ID로 메뉴 목록을 조회한다")
     void findMenusById_Success() {
+        // when
         List<StoreMenuQueryDto> menus = storeQueryRepository.findMenusById(savedStore.getId());
 
+        // then
         assertThat(menus).hasSize(3);
-        assertThat(menus).extracting(StoreMenuQueryDto::menuName)
-                .containsExactlyInAnyOrder("menu1", "menu2", "menu3");
+        assertThat(menus).extracting(StoreMenuQueryDto::menuName).containsExactlyInAnyOrder("menu1", "menu2", "menu3");
     }
 
     @Test
-    @DisplayName("returns empty when store id does not exist")
-    void findMenusById_Empty() {
+    @DisplayName("성공 - 존재하지 않는 가게 ID를 조회하면 빈 목록을 반환한다")
+    void findMenusById_Success_WhenStoreDoesNotExist() {
+        // when
         List<StoreMenuQueryDto> menus = storeQueryRepository.findMenusById(-1L);
 
+        // then
         assertThat(menus).isEmpty();
     }
 
     @Test
-    @DisplayName("finds menu query dtos by public store id")
+    @DisplayName("성공 - 가게 Public ID로 메뉴 목록을 조회한다")
     void findMenusByPublicId_Success() {
+        // when
         List<StoreMenuQueryDto> menus = storeQueryRepository.findMenusByPublicId(savedStore.getPublicId());
 
+        // then
         assertThat(menus).hasSize(3);
-        assertThat(menus).extracting(StoreMenuQueryDto::price)
-                .containsExactlyInAnyOrder(10000, 20000, 30000);
+        assertThat(menus).extracting(StoreMenuQueryDto::price).containsExactlyInAnyOrder(10000, 20000, 30000);
     }
 
     @Test
-    @DisplayName("returns empty when public store id is null")
-    void findMenusByPublicId_Empty() {
+    @DisplayName("성공 - null Public ID를 조회하면 빈 목록을 반환한다")
+    void findMenusByPublicId_Success_WhenPublicIdIsNull() {
+        // when
         List<StoreMenuQueryDto> menus = storeQueryRepository.findMenusByPublicId(null);
 
+        // then
         assertThat(menus).isEmpty();
     }
 }

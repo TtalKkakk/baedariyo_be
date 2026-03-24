@@ -48,7 +48,7 @@ class OrderRiderFacadeTest {
 
     @Test
     @DisplayName("실패 - RiderQueryService에서 조회 실패 시 예외 발생")
-    void assignRider_Fail_RiderNotFound() {
+    void assignRider_Error_RiderNotFound() {
         // given
         Long accountId = 10L;
         Long orderId = 100L;

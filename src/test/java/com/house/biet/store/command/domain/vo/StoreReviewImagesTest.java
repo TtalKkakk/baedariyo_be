@@ -37,7 +37,7 @@ class StoreReviewImagesTest {
 
     @Test
     @DisplayName("create - 실패 - 이미지 4장 초과")
-    void create_Fail_ImageCountExceeded() {
+    void create_Error_ImageCountExceeded() {
         // given
         List<String> images = List.of("1", "2", "3", "4", "5");
 

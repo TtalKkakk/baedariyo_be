@@ -38,7 +38,7 @@ class MenuTest {
 
     @Test
     @DisplayName("에러 - Store가 null이면 메뉴 생성 실패")
-    void CreateMenu_Fail_StoreIsNull() {
+    void createMenu_Error_StoreIsNull() {
         // given
         Store store = null;
         MenuName menuName = new MenuName("불고기버거");
@@ -54,7 +54,7 @@ class MenuTest {
 
     @Test
     @DisplayName("에러 - 메뉴 이름이 null이면 메뉴 생성 실패")
-    void CreateMenu_Fail_MenuNameIsNull() {
+    void createMenu_Error_MenuNameIsNull() {
         // given
         Store store = StoreFixture.createStore();
         MenuName menuName = null;
@@ -70,7 +70,7 @@ class MenuTest {
 
     @Test
     @DisplayName("에러 - 가격이 null이면 메뉴 생성 실패")
-    void CreateMenu_Fail_PriceIsNull() {
+    void createMenu_Error_PriceIsNull() {
         // given
         Store store = StoreFixture.createStore();
         MenuName menuName = new MenuName("불고기버거");

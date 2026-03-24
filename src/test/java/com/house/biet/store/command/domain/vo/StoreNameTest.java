@@ -25,7 +25,7 @@ class StoreNameTest {
 
     @Test
     @DisplayName("에러 - 가게 이름이 null")
-    void CreateStoreName_ValueIsNull() {
+    void createStoreName_Error_ValueIsNull() {
         // given
         String givenValue = null;
 
@@ -37,7 +37,7 @@ class StoreNameTest {
 
     @Test
     @DisplayName("에러 - 가게 이름이 빈 문자열")
-    void CreateStoreName_ValueIsEmpty() {
+    void createStoreName_Error_ValueIsEmpty() {
         // given
         String givenValue = "";
 
@@ -49,7 +49,7 @@ class StoreNameTest {
 
     @Test
     @DisplayName("에러 - 가게 이름이 공백 문자열")
-    void CreateStoreName_ValueIsBlank() {
+    void createStoreName_Error_ValueIsBlank() {
         // given
         String givenValue = "   ";
 
@@ -61,7 +61,7 @@ class StoreNameTest {
 
     @Test
     @DisplayName("에러 - 가게 이름이 50자 초과")
-    void CreateStoreName_ValueTooLong() {
+    void createStoreName_Success_ValueTooLong() {
         // given
         String givenValue = "a".repeat(51);
 

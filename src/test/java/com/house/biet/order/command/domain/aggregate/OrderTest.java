@@ -97,7 +97,7 @@ class OrderTest {
 
     @Test
     @DisplayName("실패 - 메뉴 없는 주문 생성")
-    void createOrder_Fail_NoMenu() {
+    void createOrder_Error_NoMenu() {
         assertThatThrownBy(() -> new Order(
                 storeId,
                 userId,
@@ -159,7 +159,7 @@ class OrderTest {
 
     @Test
     @DisplayName("실패 - 다른 가게 메뉴 추가 시 예외")
-    void addMenu_Fail_InvalidStore() {
+    void addMenu_Error_InvalidStore() {
         Order order = new Order(storeId,
                 userId,
                 List.of(menu1),
@@ -201,7 +201,7 @@ class OrderTest {
 
     @Test
     @DisplayName("실패 - 존재하지 않는 메뉴 제거")
-    void removeMenu_Fail_NotFound() {
+    void removeMenu_Error_NotFound() {
         Order order = new Order(storeId,
                 userId,
                 List.of(menu1),
@@ -241,7 +241,7 @@ class OrderTest {
 
     @Test
     @DisplayName("실패 - 메뉴 수량 0 이하로 수정")
-    void updateMenuQuantity_Fail_InvalidQuantity() {
+    void updateMenuQuantity_Error_InvalidQuantity() {
         Order order = new Order(storeId,
                 userId,
                 List.of(menu1),
@@ -260,7 +260,7 @@ class OrderTest {
 
     @Test
     @DisplayName("실패 - 존재하지 않는 메뉴 수량 수정")
-    void updateMenuQuantity_Fail_NotFound() {
+    void updateMenuQuantity_Error_NotFound() {
         Order order = new Order(storeId,
                 userId,
                 List.of(menu1),
@@ -393,7 +393,7 @@ class OrderTest {
 
     @Test
     @DisplayName("실패 - 주문 취소 잘못된 상태")
-    void cancelOrder_Fail() {
+    void cancelOrder_Error() {
         Order order = new Order(storeId,
                 userId,
                 List.of(menu1),
@@ -439,7 +439,7 @@ class OrderTest {
 
     @Test
     @DisplayName("실패 - 잘못된 상태 전이 시 예외")
-    void orderStatusFlow_Fail_InvalidTransition() {
+    void orderStatusFlow_Error_InvalidTransition() {
         Order order = new Order(storeId,
                 userId,
                 List.of(menu1),

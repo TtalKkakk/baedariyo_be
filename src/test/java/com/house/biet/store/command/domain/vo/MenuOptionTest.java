@@ -28,7 +28,7 @@ class MenuOptionTest {
 
     @Test
     @DisplayName("에러 - 옵션 이름이 null")
-    void CreateMenuOption_NameIsNull() {
+    void createMenuOption_Error_NameIsNull() {
         // given
         String givenName = null;
         Money givenOptionPrice = new Money(1000);
@@ -41,7 +41,7 @@ class MenuOptionTest {
 
     @Test
     @DisplayName("에러 - 옵션 이름이 빈 문자열")
-    void CreateMenuOption_NameIsEmpty() {
+    void createMenuOption_Error_NameIsEmpty() {
         // given
         String givenName = "";
         Money givenOptionPrice = new Money(1000);

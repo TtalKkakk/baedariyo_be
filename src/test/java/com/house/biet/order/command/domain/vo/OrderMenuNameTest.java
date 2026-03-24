@@ -40,7 +40,7 @@ class OrderMenuNameTest {
 
     @Test
     @DisplayName("실패 - 메뉴 이름이 null이면 예외 발생")
-    void createMenuName_Fail_NullValue() {
+    void createMenuName_Error_NullValue() {
         // given
         String nullValue = null;
 
@@ -52,7 +52,7 @@ class OrderMenuNameTest {
 
     @Test
     @DisplayName("실패 - 메뉴 이름이 빈 문자열이면 예외 발생")
-    void createMenuName_Fail_BlankValue() {
+    void createMenuName_Error_BlankValue() {
         // given
         String blankValue = "   ";
 
@@ -65,7 +65,7 @@ class OrderMenuNameTest {
 
     @Test
     @DisplayName("실패 - 메뉴 이름 길이가 50자를 초과하면 예외 발생")
-    void createMenuName_Fail_TooLongValue() {
+    void createMenuName_Error_TooLongValue() {
         // given
         String longMenuName = "a".repeat(51);
 
@@ -77,7 +77,7 @@ class OrderMenuNameTest {
 
     @Test
     @DisplayName("성공 - 같은 값의 MenuName은 동등하다")
-    void equalsAndHashCode_SameValue() {
+    void equalsAndHashCode_Success_SameValue() {
         // given
         OrderMenuName orderMenuName1 = new OrderMenuName("고추마요순살");
         OrderMenuName orderMenuName2 = new OrderMenuName("고추마요순살");
@@ -89,7 +89,7 @@ class OrderMenuNameTest {
 
     @Test
     @DisplayName("성공 - 다른 값의 MenuName은 동등하지 않다")
-    void equalsAndHashCode_DifferentValue() {
+    void equalsAndHashCode_Success_DifferentValue() {
         // given
         OrderMenuName orderMenuName1 = new OrderMenuName("고추마요순살");
         OrderMenuName orderMenuName2 = new OrderMenuName("간장마늘치킨");

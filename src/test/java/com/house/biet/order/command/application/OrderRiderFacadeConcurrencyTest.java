@@ -94,7 +94,7 @@ public class OrderRiderFacadeConcurrencyTest extends AbstractPostgresConcurrency
 
     @Test
     @DisplayName("동시성 - 여러 라이더(n명)가 동시에 주문 수락 시 한 명만 배정")
-    void assignRider_Concurrent_N_Riders() throws InterruptedException {
+    void assignRider_Success_Concurrent_N_Riders() throws InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(RIDER_COUNT);
         CountDownLatch latch = new CountDownLatch(RIDER_COUNT);
 

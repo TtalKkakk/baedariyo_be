@@ -82,7 +82,7 @@ class UserCommandFacadeIntegrationTest extends ServiceIntegrationTest {
 
     @Test
     @DisplayName("성공 - 주소 추가 및 기본 배송지 설정")
-    void addAddress_Integration_Success() {
+    void addAddressIntegration_Success() {
         // when
         userCommandFacade.addAddress(
                 account.getId(),
@@ -103,7 +103,7 @@ class UserCommandFacadeIntegrationTest extends ServiceIntegrationTest {
 
     @Test
     @DisplayName("성공 - 기본 배송지 변경")
-    void changeDefaultAddress_Integration_Success() {
+    void changeDefaultAddressIntegration_Success() {
         // given
         String addAliasValue = "회사";
         
@@ -131,7 +131,7 @@ class UserCommandFacadeIntegrationTest extends ServiceIntegrationTest {
 
     @Test
     @DisplayName("성공 - 주소 삭제")
-    void removeAddress_Integration_Success() {
+    void removeAddressIntegration_Success() {
         // given
         String removeAliasValue = "회사";
 
@@ -155,7 +155,7 @@ class UserCommandFacadeIntegrationTest extends ServiceIntegrationTest {
 
     @Test
     @DisplayName("성공 - 배송지 별칭 변경")
-    void changeAddressAlias_Integration_Success() {
+    void changeAddressAliasIntegration_Success() {
         // given
         String oldAlias = "집";
         String newAlias = "우리집";

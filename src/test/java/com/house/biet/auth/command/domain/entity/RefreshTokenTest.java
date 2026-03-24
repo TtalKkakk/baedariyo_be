@@ -29,7 +29,7 @@ class RefreshTokenTest {
 
     @Test
     @DisplayName("성공 - refreshToken 만료 확인")
-    void expired_refreshToken() {
+    void expired_Success_RefreshToken() {
         // given
         Long accountId = 1L;
         String token = "<REFRESH-TOKEN>";
@@ -46,7 +46,7 @@ class RefreshTokenTest {
 
     @Test
     @DisplayName("성공 - refreshToken 미만료 확인")
-    void notExpired_refreshToken() {
+    void notExpired_Error_RefreshToken() {
         // given
         Long accountId = 1L;
         String token = "<REFRESH-TOKEN>";

@@ -42,7 +42,7 @@ class OrderRepositoryTest {
 
     @Test
     @DisplayName("실패 - 존재하지 않는 주문 ID")
-    void existsById_False() {
+    void existsById_Success_False() {
         boolean exists = orderRepository.existsById(9999L);
         assertThat(exists).isFalse();
     }

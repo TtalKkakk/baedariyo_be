@@ -139,7 +139,7 @@ class PaymentQueryRepositoryQuerydslTest {
 
     @Test
     @DisplayName("성공 - userId로 전체 결제 조회 (status null)")
-    void findMyPaymentDetailList_AllStatus() {
+    void findMyPaymentDetailList_Success_AllStatus() {
         // when
         List<MyPaymentDetailResponseDto> result =
                 paymentQueryRepository.findMyPaymentDetailList(
@@ -152,7 +152,7 @@ class PaymentQueryRepositoryQuerydslTest {
 
     @Test
     @DisplayName("성공 - userId + status 조건으로 결제 조회")
-    void findMyPaymentDetailList_WithStatus() {
+    void findMyPaymentDetailList_Success_WithStatus() {
         // when
         List<MyPaymentDetailResponseDto> resultReady =
                 paymentQueryRepository.findMyPaymentDetailList(

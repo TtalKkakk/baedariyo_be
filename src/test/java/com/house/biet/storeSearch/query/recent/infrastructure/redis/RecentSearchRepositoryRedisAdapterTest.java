@@ -43,7 +43,7 @@ class RecentSearchRepositoryRedisAdapterTest {
 
     @Test
     @DisplayName("성공 - 최근 검색어 저장 시 오래된 데이터 삭제")
-    void saveKeyword_RemoveOldData_Success() {
+    void saveKeyword_Success_RemoveOldData() {
 
         // given
         Long userId = 1L;

@@ -127,7 +127,7 @@ class AccountRepositoryTest {
 
     @Test
     @DisplayName("성공 - 이메일로 계정을 조회")
-    void findByEmail__AndRole__Success() {
+    void findByEmailAndRole_Success() {
         // given
         accountRepository.save(userAccount);
 
@@ -141,7 +141,7 @@ class AccountRepositoryTest {
 
     @Test
     @DisplayName("성공 - 이메일 계정이 저장되었는지 확인")
-    void existsByEmail__Role__Success() {
+    void existsByEmail_Success_Role() {
         // given
         accountRepository.save(userAccount);
 

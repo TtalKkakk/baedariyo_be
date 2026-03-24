@@ -26,7 +26,7 @@ class StoreOperationInfoTest {
 
     @Test
     @DisplayName("성공 - 원산지 정보만 있는 경우")
-    void CreateWithOnlyOriginInfo() {
+    void createWithOnlyOriginInfo_Success() {
         // given
         String originInfo = "쌀: 국내산";
 
