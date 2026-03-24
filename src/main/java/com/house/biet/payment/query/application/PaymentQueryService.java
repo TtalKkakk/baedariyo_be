@@ -1,106 +1,28 @@
 package com.house.biet.payment.query.application;
 
 import com.house.biet.common.domain.enums.PaymentStatus;
-import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.query.application.dto.MyPaymentDetailResponseDto;
 import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
+import com.house.biet.payment.query.application.dto.PaymentDetailResponseDto;
 
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Payment Query Application Service.
- *
- * <p>
- * 결제 도메인의 조회(Query) 전용 서비스 계층이다.
- * </p>
- *
- * <h3>역할</h3>
- * <ul>
- *     <li>읽기 전용 데이터 조회</li>
- *     <li>조회 트랜잭션 관리 (readOnly)</li>
- *     <li>화면 표시용 데이터 제공</li>
- * </ul>
- *
- * <h3>설계 원칙</h3>
- * <ul>
- *     <li>상태 변경 로직은 포함하지 않는다.</li>
- *     <li>읽기 성능 최적화를 위해 Projection 또는 Querydsl 확장이 가능하다.</li>
- *     <li>Entity 직접 반환은 단순 구조에서만 허용한다.</li>
- * </ul>
- */
 public interface PaymentQueryService {
 
-    /**
-     * 특정 상태의 결제 목록을 조회한다.
-     *
-     * @param status 조회할 결제 상태
-     * @return 해당 상태의 결제 목록
-     */
-    List<Payment> findByStatus(PaymentStatus status);
+    List<PaymentDetailResponseDto> findByStatus(PaymentStatus status);
 
-    /**
-     * id를 이용하여 결제 이력을 조회한다
-     * jpa 영속성이 필요없을 때 사용
-     * 
-     * @param paymentId 결제 id
-     * @return 해당 결제 (없으면 Optional.empty())
-     */
-    Optional<Payment> findById(Long paymentId);
+    Optional<PaymentDetailResponseDto> findById(Long paymentId);
 
-    /**
-     * 특정 주문에 대한 결제 이력을 조회한다.
-     *
-     * <p>
-     * 1:N 구조에서 하나의 주문에 여러 결제가 존재할 수 있다.
-     * </p>
-     *
-     * @param orderId 주문 ID
-     * @return 해당 주문의 결제 목록
-     */
-    List<Payment> findByOrderId(Long orderId);
+    List<PaymentDetailResponseDto> findByOrderId(Long orderId);
 
-    /**
-     * 특정 사용자의 전체 결제 이력을 조회한다.
-     *
-     * @param userId 사용자 ID
-     * @return 해당 사용자의 결제 목록
-     */
-    List<Payment> findByUserId(Long userId);
+    List<PaymentDetailResponseDto> findByUserId(Long userId);
 
-    /**
-     * 특정 사용자의 특정 상태 결제 목록을 조회한다.
-     *
-     * @param userId 사용자 ID
-     * @param statuses 조회할 결제 상태 목록
-     * @return 조건에 해당하는 결제 목록
-     */
-    List<Payment> findByUserIdAndStatuses(
-            Long userId,
-            List<PaymentStatus> statuses
-    );
+    List<PaymentDetailResponseDto> findByUserIdAndStatuses(Long userId, List<PaymentStatus> statuses);
 
-    /**
-     * 특정 주문의 승인된 결제를 조회한다.
-     *
-     * @param orderId 주문 ID
-     * @return 승인된 결제 (없을 경우 Optional.empty)
-     */
-    Optional<Payment> findApprovedByOrderId(Long orderId);
+    Optional<PaymentDetailResponseDto> findApprovedByOrderId(Long orderId);
 
-    /**
-     * paymentKey를 기준으로 결제를 조회한다.
-     *
-     * @param paymentKey 결제 식별 키
-     * @return 해당 paymentKey의 결제 (없을 경우 Optional.empty)
-     */
-    Optional<Payment> findByPaymentKey(String paymentKey);
+    Optional<PaymentDetailResponseDto> findByPaymentKey(String paymentKey);
 
-    /**
-     * 검색 조건에 따른 나의 결제 상세 내역 목록을 조회한다.
-     *
-     * @param myPaymentSearchCondition 결제 조회 필터 조건 (사용자 ID, 기간 등)
-     * @return 결제 상세 정보 DTO 리스트
-     */
     List<MyPaymentDetailResponseDto> findMyPaymentDetailList(MyPaymentSearchCondition myPaymentSearchCondition);
 }

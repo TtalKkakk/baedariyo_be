@@ -1,8 +1,5 @@
 package com.house.biet.store.query.dto;
 
-import com.house.biet.common.domain.vo.Money;
-import com.house.biet.store.command.domain.entity.Menu;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -17,15 +14,17 @@ public record StoreDetailWithMenuAndReviewResponseDto(
 ) {
 
     public record MenuDto(
+            Long menuId,
             String menuName,
-            Money price,
+            int price,
             String menuDescription
     ) {
-        public static MenuDto fromEntity(Menu menu) {
+        public static MenuDto from(StoreMenuQueryDto menu) {
             return new MenuDto(
-                    menu.getMenuName().getValue(),
-                    menu.getPrice(),
-                    menu.getMenuDescription()
+                    menu.menuId(),
+                    menu.menuName(),
+                    menu.price(),
+                    menu.menuDescription()
             );
         }
     }

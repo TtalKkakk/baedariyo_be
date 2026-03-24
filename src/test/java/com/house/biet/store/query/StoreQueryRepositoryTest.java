@@ -4,9 +4,9 @@ import com.house.biet.common.domain.vo.Money;
 import com.house.biet.fixtures.StoreFixture;
 import com.house.biet.store.command.StoreRepository;
 import com.house.biet.store.command.domain.aggregate.Store;
-import com.house.biet.store.command.domain.entity.Menu;
 import com.house.biet.store.command.domain.vo.MenuName;
 import com.house.biet.store.command.repository.StoreRepositoryJpaAdapter;
+import com.house.biet.store.query.dto.StoreMenuQueryDto;
 import com.house.biet.store.query.repository.StoreQueryRepositoryJpaAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,18 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @Import({
         StoreQueryRepositoryJpaAdapter.class,
-        StoreRepositoryJpaAdapter.class}
-)
+        StoreRepositoryJpaAdapter.class
+})
 @ActiveProfiles("test")
 class StoreQueryRepositoryTest {
 
     @Autowired
-    StoreRepository storeRepository;
+    private StoreRepository storeRepository;
 
     @Autowired
-    StoreQueryRepository storeQueryRepository;
+    private StoreQueryRepository storeQueryRepository;
 
-    Store savedStore;
+    private Store savedStore;
 
     @BeforeEach
     void setup() {
@@ -42,47 +42,42 @@ class StoreQueryRepositoryTest {
         store.addMenu(new MenuName("menu1"), new Money(10000), "description1");
         store.addMenu(new MenuName("menu2"), new Money(20000), "description2");
         store.addMenu(new MenuName("menu3"), new Money(30000), "description3");
-
         savedStore = storeRepository.save(store);
     }
 
     @Test
-    @DisplayName("성공 - storeId로 메뉴 조회")
+    @DisplayName("finds menu query dtos by store id")
     void findMenusById_Success() {
-        // when
-        List<Menu> menus = storeQueryRepository.findMenusById(savedStore.getId());
+        List<StoreMenuQueryDto> menus = storeQueryRepository.findMenusById(savedStore.getId());
 
-        // then
         assertThat(menus).hasSize(3);
+        assertThat(menus).extracting(StoreMenuQueryDto::menuName)
+                .containsExactlyInAnyOrder("menu1", "menu2", "menu3");
     }
 
     @Test
-    @DisplayName("성공 - 없는 storeId로 조회 시 빈 리스트")
+    @DisplayName("returns empty when store id does not exist")
     void findMenusById_Empty() {
-        // when
-        List<Menu> menus = storeQueryRepository.findMenusById(-1L);
+        List<StoreMenuQueryDto> menus = storeQueryRepository.findMenusById(-1L);
 
-        // then
         assertThat(menus).isEmpty();
     }
 
     @Test
-    @DisplayName("성공 - publicStoreId로 메뉴 조회")
+    @DisplayName("finds menu query dtos by public store id")
     void findMenusByPublicId_Success() {
-        // when
-        List<Menu> menus = storeQueryRepository.findMenusByPublicId(savedStore.getPublicId());
+        List<StoreMenuQueryDto> menus = storeQueryRepository.findMenusByPublicId(savedStore.getPublicId());
 
-        // then
         assertThat(menus).hasSize(3);
+        assertThat(menus).extracting(StoreMenuQueryDto::price)
+                .containsExactlyInAnyOrder(10000, 20000, 30000);
     }
 
     @Test
-    @DisplayName("성공 - 없는 publicStoreId로 조회 시 빈 리스트")
+    @DisplayName("returns empty when public store id is null")
     void findMenusByPublicId_Empty() {
-        // when
-        List<Menu> menus = storeQueryRepository.findMenusByPublicId(null);
+        List<StoreMenuQueryDto> menus = storeQueryRepository.findMenusByPublicId(null);
 
-        // then
         assertThat(menus).isEmpty();
     }
 }

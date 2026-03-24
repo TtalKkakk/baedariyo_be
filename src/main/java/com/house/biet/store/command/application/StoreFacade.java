@@ -66,7 +66,7 @@ public class StoreFacade {
         // 2. 메뉴 조회
         List<StoreDetailWithMenuAndReviewResponseDto.MenuDto> menus = storeQueryService.getMenusByPublicId(storePublicId)
                 .stream()
-                .map(StoreDetailWithMenuAndReviewResponseDto.MenuDto::fromEntity)
+                .map(StoreDetailWithMenuAndReviewResponseDto.MenuDto::from)
                 .collect(Collectors.toList());
 
         // 3. 최근 사진 리뷰 3개 조회

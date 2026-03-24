@@ -1,7 +1,7 @@
 package com.house.biet.store.query.repository;
 
-import com.house.biet.store.command.domain.entity.Menu;
 import com.house.biet.store.query.StoreQueryRepository;
+import com.house.biet.store.query.dto.StoreMenuQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -15,12 +15,12 @@ public class StoreQueryRepositoryJpaAdapter implements StoreQueryRepository {
     private final StoreQueryRepositoryJpa storeQueryRepositoryJpa;
 
     @Override
-    public List<Menu> findMenusById(Long storeId) {
+    public List<StoreMenuQueryDto> findMenusById(Long storeId) {
         return storeQueryRepositoryJpa.findMenusById(storeId);
     }
 
     @Override
-    public List<Menu> findMenusByPublicId(UUID publicStoreId) {
-         return storeQueryRepositoryJpa.findMenusByPublicId(publicStoreId);
+    public List<StoreMenuQueryDto> findMenusByPublicId(UUID publicStoreId) {
+        return storeQueryRepositoryJpa.findMenusByPublicId(publicStoreId);
     }
 }

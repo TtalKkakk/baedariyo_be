@@ -1,10 +1,10 @@
 package com.house.biet.payment.query.application;
 
 import com.house.biet.common.domain.enums.PaymentStatus;
-import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.query.PaymentQueryRepository;
 import com.house.biet.payment.query.application.dto.MyPaymentDetailResponseDto;
 import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
+import com.house.biet.payment.query.application.dto.PaymentDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,49 +20,42 @@ public class PaymentQueryServiceImpl implements PaymentQueryService {
     private final PaymentQueryRepository paymentQueryRepository;
 
     @Override
-    public List<Payment> findByStatus(PaymentStatus status) {
+    public List<PaymentDetailResponseDto> findByStatus(PaymentStatus status) {
         return paymentQueryRepository.findAllByStatus(status);
     }
 
     @Override
-    public Optional<Payment> findById(Long paymentId) {
+    public Optional<PaymentDetailResponseDto> findById(Long paymentId) {
         return paymentQueryRepository.findById(paymentId);
     }
 
     @Override
-    public List<Payment> findByOrderId(Long orderId) {
+    public List<PaymentDetailResponseDto> findByOrderId(Long orderId) {
         return paymentQueryRepository.findAllByOrderId(orderId);
     }
 
     @Override
-    public List<Payment> findByUserId(Long userId) {
+    public List<PaymentDetailResponseDto> findByUserId(Long userId) {
         return paymentQueryRepository.findAllByUserId(userId);
     }
 
     @Override
-    public List<Payment> findByUserIdAndStatuses(
-            Long userId,
-            List<PaymentStatus> statuses
-    ) {
-        return paymentQueryRepository
-                .findAllByUserIdAndStatusIn(userId, statuses);
+    public List<PaymentDetailResponseDto> findByUserIdAndStatuses(Long userId, List<PaymentStatus> statuses) {
+        return paymentQueryRepository.findAllByUserIdAndStatusIn(userId, statuses);
     }
 
     @Override
-    public Optional<Payment> findApprovedByOrderId(Long orderId) {
-        return paymentQueryRepository
-                .findApprovedByOrderId(orderId);
+    public Optional<PaymentDetailResponseDto> findApprovedByOrderId(Long orderId) {
+        return paymentQueryRepository.findApprovedByOrderId(orderId);
     }
 
     @Override
-    public Optional<Payment> findByPaymentKey(String paymentKey) {
-        return paymentQueryRepository
-                .findByPaymentKey(paymentKey);
+    public Optional<PaymentDetailResponseDto> findByPaymentKey(String paymentKey) {
+        return paymentQueryRepository.findByPaymentKey(paymentKey);
     }
 
     @Override
     public List<MyPaymentDetailResponseDto> findMyPaymentDetailList(MyPaymentSearchCondition myPaymentSearchCondition) {
-        return paymentQueryRepository
-                .findMyPaymentDetailList(myPaymentSearchCondition);
+        return paymentQueryRepository.findMyPaymentDetailList(myPaymentSearchCondition);
     }
 }

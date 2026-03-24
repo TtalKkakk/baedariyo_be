@@ -3,7 +3,6 @@ package com.house.biet.payment.query.application;
 import com.house.biet.common.domain.enums.PaymentStatus;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
-import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.query.application.dto.MyPaymentDetailResponseDto;
 import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
 import com.house.biet.payment.query.application.dto.PaymentDetailResponseDto;
@@ -21,10 +20,8 @@ public class PaymentQueryMapper {
     private final UserQueryService userQueryService;
 
     public PaymentDetailResponseDto getPayment(Long paymentId) {
-        Payment payment = paymentQueryService.findById(paymentId)
+        return paymentQueryService.findById(paymentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
-
-        return PaymentDetailResponseDto.from(payment);
     }
 
     public List<MyPaymentDetailResponseDto> getMyPaymentList(Long accountId, PaymentStatus status) {

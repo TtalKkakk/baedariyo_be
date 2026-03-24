@@ -10,11 +10,15 @@ import com.house.biet.global.geocoding.dto.GeoPoint;
 import com.house.biet.store.command.application.dto.StoreCreateRequestDto;
 import com.house.biet.store.command.application.dto.StoreCreateResponseDto;
 import com.house.biet.store.command.domain.aggregate.Store;
-import com.house.biet.store.command.domain.vo.*;
+import com.house.biet.store.command.domain.vo.BusinessHours;
+import com.house.biet.store.command.domain.vo.GeoLocation;
+import com.house.biet.store.command.domain.vo.StoreName;
+import com.house.biet.store.command.domain.vo.StoreOperationInfo;
+import com.house.biet.store.command.domain.vo.StoreThumbnail;
 import com.house.biet.store.query.application.StoreQueryService;
 import com.house.biet.store.query.application.StoreReviewQueryService;
 import com.house.biet.store.query.dto.StoreDetailWithMenuAndReviewResponseDto;
-import com.house.biet.storeSearch.query.common.SearchKeywordNormalizer;
+import com.house.biet.store.query.dto.StoreMenuQueryDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,13 +66,12 @@ class StoreFacadeTest {
     private StoreOperationInfo operationInfo;
     private Money minimumOrderAmount;
     private Money deliveryFee;
-
     private StoreCreateRequestDto request;
     private Store store;
 
     @BeforeEach
     void setUp() {
-        storeName = "테스트가게";
+        storeName = "test store";
         storeCategory = StoreCategory.CHICKEN;
         storeAddress = new Address("roadAddress", "jibunAddress", "detailAddress");
         storeGeoLocation = new GeoLocation(37.2123, 129.222);
@@ -103,38 +106,27 @@ class StoreFacadeTest {
     }
 
     @Test
-    @DisplayName("성공 - 가게 생성")
+    @DisplayName("creates store")
     void createStore_Success() {
-        // given
         given(storeService.save(any(Store.class))).willReturn(store);
+        given(geocodingService.geocode(any())).willReturn(new GeoPoint(37.0, 127.0));
 
-        given(geocodingService.geocode(any()))
-                .willReturn(new GeoPoint(37.0, 127.0));
-
-        // when
         StoreCreateResponseDto response = storeFacade.createStore(request);
 
-        // then
         assertThat(response).isNotNull();
         verify(storeService).save(any(Store.class));
     }
 
     @Test
-    @DisplayName("성공 - 가게 생성 시 요청값 매핑")
+    @DisplayName("maps store create request")
     void createStoreMapping_Success() {
-        // given
         ArgumentCaptor<Store> captor = ArgumentCaptor.forClass(Store.class);
         given(storeService.save(any(Store.class))).willReturn(store);
+        given(geocodingService.geocode(any())).willReturn(new GeoPoint(37.0, 127.0));
 
-        given(geocodingService.geocode(any()))
-                .willReturn(new GeoPoint(37.0, 127.0));
-
-        // when
         storeFacade.createStore(request);
 
-        // then
         verify(storeService).save(captor.capture());
-
         Store captured = captor.getValue();
 
         assertThat(captured.getStoreName().getValue()).isEqualTo(storeName);
@@ -145,43 +137,33 @@ class StoreFacadeTest {
     }
 
     @Test
-    @DisplayName("성공 - 가게 상세 조회")
+    @DisplayName("gets store detail with query dto menus")
     void getStoreDetail_Success() {
-        // given
         UUID storeId = UUID.randomUUID();
 
         given(storeService.getStoreByPublicId(storeId)).willReturn(store);
-        given(storeQueryService.getMenusByPublicId(storeId)).willReturn(List.of());
-        given(storeReviewQueryService.findTop3PhotoReviewsByStore(storeId))
-                .willReturn(List.of());
+        given(storeQueryService.getMenusByPublicId(storeId)).willReturn(
+                List.of(new StoreMenuQueryDto(1L, "menu1", 10000, "desc1"))
+        );
+        given(storeReviewQueryService.findTop3PhotoReviewsByStore(storeId)).willReturn(List.of());
 
-        // when
-        StoreDetailWithMenuAndReviewResponseDto response =
-                storeFacade.getStoreDetail(storeId);
+        StoreDetailWithMenuAndReviewResponseDto response = storeFacade.getStoreDetail(storeId);
 
-        // then
         assertThat(response).isNotNull();
         assertThat(response.storePublicId()).isEqualTo(store.getPublicId());
         assertThat(response.storeName()).isEqualTo(storeName);
-        assertThat(response.menus()).isEmpty();
+        assertThat(response.menus()).hasSize(1);
+        assertThat(response.menus().get(0).menuName()).isEqualTo("menu1");
+        assertThat(response.menus().get(0).price()).isEqualTo(10000);
         assertThat(response.recentPhotoReviews()).isEmpty();
-
-        verify(storeService).getStoreByPublicId(storeId);
-        verify(storeQueryService).getMenusByPublicId(storeId);
-        verify(storeReviewQueryService)
-                .findTop3PhotoReviewsByStore(storeId);
     }
 
     @Test
-    @DisplayName("실패 - 가게 미존재")
+    @DisplayName("throws when store is not found")
     void getStoreDetail_Error_StoreNotFound() {
-        // given
         UUID storeId = UUID.randomUUID();
+        given(storeService.getStoreByPublicId(storeId)).willThrow(new RuntimeException("STORE_NOT_FOUND"));
 
-        given(storeService.getStoreByPublicId(storeId))
-                .willThrow(new RuntimeException("STORE_NOT_FOUND"));
-
-        // when & then
         assertThatThrownBy(() -> storeFacade.getStoreDetail(storeId))
                 .isInstanceOf(RuntimeException.class);
     }

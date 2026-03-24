@@ -4,14 +4,12 @@ import com.house.biet.auth.infrastructure.security.AuthPrincipal;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
 import com.house.biet.store.command.application.StoreFacade;
-import com.house.biet.store.command.application.StoreService;
 import com.house.biet.store.command.application.dto.StoreCreateRequestDto;
 import com.house.biet.store.command.application.dto.StoreCreateResponseDto;
 import com.house.biet.store.query.application.StoreQueryService;
-import com.house.biet.store.command.domain.aggregate.Store;
-import com.house.biet.store.command.domain.entity.Menu;
 import com.house.biet.store.query.application.StoreSearchQueryService;
 import com.house.biet.store.query.dto.StoreDetailWithMenuAndReviewResponseDto;
+import com.house.biet.store.query.dto.StoreMenuQueryDto;
 import com.house.biet.store.query.dto.StoreSearchRequestDto;
 import com.house.biet.store.query.dto.StoreSearchResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -85,10 +83,10 @@ public class StoreController {
     // ----------------------
 
     @GetMapping("/{storePublicId}/menus")
-    public ResponseEntity<CustomApiResponse<List<Menu>>> getMenusByStorePublicId(
+    public ResponseEntity<CustomApiResponse<List<StoreMenuQueryDto>>> getMenusByStorePublicId(
             @PathVariable UUID storePublicId
     ) {
-        List<Menu> menus = storeQueryService.getMenusByPublicId(storePublicId);
+        List<StoreMenuQueryDto> menus = storeQueryService.getMenusByPublicId(storePublicId);
         return ResponseEntity.ok(
                 CustomApiResponse.success(SuccessCode.OK, menus)
         );
