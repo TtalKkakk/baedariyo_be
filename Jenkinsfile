@@ -4,20 +4,13 @@ pipeline {
     environment {
         IMAGE_NAME = "ttalkkak"
         CONTAINER_NAME = "ttalkkak-container"
-        GIT_URL = "https://github.com/TtalKkakk/baedariyo_be.git"
     }
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                git url: "${GIT_URL}", branch: 'main'
-            }
-        }
-
         stage('Test') {
             steps {
-                sh './gradlew test -x test'
+                sh './gradlew test'
             }
         }
 
