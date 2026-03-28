@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+volumes:
+  jenkins_home:

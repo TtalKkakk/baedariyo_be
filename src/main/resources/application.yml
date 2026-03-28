@@ -18,3 +18,9 @@ spring:
   vword:
     base-url: https://api.vworld.kr/req/address
     rest-api-key: ${vword.rest-api-key}
+
+  redis:
+    host: redis
+
+  rabbitmq:
+    host: rabbitmq
