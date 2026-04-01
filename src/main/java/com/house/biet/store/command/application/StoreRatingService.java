@@ -13,6 +13,12 @@ public class StoreRatingService {
 
     private final StoreService storeService;
 
+    /**
+     * Rating을 처리한다
+     *
+     * @param storePublicId storePublicId 값
+     * @param rating rating 값
+     */
     @Transactional
     public void increaseRating(UUID storePublicId, int rating) {
         Store store = storeService.getStoreByPublicId(storePublicId);
@@ -20,6 +26,12 @@ public class StoreRatingService {
         store.addRating(rating);
     }
 
+    /**
+     * Rating을 처리한다
+     *
+     * @param storePublicId storePublicId 값
+     * @param rating rating 값
+     */
     @Transactional
     public void decreaseRating(UUID storePublicId, int rating) {
         Store store = storeService.getStoreByPublicId(storePublicId);

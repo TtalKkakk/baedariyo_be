@@ -20,6 +20,13 @@ public class OrderUserFacade {
     private final OrderService orderService;
     private final UserQueryService userQueryService;
 
+    /**
+     * 주문 Notify을 생성한다
+     *
+     * @param accountId 계정 식별자
+     * @param requestDto 요청 정보
+     * @return createOrderAndNotify 결과
+     */
     @Transactional
     public Order createOrderAndNotify(Long accountId, OrderCreateRequestDto requestDto) {
 

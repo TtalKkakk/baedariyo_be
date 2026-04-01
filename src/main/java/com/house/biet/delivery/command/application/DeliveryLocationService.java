@@ -26,6 +26,9 @@ public class DeliveryLocationService {
 
     /**
      * 라이더 위치 업데이트 처리
+     *
+     * @param message message 값
+     * @param accountId 계정 식별자
      */
     @Transactional
     public void handleLocation(DeliveryLocationMessage message, Long accountId) {
@@ -56,6 +59,9 @@ public class DeliveryLocationService {
 
     /**
      * 현재 배달 위치 조회
+     *
+     * @param orderId 주문 식별자
+     * @return getCurrentLocation 결과
      */
     @Transactional(readOnly = true)
     public DeliveryLocationResponseDto getCurrentLocation(Long orderId) {
@@ -71,12 +77,21 @@ public class DeliveryLocationService {
 
     /**
      * 배달 완료 시 위치 삭제
+     *
+     * @param orderId 주문 식별자
      */
     @Transactional
     public void clearLocation(Long orderId) {
         redisRepository.delete(orderId);
     }
 
+    /**
+     * 위치을 변경한다
+     *
+     * @param orderId 주문 식별자
+     * @param latitude latitude 값
+     * @param longitude longitude 값
+     */
     @Transactional
     public void updateLocation(Long orderId, double latitude, double longitude) {
 

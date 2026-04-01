@@ -24,6 +24,12 @@ public class PaymentQueryRepositoryQuerydsl {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    /**
+     * 내 결제 상세 목록을 조회한다
+     *
+     * @param condition condition 값
+     * @return 조회 결과 목록
+     */
     public List<MyPaymentDetailResponseDto> findMyPaymentDetailList(
             MyPaymentSearchCondition condition
     ) {

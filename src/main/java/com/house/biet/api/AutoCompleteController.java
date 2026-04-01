@@ -18,6 +18,12 @@ public class AutoCompleteController {
 
     private final AutoCompleteSearchService autoCompleteSearchService;
 
+    /**
+     * 대상을 검색한다
+     *
+     * @param keyword 검색어
+     * @return search 결과
+     */
     @GetMapping
     public ResponseEntity<CustomApiResponse<KeywordListResponseDto>> search(
             @RequestParam String keyword

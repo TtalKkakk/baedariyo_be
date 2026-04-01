@@ -56,17 +56,11 @@ public class PaymentService {
     /**
      * 새로운 결제를 생성한다.
      *
-     * <p>
-     * 동일한 paymentKey가 존재할 경우 중복 결제로 간주하고 예외를 발생시킨다.
-     * 생성된 결제의 초기 상태는 {@code READY}이다.
-     * </p>
-     *
      * @param orderId 결제가 발생한 주문 ID
      * @param userId 사용자 ID
      * @param money 결제 금액
      * @param paymentKeyValue 중복 방지를 위한 결제 식별 키
      * @return 생성된 Payment의 식별자(ID)
-     * @throws CustomException DUPLICATE_PAYMENT 예외 (중복 결제 시)
      */
     public Long createPayment(Long orderId, Long userId, Money money, String paymentKeyValue) {
         if (paymentRepository.existsByPaymentKey(paymentKeyValue)) {
@@ -86,13 +80,7 @@ public class PaymentService {
     /**
      * 결제를 PG 요청 상태로 전이한다.
      *
-     * <p>
-     * READY 상태에서만 REQUESTED 상태로 전이할 수 있다.
-     * 상태 전이 검증은 Aggregate 내부에서 수행된다.
-     * </p>
-     *
      * @param paymentId 결제 식별자
-     * @throws CustomException PAYMENT_NOT_FOUND 예외 (결제 미존재 시)
      */
     public void request(Long paymentId) {
         Payment payment = getPayment(paymentId);
@@ -119,6 +107,12 @@ public class PaymentService {
             maxAttempts = 3,
             backoff = @Backoff(delay = 50, multiplier = 2.0)
     )
+    /**
+     * 대상을 승인한다
+     *
+     * @param paymentId 결제 식별자
+     * @param transactionIdValue transactionIdValue 값
+     */
     public void approve(Long paymentId, String transactionIdValue) {
         Payment payment = getPayment(paymentId);
 
@@ -134,10 +128,6 @@ public class PaymentService {
     /**
      * 결제 승인 실패 처리.
      *
-     * <p>
-     * REQUESTED 상태에서 FAILED 상태로 전이한다.
-     * </p>
-     *
      * @param paymentId 결제 식별자
      */
     public void fail(Long paymentId) {
@@ -148,10 +138,6 @@ public class PaymentService {
     /**
      * 승인된 결제를 취소한다.
      *
-     * <p>
-     * APPROVED 상태에서만 CANCELED 상태로 전이 가능하다.
-     * </p>
-     *
      * @param paymentId 결제 식별자
      */
     public void cancel(Long paymentId) {
@@ -159,11 +145,25 @@ public class PaymentService {
         payment.cancel();
     }
 
+    /**
+     * 대상을 처리한다
+     *
+     * @param e e 값
+     * @param paymentId 결제 식별자
+     * @param transactionIdValue transactionIdValue 값
+     */
     @Recover
     public void recover(ObjectOptimisticLockingFailureException e, Long paymentId, String transactionIdValue) {
         throw new CustomException(ErrorCode.PAYMENT_CONCURRENCY_CONFLICT);
     }
 
+    /**
+     * 대상을 처리한다
+     *
+     * @param e e 값
+     * @param paymentId 결제 식별자
+     * @param transactionIdValue transactionIdValue 값
+     */
     @Recover
     public void recover(OptimisticLockException e, Long paymentId, String transactionIdValue) {
         throw new CustomException(ErrorCode.PAYMENT_CONCURRENCY_CONFLICT);

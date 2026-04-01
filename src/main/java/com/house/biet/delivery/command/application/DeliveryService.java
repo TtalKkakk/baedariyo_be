@@ -37,7 +37,6 @@ public class DeliveryService {
      *
      * @param orderId 주문 ID
      * @return 생성된 Delivery
-     * @throws CustomException 이미 해당 주문에 대한 배달이 존재할 경우
      */
     public Delivery create(Long orderId) {
         deliveryRepository.findByOrderId(orderId)
@@ -118,7 +117,6 @@ public class DeliveryService {
      *
      * @param orderId 주문 ID
      * @return Delivery
-     * @throws CustomException 존재하지 않을 경우
      */
     @Transactional(readOnly = true)
     public Delivery getByOrderId(Long orderId) {

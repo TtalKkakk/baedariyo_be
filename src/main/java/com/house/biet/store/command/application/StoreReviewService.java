@@ -50,7 +50,6 @@ public class StoreReviewService {
      *
      * @param publicId 조회 대상 리뷰 공개 식별자
      * @return 조회된 StoreReview
-     * @throws CustomException 리뷰를 찾지 못하면 STORE_REVIEW_NOT_FOUND 예외 발생
      */
     public StoreReview findByPublicId(UUID publicId) {
         return storeReviewRepository.findByPublicId(publicId)

@@ -26,11 +26,6 @@ public interface StoreReviewQueryRepository {
     /**
      * 사용자가 작성한 리뷰 목록을 조회한다.
      *
-     * <p>
-     * 마이페이지 등에서 사용되며,
-     * 상호명, 별점, 작성일, 대표 이미지(썸네일), 리뷰 내용을 포함한다.
-     * </p>
-     *
      * @param userId 사용자 식별자
      * @return 내가 작성한 리뷰 목록
      */
@@ -39,11 +34,6 @@ public interface StoreReviewQueryRepository {
     /**
      * 특정 가게에 대한 리뷰 목록을 조회한다.
      *
-     * <p>
-     * 가게 상세 화면에서 사용되며,
-     * 여러 사용자의 리뷰를 포함한다.
-     * </p>
-     *
      * @param storePublicId 가게 공개 식별자
      * @return 가게에 대한 리뷰 목록
      */
@@ -51,11 +41,6 @@ public interface StoreReviewQueryRepository {
 
     /**
      * 특정 가게에 대한 리뷰 목록을 날짜순으로 3개 조회한다.
-     *
-     * <p>
-     * 가게 상세 화면에서 사용되며,
-     * 여러 사용자의 리뷰를 포함한다.
-     * </p>
      *
      * @param storePublicId 가게 공개 식별자
      * @return 가게에 대한 리뷰 목록

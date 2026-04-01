@@ -39,6 +39,10 @@ public class RiderController {
 
     /**
      * 라이더 닉네임 변경 API
+     *
+     * @param principal 인증 사용자 정보
+     * @param requestDto 요청 정보
+     * @return changeNickname 결과
      */
     @PatchMapping("/nickname")
     public ResponseEntity<CustomApiResponse<Void>> changeNickname(
@@ -57,6 +61,10 @@ public class RiderController {
 
     /**
      * 라이더 전화번호 변경 API
+     *
+     * @param principal 인증 사용자 정보
+     * @param requestDto 요청 정보
+     * @return changePhoneNumber 결과
      */
     @PatchMapping("/phoneNumber")
     public ResponseEntity<CustomApiResponse<Void>> changePhoneNumber(
@@ -75,6 +83,10 @@ public class RiderController {
 
     /**
      * 라이더 차량 타입 변경 API
+     *
+     * @param principal 인증 사용자 정보
+     * @param requestDto 요청 정보
+     * @return changeVehicleType 결과
      */
     @PatchMapping("/vehicle")
     public ResponseEntity<CustomApiResponse<Void>> changeVehicleType(
@@ -94,9 +106,8 @@ public class RiderController {
     /**
      * 라이더를 ONLINE 상태로 전환
      *
-     * <p>
-     * OFFLINE 상태에서만 가능
-     * </p>
+     * @param principal 인증 사용자 정보
+     * @return goOnline 결과
      */
     @PatchMapping("/online")
     public ResponseEntity<CustomApiResponse<Void>> goOnline(
@@ -112,9 +123,8 @@ public class RiderController {
     /**
      * 배달 시작 (WORKING 상태 전환)
      *
-     * <p>
-     * ONLINE 상태에서만 가능
-     * </p>
+     * @param principal 인증 사용자 정보
+     * @return startDelivery 결과
      */
     @PatchMapping("/deliveries/start")
     public ResponseEntity<CustomApiResponse<Void>> startDelivery(
@@ -130,9 +140,8 @@ public class RiderController {
     /**
      * 배달 완료 (ONLINE 상태 전환)
      *
-     * <p>
-     * WORKING 상태에서만 가능
-     * </p>
+     * @param principal 인증 사용자 정보
+     * @return completeDelivery 결과
      */
     @PatchMapping("/deliveries/complete")
     public ResponseEntity<CustomApiResponse<Void>> completeDelivery(
@@ -148,9 +157,8 @@ public class RiderController {
     /**
      * 라이더를 OFFLINE 상태로 전환
      *
-     * <p>
-     * ONLINE 상태에서만 가능
-     * </p>
+     * @param principal 인증 사용자 정보
+     * @return goOffline 결과
      */
     @PatchMapping("/offline")
     public ResponseEntity<CustomApiResponse<Void>> goOffline(

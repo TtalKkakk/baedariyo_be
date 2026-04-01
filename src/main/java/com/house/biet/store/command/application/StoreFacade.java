@@ -31,6 +31,9 @@ public class StoreFacade {
 
     /**
      * 가게 생성
+     *
+     * @param requestDto 요청 정보
+     * @return createStore 결과
      */
     @Transactional
     public StoreCreateResponseDto createStore(StoreCreateRequestDto requestDto) {
@@ -57,6 +60,9 @@ public class StoreFacade {
 
     /**
      * 가게 상세 조회 (메뉴 + 최근 사진 리뷰 3개 포함)
+     *
+     * @param storePublicId storePublicId 값
+     * @return getStoreDetail 결과
      */
     @Transactional(readOnly = true)
     public StoreDetailWithMenuAndReviewResponseDto getStoreDetail(UUID storePublicId) {

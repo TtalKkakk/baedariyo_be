@@ -16,6 +16,12 @@ public class RiderLoginService {
     private final AuthService authService;
     private final RiderService riderService;
 
+    /**
+     * 대상을 처리한다
+     *
+     * @param requestDto 요청 정보
+     * @return login 결과
+     */
     public LoginResultDto login(LoginRequestDto requestDto) {
         AuthLoginResultDto authLoginResultDto = authService.login(requestDto.email(), requestDto.password(), UserRole.RIDER);
         riderService.goOnline(authLoginResultDto.accountId());

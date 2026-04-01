@@ -42,12 +42,7 @@ public class UserCommandFacade {
     /**
      * 사용자 닉네임을 변경한다.
      *
-     * <p>
-     * Account ID를 기반으로 User를 조회한 뒤,
-     * 새로운 닉네임으로 변경한다.
-     * </p>
-     *
-     * @param accountId        계정 ID (인증 주체)
+     * @param accountId 계정 ID (인증 주체)
      * @param newNicknameValue 변경할 닉네임 값
      */
     public void changeNickname(Long accountId, String newNicknameValue) {
@@ -59,13 +54,8 @@ public class UserCommandFacade {
     /**
      * 사용자 전화번호를 변경한다.
      *
-     * <p>
-     * Account ID를 기반으로 User를 조회한 뒤,
-     * 새로운 전화번호로 변경한다.
-     * </p>
-     *
-     * @param accountId             계정 ID (인증 주체)
-     * @param newPhoneNumberValue   변경할 전화번호 값
+     * @param accountId 계정 ID (인증 주체)
+     * @param newPhoneNumberValue 변경할 전화번호 값
      */
     public void changePhoneNumber(Long accountId, String newPhoneNumberValue) {
         Long userId = getUserId(accountId);
@@ -76,22 +66,12 @@ public class UserCommandFacade {
     /**
      * 사용자에게 새로운 배송지를 추가한다.
      *
-     * <p>
-     * Account ID를 기반으로 User를 조회한 뒤,
-     * 전달받은 주소 정보를 이용하여 배송지를 생성한다.
-     * </p>
-     *
-     * <p>
-     * 기본 배송지로 설정할 경우 기존 기본 배송지는 자동으로 해제된다.
-     * 첫 번째 배송지인 경우, 자동으로 기본 배송지로 설정된다.
-     * </p>
-     *
-     * @param accountId     계정 ID (인증 주체)
-     * @param roadAddress   도로명 주소
-     * @param jibunAddress  지번 주소
+     * @param accountId 계정 ID (인증 주체)
+     * @param roadAddress 도로명 주소
+     * @param jibunAddress 지번 주소
      * @param detailAddress 상세 주소
-     * @param aliasValue    주소 별칭 (예: 집, 회사)
-     * @param isDefault     기본 배송지 여부
+     * @param aliasValue 주소 별칭 (예: 집, 회사)
+     * @param isDefault 기본 배송지 여부
      */
     public void addAddress(
             Long accountId,
@@ -116,12 +96,6 @@ public class UserCommandFacade {
     /**
      * 사용자의 기본 배송지를 변경한다.
      *
-     * <p>
-     * Account ID를 기반으로 User를 조회한 뒤,
-     * 지정된 addressId를 기본 배송지로 설정한다.
-     * 기존 기본 배송지는 자동으로 해제된다.
-     * </p>
-     *
      * @param accountId 계정 ID (인증 주체)
      * @param addressAlias 기본 배송지로 설정할 주소 별명
      */
@@ -133,16 +107,6 @@ public class UserCommandFacade {
 
     /**
      * 사용자의 배송지를 삭제한다.
-     *
-     * <p>
-     * Account ID를 기반으로 User를 조회한 뒤,
-     * 지정된 addressId에 해당하는 배송지를 삭제한다.
-     * </p>
-     *
-     * <p>
-     * 삭제 대상이 기본 배송지인 경우,
-     * 남아있는 배송지 중 하나가 자동으로 기본 배송지로 설정된다.
-     * </p>
      *
      * @param accountId 계정 ID (인증 주체)
      * @param addressAlias 삭제할 배송지 별명
@@ -156,19 +120,9 @@ public class UserCommandFacade {
     /**
      * 사용자의 배송지 별칭을 변경한다.
      *
-     * <p>
-     * 외부에서 전달받은 Account ID를 기반으로 User ID를 조회한 뒤,
-     * 지정된 배송지의 별칭을 새로운 값으로 변경한다.
-     * </p>
-     *
-     * <p>
-     * 실제 별칭 변경 로직은 {@link UserService} 및 도메인(User)에 위임되며,
-     * 별칭 중복 여부 및 존재 여부 검증 또한 도메인에서 처리된다.
-     * </p>
-     *
-     * @param accountId        계정 ID (인증 주체)
-     * @param addressAlias     기존 배송지 별칭
-     * @param newAddressAlias  변경할 새로운 별칭
+     * @param accountId 계정 ID (인증 주체)
+     * @param addressAlias 기존 배송지 별칭
+     * @param newAddressAlias 변경할 새로운 별칭
      */
     public void changeAddressAlias(Long accountId, String addressAlias, String newAddressAlias) {
         Long userId = getUserId(accountId);

@@ -87,16 +87,6 @@ public class UserController {
     /**
      * 사용자 전체 배송지 조회 API (Query)
      *
-     * <p>
-     * 인증된 사용자의 Account ID를 기반으로,
-     * 해당 사용자의 모든 배송지 목록을 조회한다.
-     * </p>
-     *
-     * <p>
-     * 조회 결과는 {@code AddressResponseDto} 형태로 반환되며,
-     * 도메인 엔티티는 외부로 노출되지 않는다.
-     * </p>
-     *
      * @param principal 인증된 사용자 정보
      * @return 배송지 목록
      */
@@ -116,17 +106,8 @@ public class UserController {
     /**
      * 사용자 전체 배송지 조회 API (Query)
      *
-     * <p>
-     * 인증된 사용자의 Account ID를 기반으로,
-     * 해당 사용자의 모든 배송지 목록을 조회한다.
-     * </p>
-     *
-     * <p>
-     * 조회 결과는 {@code AddressResponseDto} 형태로 반환되며,
-     * 도메인 엔티티는 외부로 노출되지 않는다.
-     * </p>
-     *
      * @param principal 인증된 사용자 정보
+     * @param requestDto 요청 정보
      * @return 배송지 목록
      */
     @PostMapping("/address")
@@ -151,15 +132,6 @@ public class UserController {
     /**
      * 사용자 배송지 삭제 API (Command)
      *
-     * <p>
-     * 지정된 주소 별칭(addressAlias)에 해당하는 배송지를 삭제한다.
-     * </p>
-     *
-     * <p>
-     * 삭제 대상이 기본 배송지인 경우,
-     * 남아있는 배송지 중 하나가 자동으로 기본 배송지로 설정된다.
-     * </p>
-     *
      * @param principal 인증된 사용자 정보
      * @param requestDto 삭제할 배송지 정보
      * @return 성공 응답
@@ -182,14 +154,6 @@ public class UserController {
     /**
      * 기본 배송지 변경 API (Command)
      *
-     * <p>
-     * 지정된 주소 별칭(addressAlias)을 기본 배송지로 설정한다.
-     * </p>
-     *
-     * <p>
-     * 기존 기본 배송지는 자동으로 해제된다.
-     * </p>
-     *
      * @param principal 인증된 사용자 정보
      * @param requestDto 기본 배송지 변경 정보
      * @return 성공 응답
@@ -211,15 +175,6 @@ public class UserController {
 
     /**
      * 배송지 별칭 변경 API (Command)
-     *
-     * <p>
-     * 기존 배송지의 별칭(addressAlias)을 새로운 별칭(newAddressAlias)으로 변경한다.
-     * </p>
-     *
-     * <p>
-     * 별칭은 사용자 내에서 고유해야 하며,
-     * 중복될 경우 예외가 발생한다.
-     * </p>
      *
      * @param principal 인증된 사용자 정보
      * @param requestDto 별칭 변경 정보

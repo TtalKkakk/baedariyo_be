@@ -19,6 +19,13 @@ public class DeliveryRiderController {
 
     private final DeliveryOrderFacade deliveryOrderFacade;
 
+    /**
+     * 라이더을 할당한다
+     *
+     * @param principal 인증 사용자 정보
+     * @param orderId 주문 식별자
+     * @return assignRider 결과
+     */
     @PostMapping("/{orderId}/assign")
     public ResponseEntity<CustomApiResponse<Void>> assignRider(
             @AuthenticationPrincipal AuthPrincipal principal,
@@ -32,6 +39,12 @@ public class DeliveryRiderController {
     }
 
 
+    /**
+     * 배달을 시작한다
+     *
+     * @param orderId 주문 식별자
+     * @return startDelivery 결과
+     */
     @PostMapping("/{orderId}/start")
     public ResponseEntity<CustomApiResponse<Void>> startDelivery(@PathVariable Long orderId) {
         deliveryOrderFacade.startDelivery(orderId);
@@ -41,6 +54,12 @@ public class DeliveryRiderController {
         );
     }
 
+    /**
+     * 배달을 완료한다
+     *
+     * @param orderId 주문 식별자
+     * @return completeDelivery 결과
+     */
     @PostMapping("/{orderId}/complete")
     public ResponseEntity<CustomApiResponse<Void>> completeDelivery(@PathVariable Long orderId) {
         deliveryOrderFacade.completeDelivery(orderId);

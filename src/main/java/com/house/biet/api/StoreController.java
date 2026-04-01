@@ -32,6 +32,13 @@ public class StoreController {
     // ----------------------
     // Store 검색
     // ----------------------
+    /**
+     * Stores을 검색한다
+     *
+     * @param principal 인증 사용자 정보
+     * @param requestDto 요청 정보
+     * @return searchStores 결과
+     */
     @GetMapping
     public ResponseEntity<CustomApiResponse<List<StoreSearchResponseDto>>> searchStores(
             @AuthenticationPrincipal AuthPrincipal principal,
@@ -55,6 +62,12 @@ public class StoreController {
     // ----------------------
     // Store CRUD
     // ----------------------
+    /**
+     * 가게을 생성한다
+     *
+     * @param requestDto 요청 정보
+     * @return createStore 결과
+     */
     @PostMapping
     public ResponseEntity<CustomApiResponse<StoreCreateResponseDto>> createStore(
             @RequestBody StoreCreateRequestDto requestDto)
@@ -66,6 +79,12 @@ public class StoreController {
         );
     }
 
+    /**
+     * 가게 가게 공개 식별자을 조회한다
+     *
+     * @param storePublicId storePublicId 값
+     * @return getStoreByStorePublicId 결과
+     */
     @GetMapping("/{storePublicId}")
     public ResponseEntity<CustomApiResponse<StoreDetailWithMenuAndReviewResponseDto>> getStoreByStorePublicId(
             @PathVariable UUID storePublicId
@@ -82,6 +101,12 @@ public class StoreController {
     // Store Menu 조회
     // ----------------------
 
+    /**
+     * Menus 가게 공개 식별자을 조회한다
+     *
+     * @param storePublicId storePublicId 값
+     * @return getMenusByStorePublicId 결과
+     */
     @GetMapping("/{storePublicId}/menus")
     public ResponseEntity<CustomApiResponse<List<StoreMenuQueryDto>>> getMenusByStorePublicId(
             @PathVariable UUID storePublicId

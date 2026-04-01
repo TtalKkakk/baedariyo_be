@@ -13,6 +13,12 @@ public class GeocodingService {
 
     private final VWorldGeocodingClient geocodingClient;
 
+    /**
+     * 주소를 좌표로 변환한다
+     *
+     * @param address address 값
+     * @return geocode 결과
+     */
     public GeoPoint geocode(String address) {
 
         String normalizedAddress = normalize(address);

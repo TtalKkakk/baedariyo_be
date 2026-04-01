@@ -73,10 +73,6 @@ public class RiderCommandFacade {
     /**
      * 라이더를 온라인 상태로 전환합니다.
      *
-     * <p>
-     * OFFLINE 상태에서만 ONLINE으로 전환 가능합니다.
-     * </p>
-     *
      * @param accountId 계정 ID
      */
     public void goOnline(Long accountId) {
@@ -87,10 +83,6 @@ public class RiderCommandFacade {
 
     /**
      * 배달을 시작하여 WORKING 상태로 전환합니다.
-     *
-     * <p>
-     * ONLINE 상태에서만 배달을 시작할 수 있습니다.
-     * </p>
      *
      * @param accountId 계정 ID
      */
@@ -103,10 +95,6 @@ public class RiderCommandFacade {
     /**
      * 배달을 완료하여 ONLINE 상태로 전환합니다.
      *
-     * <p>
-     * WORKING 상태에서만 완료할 수 있습니다.
-     * </p>
-     *
      * @param accountId 계정 ID
      */
     public void completeDelivery(Long accountId) {
@@ -117,10 +105,6 @@ public class RiderCommandFacade {
 
     /**
      * 라이더를 오프라인 상태로 전환합니다.
-     *
-     * <p>
-     * ONLINE 상태에서만 OFFLINE으로 전환 가능합니다.
-     * </p>
      *
      * @param accountId 계정 ID
      */

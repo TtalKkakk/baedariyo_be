@@ -22,10 +22,6 @@ public interface PaymentRepository {
     /**
      * Payment Aggregate를 저장한다.
      *
-     * <p>
-     * 신규 생성 또는 상태 변경 이후 영속화에 사용된다.
-     * </p>
-     *
      * @param payment 저장할 Payment Aggregate
      * @return 저장된 Payment (식별자 포함)
      */
@@ -33,12 +29,6 @@ public interface PaymentRepository {
 
     /**
      * Payment Aggregate를 저장하고 즉시 DB와 동기화한다.
-     *
-     * <p>
-     * save와 달리 {@code saveAndFlush}는 즉시 flush를 수행하여
-     * 낙관적 락이나 unique 제약 조건 충돌을 빠르게 검증할 때 사용된다.
-     * 멀티스레드 환경이나 동시성 테스트에서 유용하다.
-     * </p>
      *
      * @param payment 저장할 Payment Aggregate
      * @return 저장된 Payment (식별자 포함)
@@ -55,10 +45,6 @@ public interface PaymentRepository {
 
     /**
      * 중복 결제 방지를 위한 paymentKey 기준 조회.
-     *
-     * <p>
-     * 동일 paymentKey가 존재하면 중복 결제로 판단할 수 있다.
-     * </p>
      *
      * @param paymentKey 결제 식별 키
      * @return Optional Payment

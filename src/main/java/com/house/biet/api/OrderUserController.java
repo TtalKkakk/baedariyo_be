@@ -20,6 +20,13 @@ public class OrderUserController {
 
     private final OrderUserFacade orderUserFacade;
 
+    /**
+     * 대상을 생성한다
+     *
+     * @param principal 인증 사용자 정보
+     * @param requestDto 요청 정보
+     * @return create 결과
+     */
     @PostMapping("/assign")
     public ResponseEntity<CustomApiResponse<Void>> create(
             @AuthenticationPrincipal AuthPrincipal principal,

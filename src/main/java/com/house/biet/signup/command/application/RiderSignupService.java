@@ -15,6 +15,11 @@ public class RiderSignupService {
     private final AuthService authService;
     private final RiderService riderService;
 
+    /**
+     * 대상을 처리한다
+     *
+     * @param dto 요청 정보
+     */
     public void signup(RiderSignupRequestDto dto) {
         Account account = authService.signup(dto.email(), dto.password(), UserRole.RIDER);
         riderService.save(account, dto.name(), dto.nickname(), dto.phoneNumber(), dto.vehicleType());

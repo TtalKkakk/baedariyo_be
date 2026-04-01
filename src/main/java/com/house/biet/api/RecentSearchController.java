@@ -15,6 +15,12 @@ public class RecentSearchController {
 
     private final RecentSearchService recentSearchService;
 
+    /**
+     * 최근 Keywords을 조회한다
+     *
+     * @param userId 사용자 식별자
+     * @return getRecentKeywords 결과
+     */
     @GetMapping
     public ResponseEntity<CustomApiResponse<KeywordListResponseDto>> getRecentKeywords(
             @RequestParam Long userId
@@ -27,6 +33,13 @@ public class RecentSearchController {
         );
     }
 
+    /**
+     * 검색어을 삭제한다
+     *
+     * @param userId 사용자 식별자
+     * @param keyword 검색어
+     * @return deleteKeyword 결과
+     */
     @DeleteMapping("/{keyword}")
     public ResponseEntity<CustomApiResponse<Void>> deleteKeyword(
             @RequestParam Long userId,
@@ -40,6 +53,12 @@ public class RecentSearchController {
         );
     }
 
+    /**
+     * 전체을 삭제한다
+     *
+     * @param userId 사용자 식별자
+     * @return deleteAll 결과
+     */
     @DeleteMapping
     public ResponseEntity<CustomApiResponse<Void>> deleteAll(
             @RequestParam Long userId

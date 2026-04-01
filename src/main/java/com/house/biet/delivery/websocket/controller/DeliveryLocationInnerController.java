@@ -14,6 +14,12 @@ public class DeliveryLocationInnerController {
 
     private final DeliveryLocationService locationService;
 
+    /**
+     * 위치을 처리한다
+     *
+     * @param message message 값
+     * @param principal 인증 사용자 정보
+     */
     @MessageMapping("/location")
     public void receiveLocation(
             DeliveryLocationMessage message,

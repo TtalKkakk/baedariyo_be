@@ -43,6 +43,7 @@ public class PaymentController {
     /**
      * 새로운 결제를 생성한다.
      *
+     * @param principal 인증 사용자 정보
      * @param requestDto 주문 ID, 금액, paymentKey를 포함한 JSON 요청
      * @return 생성된 결제 ID
      */
@@ -117,6 +118,9 @@ public class PaymentController {
 
     /**
      * 결제 단건 조회
+     *
+     * @param paymentId 결제 식별자
+     * @return getPayment 결과
      */
     @GetMapping("/{paymentId}")
     public ResponseEntity<CustomApiResponse<PaymentDetailResponseDto>> getPayment(
@@ -131,6 +135,10 @@ public class PaymentController {
 
     /**
      * 내 결제 목록 조회 (상태 필터 가능)
+     *
+     * @param principal 인증 사용자 정보
+     * @param status 상태
+     * @return getMyPayments 결과
      */
     @GetMapping("/my")
     public ResponseEntity<CustomApiResponse<List<MyPaymentDetailResponseDto>>> getMyPayments(

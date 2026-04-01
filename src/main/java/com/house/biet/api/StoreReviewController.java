@@ -31,6 +31,14 @@ public class StoreReviewController {
     // ==============================
     // 1️⃣ 리뷰 생성 (가게 기준)
     // ==============================
+    /**
+     * 리뷰을 생성한다
+     *
+     * @param storePublicId storePublicId 값
+     * @param requestDto 요청 정보
+     * @param principal 인증 사용자 정보
+     * @return createReview 결과
+     */
     @PostMapping("/stores/{storePublicId}/reviews")
     public ResponseEntity<CustomApiResponse<StoreReviewCreateResponseDto>> createReview(
             @PathVariable UUID storePublicId,
@@ -48,6 +56,12 @@ public class StoreReviewController {
     // ==============================
     // 2️⃣ 특정 가게 리뷰 목록 조회
     // ==============================
+    /**
+     * 가게 Reviews을 조회한다
+     *
+     * @param storePublicId storePublicId 값
+     * @return getStoreReviews 결과
+     */
     @GetMapping("/stores/{storePublicId}/reviews")
     public ResponseEntity<CustomApiResponse<List<StoreReviewDto>>> getStoreReviews(
             @PathVariable UUID storePublicId
@@ -63,6 +77,12 @@ public class StoreReviewController {
     // ==============================
     // 3️⃣ 리뷰 단건 조회 (리뷰 기준)
     // ==============================
+    /**
+     * 리뷰을 조회한다
+     *
+     * @param storeReviewPublicId storeReviewPublicId 값
+     * @return getReview 결과
+     */
     @GetMapping("/reviews/{storeReviewPublicId}")
     public ResponseEntity<CustomApiResponse<StoreReview>> getReview(
             @PathVariable UUID storeReviewPublicId
@@ -78,6 +98,13 @@ public class StoreReviewController {
     // ==============================
     // 4️⃣ 리뷰 삭제 (리뷰 기준)
     // ==============================
+    /**
+     * 리뷰을 삭제한다
+     *
+     * @param storeReviewPublicId storeReviewPublicId 값
+     * @param principal 인증 사용자 정보
+     * @return deleteReview 결과
+     */
     @DeleteMapping("/reviews/{storeReviewPublicId}")
     public ResponseEntity<CustomApiResponse<Void>> deleteReview(
             @PathVariable UUID storeReviewPublicId,
@@ -93,6 +120,12 @@ public class StoreReviewController {
     // ==============================
     // 5️⃣ 내가 작성한 리뷰 조회
     // ==============================
+    /**
+     * 내 Reviews을 조회한다
+     *
+     * @param principal 인증 사용자 정보
+     * @return getMyReviews 결과
+     */
     @GetMapping("/reviews/me")
     public ResponseEntity<CustomApiResponse<List<MyStoreReviewDto>>> getMyReviews(
             @AuthenticationPrincipal AuthPrincipal principal

@@ -24,6 +24,12 @@ public interface PaymentQueryRepositoryJpa extends Repository<Payment, Long> {
             from Payment p
             where p.status = :status
             """)
+    /**
+     * 결제 상세 목록을 조회한다
+     *
+     * @param status 상태
+     * @return 조회 결과 목록
+     */
     List<PaymentDetailResponseDto> findAllByStatus(PaymentStatus status);
 
     @Query("""
@@ -39,6 +45,12 @@ public interface PaymentQueryRepositoryJpa extends Repository<Payment, Long> {
             from Payment p
             where p.id = :paymentId
             """)
+    /**
+     * 결제 상세 정보를 조회한다
+     *
+     * @param paymentId 결제 식별자
+     * @return 조회 결과
+     */
     Optional<PaymentDetailResponseDto> findDetailById(Long paymentId);
 
     @Query("""
@@ -54,6 +66,12 @@ public interface PaymentQueryRepositoryJpa extends Repository<Payment, Long> {
             from Payment p
             where p.orderId = :orderId
             """)
+    /**
+     * 결제 상세 목록을 조회한다
+     *
+     * @param orderId 주문 식별자
+     * @return 조회 결과 목록
+     */
     List<PaymentDetailResponseDto> findAllByOrderId(Long orderId);
 
     @Query("""
@@ -69,6 +87,12 @@ public interface PaymentQueryRepositoryJpa extends Repository<Payment, Long> {
             from Payment p
             where p.userId = :userId
             """)
+    /**
+     * 결제 상세 목록을 조회한다
+     *
+     * @param userId 사용자 식별자
+     * @return 조회 결과 목록
+     */
     List<PaymentDetailResponseDto> findAllByUserId(Long userId);
 
     @Query("""
@@ -85,6 +109,13 @@ public interface PaymentQueryRepositoryJpa extends Repository<Payment, Long> {
             where p.userId = :userId
               and p.status in :statuses
             """)
+    /**
+     * 결제 상세 목록을 조회한다
+     *
+     * @param userId 사용자 식별자
+     * @param statuses 상태 목록
+     * @return 조회 결과 목록
+     */
     List<PaymentDetailResponseDto> findAllByUserIdAndStatusIn(Long userId, List<PaymentStatus> statuses);
 
     @Query("""
@@ -101,6 +132,12 @@ public interface PaymentQueryRepositoryJpa extends Repository<Payment, Long> {
             where p.orderId = :orderId
               and p.status = 'APPROVED'
             """)
+    /**
+     * 결제 상세 정보를 조회한다
+     *
+     * @param orderId 주문 식별자
+     * @return 조회 결과
+     */
     Optional<PaymentDetailResponseDto> findApprovedByOrderId(Long orderId);
 
     @Query("""
@@ -116,5 +153,11 @@ public interface PaymentQueryRepositoryJpa extends Repository<Payment, Long> {
             from Payment p
             where p.paymentKey.value = :paymentKey
             """)
+    /**
+     * 결제 상세 정보를 조회한다
+     *
+     * @param paymentKey 결제 키
+     * @return 조회 결과
+     */
     Optional<PaymentDetailResponseDto> findByPaymentKey(String paymentKey);
 }

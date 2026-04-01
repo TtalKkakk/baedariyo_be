@@ -21,6 +21,14 @@ public class DeliveryLocationRedisRepository {
         return PREFIX + orderId;
     }
 
+    /**
+     * 대상을 저장한다
+     *
+     * @param orderId 주문 식별자
+     * @param riderId 라이더 식별자
+     * @param latitude latitude 값
+     * @param longitude longitude 값
+     */
     public void save(Long orderId,
                      Long riderId,
                      double latitude,
@@ -39,6 +47,9 @@ public class DeliveryLocationRedisRepository {
 
     /**
      * 현재 위치 조회
+     *
+     * @param orderId 주문 식별자
+     * @return 조회 결과
      */
     public Optional<DeliveryLocationCache> getLatestLocation(Long orderId) {
         Object value = redisTemplate.opsForValue().get(key(orderId));
@@ -48,6 +59,8 @@ public class DeliveryLocationRedisRepository {
 
     /**
      * 배달 종료 시 위치 삭제
+     *
+     * @param orderId 주문 식별자
      */
     public void delete(Long orderId) {
         redisTemplate.delete(key(orderId));

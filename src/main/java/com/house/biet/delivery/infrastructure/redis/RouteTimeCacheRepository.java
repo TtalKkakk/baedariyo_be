@@ -14,6 +14,12 @@ public class RouteTimeCacheRepository {
 
     private static final Duration TTL = Duration.ofMinutes(10);
 
+    /**
+     * 대상을 조회한다
+     *
+     * @param key key 값
+     * @return 처리 결과 값
+     */
     public Integer get(String key) {
 
         Object value = redisTemplate.opsForValue().get(key);
@@ -29,6 +35,12 @@ public class RouteTimeCacheRepository {
         return Integer.valueOf(String.valueOf(value));
     }
 
+    /**
+     * 대상을 저장한다
+     *
+     * @param key key 값
+     * @param minutes minutes 값
+     */
     public void save(String key, int minutes) {
         redisTemplate.opsForValue()
                 .set(key, minutes, TTL);

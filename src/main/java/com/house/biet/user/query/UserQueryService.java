@@ -23,16 +23,8 @@ public interface UserQueryService {
     /**
      * accountId를 기반으로 userId 조회
      *
-     * <p>
-     * - 인증 컨텍스트에서는 accountId만 존재하므로
-     *   실제 비즈니스 로직에서 필요한 userId를 조회하기 위해 사용
-     * - User 엔티티 전체를 로딩하지 않고 ID만 조회
-     * </p>
-     *
      * @param accountId 인증 계정 ID
-     * @return 조회된 userId
-     * @throws com.house.biet.global.response.CustomException
-     *         accountId에 해당하는 User가 존재하지 않을 경우
+     * @return 조회된 userId accountId에 해당하는 User가 존재하지 않을 경우
      */
     Long getUserIdByAccountId(Long accountId);
 }

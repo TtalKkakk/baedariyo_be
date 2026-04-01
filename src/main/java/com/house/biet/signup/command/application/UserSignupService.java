@@ -17,6 +17,19 @@ public class UserSignupService {
     private final AuthService authService;
     private final UserService userService;
 
+    /**
+     * 대상을 처리한다
+     *
+     * @param email email 값
+     * @param password password 값
+     * @param name name 값
+     * @param nickname nickname 값
+     * @param phoneNumber phoneNumber 값
+     * @param roadAddress 도로명 주소
+     * @param jibunAddress 지번 주소
+     * @param detailAddress 상세 주소
+     * @param addressAlias 주소 별칭
+     */
     public void signup(
             String email,
             String password,

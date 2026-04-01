@@ -40,11 +40,11 @@ public class RiderService {
     /**
      * 라이더를 신규 생성한다
      *
-     * @param account          계정 정보
-     * @param realNameValue    라이더 실명
-     * @param nicknameValue    라이더 닉네임
+     * @param account 계정 정보
+     * @param realNameValue 라이더 실명
+     * @param nicknameValue 라이더 닉네임
      * @param phoneNumberValue 라이더 전화번호
-     * @param vehicleType      이동 수단 타입
+     * @param vehicleType 이동 수단 타입
      */
     public void save(Account account, String realNameValue, String nicknameValue, String phoneNumberValue, VehicleType vehicleType) {
         Rider rider = Rider.create(account, realNameValue, nicknameValue, phoneNumberValue, vehicleType);
@@ -56,7 +56,6 @@ public class RiderService {
      *
      * @param riderId 라이더 식별자
      * @param newNicknameValue 변경할 닉네임
-     * @throws CustomException 라이더가 존재하지 않는 경우
      */
     public void changeNicknameByRiderId(Long riderId, String newNicknameValue) {
         Rider rider = getRiderOrThrow(riderId);
@@ -69,7 +68,6 @@ public class RiderService {
      *
      * @param riderId 라이더 식별자
      * @param newPhoneNumberValue 변경할 전화번호
-     * @throws CustomException 라이더가 존재하지 않는 경우
      */
     public void changePhoneNumberByRiderId(Long riderId, String newPhoneNumberValue) {
         Rider rider = getRiderOrThrow(riderId);
@@ -82,7 +80,6 @@ public class RiderService {
      *
      * @param riderId 라이더 식별자
      * @param newVehicleType 변경할 이동 수단 타입
-     * @throws CustomException 라이더가 존재하지 않는 경우
      */
     public void changeVehicleType(Long riderId, VehicleType newVehicleType) {
         Rider rider = getRiderOrThrow(riderId);
@@ -93,14 +90,7 @@ public class RiderService {
     /**
      * 라이더를 온라인 상태로 전환한다
      *
-     * <p>
-     * 현재 상태가 OFFLINE인 경우에만 ONLINE으로 전환 가능하다.
-     * </p>
-     *
      * @param riderId 라이더 식별자
-     * @throws CustomException
-     * - 라이더가 존재하지 않는 경우
-     * - 허용되지 않은 상태 전이인 경우
      */
     public void goOnline(Long riderId) {
         Rider rider = getRiderOrThrow(riderId);
@@ -111,14 +101,7 @@ public class RiderService {
     /**
      * 배달을 시작하여 WORKING 상태로 전환한다
      *
-     * <p>
-     * 현재 상태가 ONLINE인 경우에만 배달을 시작할 수 있다.
-     * </p>
-     *
      * @param riderId 라이더 식별자
-     * @throws CustomException
-     * - 라이더가 존재하지 않는 경우
-     * - ONLINE 상태가 아닌 경우
      */
     public void startDelivery(Long riderId) {
         Rider rider = getRiderOrThrow(riderId);
@@ -129,14 +112,7 @@ public class RiderService {
     /**
      * 배달을 완료하여 ONLINE 상태로 전환한다
      *
-     * <p>
-     * 현재 상태가 WORKING인 경우에만 완료할 수 있다.
-     * </p>
-     *
      * @param riderId 라이더 식별자
-     * @throws CustomException
-     * - 라이더가 존재하지 않는 경우
-     * - WORKING 상태가 아닌 경우
      */
     public void completeDelivery(Long riderId) {
         Rider rider = getRiderOrThrow(riderId);
@@ -147,14 +123,7 @@ public class RiderService {
     /**
      * 라이더를 오프라인 상태로 전환한다
      *
-     * <p>
-     * 현재 상태가 ONLINE인 경우에만 OFFLINE으로 전환 가능하다.
-     * </p>
-     *
      * @param riderId 라이더 식별자
-     * @throws CustomException
-     * - 라이더가 존재하지 않는 경우
-     * - ONLINE 상태가 아닌 경우
      */
     public void goOffline(Long riderId) {
         Rider rider = getRiderOrThrow(riderId);

@@ -35,15 +35,10 @@ public class AuthService {
     /**
      * 회원가입 수행
      *
-     * <p>
-     * 동일한 이메일과 역할(UserRole)을 가진 계정이 이미 존재할 경우
-     * 회원가입은 실패
-     * </p>
-     *
-     * @param emailValue      회원 이메일
+     * @param emailValue 회원 이메일
      * @param rawPasswordValue 평문 비밀번호
-     * @param userRole        회원 역할
-     * @throws CustomException 이미 존재하는 이메일과 역할 조합인 경우
+     * @param userRole 회원 역할
+     * @return signup 결과
      */
     public Account signup(String emailValue, String rawPasswordValue, UserRole userRole) {
         Email email = new Email(emailValue);
@@ -60,17 +55,7 @@ public class AuthService {
     /**
      * 회원 탈퇴 처리
      *
-     * <p>
-     * 이 메서드는 이미 인증된 사용자가 자신의 계정을 탈퇴하는 시나리오를 전제로 하며,
-     * accountId는 토큰 등을 통해 검증된 값이라고 가정
-     * </p>
-     *
-     * <p>
-     * 실제 탈퇴 처리 로직은 Account 도메인의 withdraw() 메서드에 위임
-     * </p>
-     *
      * @param accountId 탈퇴할 계정의 ID
-     * @throws CustomException 계정을 찾을 수 없는 경우
      */
     public void withdraw(Long accountId) {
         Account account = accountRepository.findById(accountId)
@@ -82,29 +67,10 @@ public class AuthService {
     /**
      * 로그인을 수행하고 인증에 필요한 정보를 반환
      *
-     * <p>
-     * 이 메서드는 이메일, 비밀번호, 사용자 역할(UserRole)을 기반으로
-     * 계정을 검증한 뒤 로그인을 수행한다.
-     * </p>
-     *
-     * <p>
-     * 로그인에 성공하면 AccessToken, RefreshToken과 함께
-     * 내부 후속 처리(도메인 상태 변경 등)를 위해 Account 식별자(accountId)를 반환한다.
-     * </p>
-     *
-     * <p>
-     * 반환되는 결과는 <b>Application Layer 내부 전용</b> 데이터이며,
-     * Controller 또는 외부 API 응답으로 직접 노출되어서는 안 된다.
-     * </p>
-     *
-     * @param emailValue       로그인 이메일
+     * @param emailValue 로그인 이메일
      * @param rawPasswordValue 평문 비밀번호
-     * @param userRole         로그인 역할
-     *
+     * @param userRole 로그인 역할
      * @return accountId, AccessToken, RefreshToken을 포함한 내부 로그인 결과
-     *
-     * @throws CustomException 계정을 찾을 수 없는 경우
-     * @throws CustomException 비밀번호가 일치하지 않는 경우
      */
     public AuthLoginResultDto login(String emailValue, String rawPasswordValue, UserRole userRole) {
         Email email = new Email(emailValue);
@@ -136,20 +102,8 @@ public class AuthService {
     /**
      * 계정의 비밀번호를 변경한다.
      *
-     * <p>
-     * 전달받은 평문 비밀번호를 {@link PasswordEncoder}를 이용해 암호화한 뒤
-     * {@link Password} Value Object로 변환하여 Account 도메인에 전달한다.
-     * </p>
-     *
-     * <p>
-     * 실제 비밀번호 변경에 대한 상태 변경 책임은
-     * {@link Account#changePassword(Password)} 도메인 메서드에 위임된다.
-     * </p>
-     *
      * @param accountId 비밀번호를 변경할 계정 ID
      * @param newPasswordValue 변경할 평문 비밀번호
-     *
-     * @throws CustomException 계정을 찾을 수 없는 경우
      */
     public void changePassword(Long accountId, String newPasswordValue) {
         Account account = accountRepository.findById(accountId)
@@ -162,21 +116,9 @@ public class AuthService {
     /**
      * 이메일과 사용자 역할(UserRole)의 중복 여부를 확인한다.
      *
-     * <p>
-     * 전달받은 이메일을 {@link Email} Value Object로 변환한 뒤,
-     * 동일한 이메일과 역할을 가진 계정이 존재하는지 조회한다.
-     * </p>
-     *
-     * <p>
-     * 회원가입 시 중복 계정 검증 또는
-     * 이메일 사용 가능 여부 확인에 사용된다.
-     * </p>
-     *
-     * @param email     확인할 이메일 (평문)
-     * @param userRole  사용자 역할
-     *
-     * @return true  - 동일한 이메일 + 역할을 가진 계정이 존재하는 경우 (중복)
-     *         false - 존재하지 않는 경우 (사용 가능)
+     * @param email 확인할 이메일 (평문)
+     * @param userRole 사용자 역할
+     * @return true - 동일한 이메일 + 역할을 가진 계정이 존재하는 경우 (중복) false - 존재하지 않는 경우 (사용 가능)
      */
     @Transactional(readOnly = true)
     public boolean isDuplicatedEmailAndRole(String email, UserRole userRole) {

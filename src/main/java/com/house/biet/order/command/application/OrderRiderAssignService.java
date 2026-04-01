@@ -19,7 +19,6 @@ public class OrderRiderAssignService {
      *
      * @param orderId 주문 ID
      * @param riderId 라이더 ID
-     * @throws CustomException 주문이 존재하지 않는 경우
      */
     @Transactional
     public void assignRider(Long orderId, Long riderId) {

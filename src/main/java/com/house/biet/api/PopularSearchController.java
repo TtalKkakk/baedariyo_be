@@ -17,6 +17,11 @@ public class PopularSearchController {
 
     private final PopularSearchService popularSearchService;
 
+    /**
+     * 인기 Keywords을 조회한다
+     *
+     * @return getPopularKeywords 결과
+     */
     @GetMapping
     public ResponseEntity<CustomApiResponse<KeywordListResponseDto>> getPopularKeywords() {
 

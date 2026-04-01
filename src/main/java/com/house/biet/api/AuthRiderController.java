@@ -28,6 +28,12 @@ public class AuthRiderController {
     private final RiderLoginService riderLoginService;
     private final AuthService authService;
 
+    /**
+     * 대상을 처리한다
+     *
+     * @param requestDto 요청 정보
+     * @return signup 결과
+     */
     @PostMapping("/signup")
     public ResponseEntity<CustomApiResponse<Void>> signup(
             @RequestBody @Valid RiderSignupRequestDto requestDto
@@ -39,6 +45,12 @@ public class AuthRiderController {
         );
     }
 
+    /**
+     * 대상을 처리한다
+     *
+     * @param principal 인증 사용자 정보
+     * @return withdraw 결과
+     */
     @PatchMapping("/withdraw")
     public ResponseEntity<CustomApiResponse<Void>> withdraw(
             @AuthenticationPrincipal AuthPrincipal principal
@@ -50,6 +62,12 @@ public class AuthRiderController {
         );
     }
 
+    /**
+     * 대상을 처리한다
+     *
+     * @param requestDto 요청 정보
+     * @return login 결과
+     */
     @PostMapping("/login")
     public ResponseEntity<CustomApiResponse<LoginResultDto>> login(
             @RequestBody @Valid LoginRequestDto requestDto
@@ -61,6 +79,13 @@ public class AuthRiderController {
         );
     }
 
+    /**
+     * Password을 변경한다
+     *
+     * @param principal 인증 사용자 정보
+     * @param requestDto 요청 정보
+     * @return changePassword 결과
+     */
     @PatchMapping("/password")
     public ResponseEntity<CustomApiResponse<Void>> changePassword(
             @AuthenticationPrincipal AuthPrincipal principal,
@@ -73,6 +98,12 @@ public class AuthRiderController {
         );
     }
 
+    /**
+     * Email Duplicate을 처리한다
+     *
+     * @param email email 값
+     * @return checkEmailDuplicate 결과
+     */
     @GetMapping("/email/duplicate")
     public ResponseEntity<CustomApiResponse<Boolean>> checkEmailDuplicate(
             @RequestParam @Email @NotBlank String email

@@ -10,6 +10,12 @@ import java.util.UUID;
 public interface StoreRepositoryJpa
         extends JpaRepository<Store, Long> {
 
+    /**
+     * 공개 식별자을 조회한다
+     *
+     * @param publicStoreId 가게 공개 식별자
+     * @return 조회 결과
+     */
     @Query("select s from Store s where s.publicId = :publicStoreId")
     Optional<Store> findByPublicId(UUID publicStoreId);
 }

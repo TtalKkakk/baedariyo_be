@@ -17,7 +17,6 @@ public interface OrderQueryRepository {
      *
      * @param orderId 주문 ID
      * @return 해당 주문의 riderId
-     * @throws CustomException 주문이 존재하지 않는 경우
      */
     Long findRiderIdByOrderId(Long orderId);
 }

@@ -38,12 +38,6 @@ public class UserAddressQueryFacade {
     /**
      * 사용자의 모든 배송지를 조회한다.
      *
-     * <p>
-     * Account ID를 기반으로 User ID를 조회하고,
-     * {@link UserService#getAllAddresses(Long)}를 통해 도메인 객체를 가져온 뒤,
-     * {@link AddressResponseDto} 리스트로 변환하여 반환한다.
-     * </p>
-     *
      * @param accountId 조회 대상 계정 ID
      * @return 사용자 배송지 리스트 (DTO)
      */

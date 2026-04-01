@@ -35,10 +35,6 @@ public interface StoreReviewRepository {
     /**
      * publicStoreReviewId를 기준으로 StoreReview를 조회한다.
      *
-     * <p>
-     * 수정, 삭제, 권한 검증 등 도메인 로직 수행을 위한 조회에 사용된다.
-     * </p>
-     *
      * @param publicStoreReviewId 공개 식별자
      * @return StoreReview Optional
      */
@@ -46,10 +42,6 @@ public interface StoreReviewRepository {
 
     /**
      * 특정 가게에 속한 StoreReview 목록을 조회한다.
-     *
-     * <p>
-     * 도메인 규칙 검증 또는 집합 단위 처리 용도로 사용된다.
-     * </p>
      *
      * @param storePublicId 가게 공개 식별자
      * @return StoreReview 목록

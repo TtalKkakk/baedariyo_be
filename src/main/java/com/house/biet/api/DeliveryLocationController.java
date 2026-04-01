@@ -19,6 +19,9 @@ public class DeliveryLocationController {
 
     /**
      * 현재 배달 위치 조회
+     *
+     * @param orderId 주문 식별자
+     * @return getLocation 결과
      */
     @GetMapping("/{orderId}/location")
     public ResponseEntity<CustomApiResponse<DeliveryLocationResponseDto>> getLocation(
@@ -32,6 +35,13 @@ public class DeliveryLocationController {
     }
 
 
+    /**
+     * 위치을 변경한다
+     *
+     * @param orderId 주문 식별자
+     * @param requestDto 요청 정보
+     * @return updateLocation 결과
+     */
     @PostMapping("/{orderId}/location")
     public ResponseEntity<Void> updateLocation(
             @PathVariable Long orderId,

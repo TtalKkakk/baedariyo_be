@@ -11,6 +11,12 @@ import java.util.Optional;
 public interface OrderRepositoryJpa
         extends JpaRepository<Order, Long> {
 
+    /**
+     * 식별자 For Update을 조회한다
+     *
+     * @param orderId 주문 식별자
+     * @return 조회 결과
+     */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select o from Order o where o.id = :orderId")
     Optional<Order> findByIdForUpdate(Long orderId);

@@ -23,6 +23,11 @@ public class StoreReviewFacade {
 
     /**
      * 리뷰 생성
+     *
+     * @param requestDto 요청 정보
+     * @param storePublicId storePublicId 값
+     * @param accountId 계정 식별자
+     * @return createReview 결과
      */
     public StoreReviewCreateResponseDto createReview(StoreReviewCreateRequestDto requestDto, UUID storePublicId, Long accountId) {
         // 계정 ID → 실제 userId 변환
@@ -46,6 +51,9 @@ public class StoreReviewFacade {
 
     /**
      * 리뷰 삭제 (작성자 본인 확인 포함)
+     *
+     * @param storeReviewPublicId storeReviewPublicId 값
+     * @param accountId 계정 식별자
      */
     public void deleteReview(UUID storeReviewPublicId, Long accountId) {
         StoreReview review = storeReviewService.findByPublicId(storeReviewPublicId);
