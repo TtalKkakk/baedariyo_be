@@ -6,7 +6,7 @@ import com.house.biet.global.response.ErrorCode;
 import com.house.biet.payment.query.application.dto.MyPaymentDetailResponseDto;
 import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
 import com.house.biet.payment.query.application.dto.PaymentDetailResponseDto;
-import com.house.biet.user.query.UserQueryService;
+import com.house.biet.user.query.application.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

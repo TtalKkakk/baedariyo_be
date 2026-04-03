@@ -5,7 +5,7 @@ import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
 import com.house.biet.storeSearch.query.dto.KeywordListResponseDto;
 import com.house.biet.storeSearch.query.recent.application.RecentSearchService;
-import com.house.biet.user.query.UserQueryService;
+import com.house.biet.user.query.application.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

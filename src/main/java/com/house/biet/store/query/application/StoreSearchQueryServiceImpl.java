@@ -7,7 +7,7 @@ import com.house.biet.store.query.dto.StoreSearchQueryDto;
 import com.house.biet.store.query.dto.StoreSearchResponseDto;
 import com.house.biet.storeSearch.query.common.SearchKeywordNormalizer;
 import com.house.biet.storeSearch.query.event.dto.StoreSearchEvent;
-import com.house.biet.user.query.UserQueryService;
+import com.house.biet.user.query.application.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

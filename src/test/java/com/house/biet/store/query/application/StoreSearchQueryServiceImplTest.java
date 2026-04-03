@@ -6,7 +6,7 @@ import com.house.biet.store.query.StoreSearchQueryRepository;
 import com.house.biet.store.query.dto.StoreSearchQueryDto;
 import com.house.biet.store.query.dto.StoreSearchResponseDto;
 import com.house.biet.storeSearch.query.common.SearchKeywordNormalizer;
-import com.house.biet.user.query.UserQueryService;
+import com.house.biet.user.query.application.UserQueryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -5,7 +5,7 @@ import com.house.biet.common.domain.vo.Money;
 import com.house.biet.order.command.domain.aggregate.Order;
 import com.house.biet.order.command.domain.dto.OrderCreateRequestDto;
 import com.house.biet.order.command.domain.vo.*;
-import com.house.biet.user.query.UserQueryService;
+import com.house.biet.user.query.application.UserQueryService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

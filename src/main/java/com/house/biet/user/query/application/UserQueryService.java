@@ -1,4 +1,6 @@
-package com.house.biet.user.query;
+package com.house.biet.user.query.application;
+
+import com.house.biet.user.query.application.dto.UserProfileResponseDto;
 
 /**
  * 사용자 조회 전용 서비스
@@ -27,4 +29,12 @@ public interface UserQueryService {
      * @return 조회된 userId accountId에 해당하는 User가 존재하지 않을 경우
      */
     Long getUserIdByAccountId(Long accountId);
+
+    /**
+     * accountId를 기반으로 user 정보 조회
+     * 
+     * @param accountId 인증 계좌 ID
+     * @return 조회된 유저 정보
+     */
+    UserProfileResponseDto getUserProfile(Long accountId);
 }

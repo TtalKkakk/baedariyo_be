@@ -6,7 +6,6 @@ import com.house.biet.user.command.application.UserService;
 import com.house.biet.user.command.domain.entity.UserAddress;
 import com.house.biet.user.command.domain.vo.AddressAlias;
 import com.house.biet.user.command.dto.AddressResponseDto;
-import com.house.biet.user.query.UserQueryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

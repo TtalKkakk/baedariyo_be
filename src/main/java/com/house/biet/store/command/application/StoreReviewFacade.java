@@ -5,7 +5,7 @@ import com.house.biet.global.response.ErrorCode;
 import com.house.biet.store.command.application.dto.StoreReviewCreateRequestDto;
 import com.house.biet.store.command.application.dto.StoreReviewCreateResponseDto;
 import com.house.biet.store.command.domain.entity.StoreReview;
-import com.house.biet.user.query.UserQueryService;
+import com.house.biet.user.query.application.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,7 +2,6 @@ package com.house.biet.user.query.application;
 
 import com.house.biet.user.command.application.UserService;
 import com.house.biet.user.command.dto.AddressResponseDto;
-import com.house.biet.user.query.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

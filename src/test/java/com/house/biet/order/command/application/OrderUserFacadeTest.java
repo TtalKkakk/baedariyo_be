@@ -8,7 +8,7 @@ import com.house.biet.order.command.domain.dto.OrderCreateRequestDto;
 import com.house.biet.common.domain.vo.Address;
 import com.house.biet.order.command.domain.vo.DeliveryLocation;
 import com.house.biet.common.domain.enums.PaymentMethod;
-import com.house.biet.user.query.UserQueryService;
+import com.house.biet.user.query.application.UserQueryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

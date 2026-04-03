@@ -1,12 +1,9 @@
 package com.house.biet.user.command.application;
 
-import com.house.biet.user.command.domain.entity.UserAddress;
-import com.house.biet.user.query.UserQueryService;
+import com.house.biet.user.query.application.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * 사용자(User) 도메인의 Command 유스케이스를 조합하여 처리하는 Facade.

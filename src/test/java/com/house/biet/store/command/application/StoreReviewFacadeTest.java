@@ -7,7 +7,7 @@ import com.house.biet.store.command.application.dto.StoreReviewCreateResponseDto
 import com.house.biet.store.command.domain.entity.StoreReview;
 import com.house.biet.store.command.domain.vo.StoreReviewComment;
 import com.house.biet.store.command.domain.vo.StoreReviewImages;
-import com.house.biet.user.query.UserQueryService;
+import com.house.biet.user.query.application.UserQueryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
