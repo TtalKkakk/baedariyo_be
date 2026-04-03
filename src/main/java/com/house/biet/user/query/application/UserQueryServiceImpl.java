@@ -3,6 +3,7 @@ package com.house.biet.user.query.application;
 import com.house.biet.global.response.CustomException;
 import com.house.biet.global.response.ErrorCode;
 import com.house.biet.user.command.UserRepository;
+import com.house.biet.user.query.UserQueryRepository;
 import com.house.biet.user.query.application.dto.UserProfileResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserQueryServiceImpl implements UserQueryService {
 
     private final UserRepository userRepository;
+    private final UserQueryRepository userQueryRepository;
 
     @Override
     public Long getUserIdByAccountId(Long accountId) {
@@ -21,6 +23,6 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public UserProfileResponseDto getUserProfile(Long accountId) {
-        return userRepository;
+        return userQueryRepository.getUserProfile(accountId);
     }
 }

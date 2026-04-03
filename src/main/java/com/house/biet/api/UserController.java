@@ -6,6 +6,8 @@ import com.house.biet.global.response.SuccessCode;
 import com.house.biet.user.command.application.UserCommandFacade;
 import com.house.biet.user.command.dto.*;
 import com.house.biet.user.query.application.UserAddressQueryFacade;
+import com.house.biet.user.query.application.UserQueryService;
+import com.house.biet.user.query.application.dto.UserProfileResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,25 @@ public class UserController {
 
     private final UserCommandFacade userCommandFacade;
     private final UserAddressQueryFacade userAddressQueryFacade;
+    private final UserQueryService userQueryService;
+
+    /**
+     * 사용자 전체 정보 API
+     *
+     */
+
+    @GetMapping("/me")
+    public ResponseEntity<CustomApiResponse<UserProfileResponseDto>> getMyNickname(
+            @AuthenticationPrincipal AuthPrincipal principal
+    ) {
+        Long accountId = principal.accountId();
+
+        UserProfileResponseDto responseDto = userQueryService.getUserProfile(accountId);
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.USER_GET_SUCCESS, responseDto)
+        );
+    }
 
     /**
      * 사용자 닉네임 변경 API
