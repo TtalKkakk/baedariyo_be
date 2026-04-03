@@ -19,7 +19,7 @@ public enum SuccessCode {
     EMAIL_DUPLICATE_SEARCH_SUCCESS(21005, "이메일 중복 조회가 확인되었습니다."),
 
     // User
-    USER_UPDATE_SUCCESS(22000, "회원 정보가 수정되었습니다."),
+    USER_GET_SUCCESS(22000, "회원 정보가 조회되었습니다."),
     USER_NICKNAME_CHANGE_SUCCESS(22001, "닉네임이 변경되었습니다."),
     USER_PHONE_NUMBER_CHANGE_SUCCESS(22002, "전화번호가 변경되었습니다."),
     USER_ADDRESS_ADD_SUCCESS(22003, "배송지가 추가되었습니다."),
