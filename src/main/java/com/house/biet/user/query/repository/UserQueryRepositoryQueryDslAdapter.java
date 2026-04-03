@@ -17,6 +17,16 @@ public class UserQueryRepositoryQueryDslAdapter implements UserQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
+    public Long findUserIdByAccountId(Long accountId) {
+        return queryFactory
+                .select(user.id)
+                .from(user)
+                .join(user.account, account)
+                .where(account.id.eq(accountId))
+                .fetchOne();
+    }
+
+    @Override
     public UserProfileResponseDto getUserProfile(Long accountId) {
         return queryFactory
                 .select(Projections.constructor(
