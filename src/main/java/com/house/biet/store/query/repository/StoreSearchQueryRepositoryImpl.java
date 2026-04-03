@@ -69,6 +69,8 @@ public class StoreSearchQueryRepositoryImpl implements StoreSearchQueryRepositor
         return queryFactory
                 .select(Projections.constructor(
                         StoreSearchQueryDto.class,
+                        store.publicId,
+                        store.thumbnail.imageUrl,
                         store.storeName.value,
                         store.storeGeoLocation.latitude,
                         store.storeGeoLocation.longitude,

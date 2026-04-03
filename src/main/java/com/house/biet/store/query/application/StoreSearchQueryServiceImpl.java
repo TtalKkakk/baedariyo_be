@@ -63,6 +63,8 @@ public class StoreSearchQueryServiceImpl implements StoreSearchQueryService {
                             );
 
                     return new StoreSearchResponseDto(
+                            store.storePublicId(),
+                            store.storeThumbnail(),
                             store.storeName(),
                             deliveryTime,
                             store.distance(),

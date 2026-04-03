@@ -1,9 +1,11 @@
 package com.house.biet.store.query.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
+import java.util.UUID;
 
 public record StoreSearchQueryDto(
 
+        UUID storePublicId,
+        String storeThumbnail,
         String storeName,
         double storeLatitude,
         double storeLongitude,
@@ -11,8 +13,4 @@ public record StoreSearchQueryDto(
         double rating,
         int reviewCount,
         double distance
-) {
-
-    @QueryProjection
-    public StoreSearchQueryDto {}
-}
+) { }

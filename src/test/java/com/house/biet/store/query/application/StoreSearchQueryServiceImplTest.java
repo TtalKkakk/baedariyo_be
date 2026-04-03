@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.*;
@@ -57,6 +58,7 @@ class StoreSearchQueryServiceImplTest {
 
         Long userId = 1L;
         String storeName = "굽네치킨";
+        UUID storePublicId = UUID.randomUUID();
         double storeLatitude = 37.6;
         double storeLongitude = 127.1;
         int minOrderPrice = 15000;
@@ -67,6 +69,8 @@ class StoreSearchQueryServiceImplTest {
         int deliveryTime = 25;
 
         StoreSearchQueryDto store = new StoreSearchQueryDto(
+                storePublicId,
+                null,
                 storeName,
                 storeLatitude,
                 storeLongitude,
