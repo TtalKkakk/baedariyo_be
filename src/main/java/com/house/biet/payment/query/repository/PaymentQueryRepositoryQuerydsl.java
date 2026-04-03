@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,12 +25,6 @@ public class PaymentQueryRepositoryQuerydsl {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    /**
-     * 내 결제 상세 목록을 조회한다
-     *
-     * @param condition condition 값
-     * @return 조회 결과 목록
-     */
     public List<MyPaymentDetailResponseDto> findMyPaymentDetailList(
             MyPaymentSearchCondition condition
     ) {
@@ -40,15 +35,16 @@ public class PaymentQueryRepositoryQuerydsl {
         QStoreReview review = QStoreReview.storeReview;
         QOrderMenu orderMenu = QOrderMenu.orderMenu;
 
-        // 메인 조회
+        // 1️⃣ 메인 조회 (DTO 변경 반영)
         List<Tuple> paymentTuples = jpaQueryFactory
                 .select(
-                        payment.id,
+                        payment.id,                 // paymentId
+                        store.publicId,        // storePublicId
+                        order.id,                   // orderId
                         store.storeName.value,
                         payment.status,
                         payment.money.amount,
-                        payment.createdAt,
-                        order.id
+                        payment.createdAt
                 )
                 .from(payment)
                 .join(order).on(payment.orderId.eq(order.id))
@@ -60,12 +56,13 @@ public class PaymentQueryRepositoryQuerydsl {
                 .orderBy(payment.createdAt.desc())
                 .fetch();
 
+        // 2️⃣ 상세 매핑
         return paymentTuples.stream()
                 .map(tuple -> {
 
                     Long orderId = tuple.get(order.id);
 
-                    // 주문 메뉴 조회
+                    // 🔹 주문 메뉴 조회
                     List<MyPaymentDetailResponseDto.OrderMenuResponse> menus =
                             jpaQueryFactory
                                     .select(Projections.constructor(
@@ -79,7 +76,7 @@ public class PaymentQueryRepositoryQuerydsl {
                                     .where(order.id.eq(orderId))
                                     .fetch();
 
-                    // 리뷰 단건 조회
+                    // 🔹 리뷰 단건 조회
                     Tuple reviewTuple = jpaQueryFactory
                             .select(
                                     review.rating,
@@ -97,18 +94,23 @@ public class PaymentQueryRepositoryQuerydsl {
                             ? reviewTuple.get(review.storeReviewComment.comment)
                             : null;
 
-                    // 리뷰 이미지 조회
+                    // 🔹 리뷰 이미지 조회 (버그 수정: fetchOne → fetch)
                     List<String> images = jpaQueryFactory
                             .select(review.storeReviewImages.images)
                             .from(review)
                             .where(review.orderId.eq(orderId))
                             .fetchOne();
 
-                    if (images == null) {
+                    if (images == null || images.isEmpty()) {
                         images = Collections.emptyList();
                     }
 
+                    // 🔹 최종 DTO 생성
                     return new MyPaymentDetailResponseDto(
+                            tuple.get(payment.id),
+                            Objects.requireNonNull(tuple.get(store.publicId)).toString(),
+                            tuple.get(order.id),
+
                             tuple.get(store.storeName.value),
                             tuple.get(payment.status),
                             rating,

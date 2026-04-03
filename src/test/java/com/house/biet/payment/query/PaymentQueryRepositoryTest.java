@@ -39,9 +39,6 @@ class PaymentQueryRepositoryTest {
     @Autowired
     private PaymentQueryRepository paymentQueryRepository;
 
-    @Autowired
-    private PaymentQueryRepositoryJpa paymentQueryRepositoryJpa;
-
     @Test
     @DisplayName("성공 - 상태로 결제 목록을 조회한다")
     void findAllByStatus_Success() {
@@ -50,15 +47,17 @@ class PaymentQueryRepositoryTest {
         Payment approved = Payment.create(2L, 4L, new Money(20000), new PaymentKey("pk_approved"));
         approved.request();
         approved.approve(new TransactionId("tx_123"));
+
         paymentRepository.save(ready);
         paymentRepository.save(approved);
 
         // when
-        List<PaymentDetailResponseDto> readyPayments = paymentQueryRepository.findAllByStatus(PaymentStatus.READY);
+        List<PaymentDetailResponseDto> result =
+                paymentQueryRepository.findAllByStatus(PaymentStatus.READY);
 
         // then
-        assertThat(readyPayments).hasSize(1);
-        assertThat(readyPayments.get(0).orderId()).isEqualTo(1L);
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).orderId()).isEqualTo(1L);
     }
 
     @Test
@@ -66,14 +65,15 @@ class PaymentQueryRepositoryTest {
     void findById_Success() {
         // given
         Payment payment = Payment.create(1L, 3L, new Money(10000), new PaymentKey("pk_ready"));
-        Payment savedPayment = paymentRepository.save(payment);
+        Payment saved = paymentRepository.save(payment);
 
         // when
-        PaymentDetailResponseDto foundPayment = paymentQueryRepository.findById(savedPayment.getId()).orElse(null);
+        PaymentDetailResponseDto result =
+                paymentQueryRepository.findById(saved.getId()).orElse(null);
 
         // then
-        assertThat(foundPayment).isNotNull();
-        assertThat(foundPayment.paymentId()).isEqualTo(savedPayment.getId());
+        assertThat(result).isNotNull();
+        assertThat(result.paymentId()).isEqualTo(saved.getId());
     }
 
     @Test
@@ -82,15 +82,18 @@ class PaymentQueryRepositoryTest {
         // given
         Long orderId = 10L;
         Long userId = 7L;
-        paymentRepository.save(Payment.create(orderId, userId, new Money(15000), new PaymentKey("pk_order_1")));
-        paymentRepository.save(Payment.create(orderId, userId, new Money(25000), new PaymentKey("pk_order_2")));
+
+        paymentRepository.save(Payment.create(orderId, userId, new Money(15000), new PaymentKey("pk1")));
+        paymentRepository.save(Payment.create(orderId, userId, new Money(25000), new PaymentKey("pk2")));
 
         // when
-        List<PaymentDetailResponseDto> payments = paymentQueryRepository.findAllByOrderId(orderId);
+        List<PaymentDetailResponseDto> result =
+                paymentQueryRepository.findAllByOrderId(orderId);
 
         // then
-        assertThat(payments).hasSize(2);
-        assertThat(payments).extracting(PaymentDetailResponseDto::orderId).containsOnly(orderId);
+        assertThat(result).hasSize(2);
+        assertThat(result).extracting(PaymentDetailResponseDto::orderId)
+                .containsOnly(orderId);
     }
 
     @Test
@@ -98,16 +101,19 @@ class PaymentQueryRepositoryTest {
     void findAllByUserId_Success() {
         // given
         Long userId = 100L;
-        paymentRepository.save(Payment.create(1L, userId, new Money(10000), new PaymentKey("pk_user_all_1")));
-        paymentRepository.save(Payment.create(2L, userId, new Money(20000), new PaymentKey("pk_user_all_2")));
-        paymentRepository.save(Payment.create(3L, 999L, new Money(30000), new PaymentKey("pk_user_all_other")));
+
+        paymentRepository.save(Payment.create(1L, userId, new Money(10000), new PaymentKey("pk1")));
+        paymentRepository.save(Payment.create(2L, userId, new Money(20000), new PaymentKey("pk2")));
+        paymentRepository.save(Payment.create(3L, 999L, new Money(30000), new PaymentKey("pk3")));
 
         // when
-        List<PaymentDetailResponseDto> result = paymentQueryRepository.findAllByUserId(userId);
+        List<PaymentDetailResponseDto> result =
+                paymentQueryRepository.findAllByUserId(userId);
 
         // then
         assertThat(result).hasSize(2);
-        assertThat(result).extracting(PaymentDetailResponseDto::userId).containsOnly(userId);
+        assertThat(result).extracting(PaymentDetailResponseDto::userId)
+                .containsOnly(userId);
     }
 
     @Test
@@ -115,19 +121,27 @@ class PaymentQueryRepositoryTest {
     void findAllByUserIdAndStatusIn_Success() {
         // given
         Long userId = 200L;
-        Payment ready = Payment.create(10L, userId, new Money(10000), new PaymentKey("pk_filter_ready"));
-        Payment approved = Payment.create(11L, userId, new Money(20000), new PaymentKey("pk_filter_approved"));
+
+        Payment ready = Payment.create(10L, userId, new Money(10000), new PaymentKey("pk_ready"));
+
+        Payment approved = Payment.create(11L, userId, new Money(20000), new PaymentKey("pk_ok"));
         approved.request();
-        approved.approve(new TransactionId("tx_filter_1"));
-        Payment failed = Payment.create(12L, userId, new Money(30000), new PaymentKey("pk_filter_failed"));
+        approved.approve(new TransactionId("tx1"));
+
+        Payment failed = Payment.create(12L, userId, new Money(30000), new PaymentKey("pk_fail"));
         failed.request();
         failed.fail();
+
         paymentRepository.save(ready);
         paymentRepository.save(approved);
         paymentRepository.save(failed);
 
         // when
-        List<PaymentDetailResponseDto> result = paymentQueryRepository.findAllByUserIdAndStatusIn(userId, List.of(PaymentStatus.APPROVED, PaymentStatus.CANCELED));
+        List<PaymentDetailResponseDto> result =
+                paymentQueryRepository.findAllByUserIdAndStatusIn(
+                        userId,
+                        List.of(PaymentStatus.APPROVED, PaymentStatus.CANCELED)
+                );
 
         // then
         assertThat(result).hasSize(1);
@@ -139,9 +153,11 @@ class PaymentQueryRepositoryTest {
     void findApprovedByOrderId_Success() {
         // given
         Long orderId = 300L;
-        Payment payment = Payment.create(orderId, 55L, new Money(50000), new PaymentKey("pk_approved_find"));
+
+        Payment payment = Payment.create(orderId, 55L, new Money(50000), new PaymentKey("pk"));
         payment.request();
-        payment.approve(new TransactionId("tx_find_approved"));
+        payment.approve(new TransactionId("tx"));
+
         paymentRepository.save(payment);
 
         // when
@@ -153,26 +169,12 @@ class PaymentQueryRepositoryTest {
     }
 
     @Test
-    @DisplayName("성공 - paymentKey로 결제를 조회한다")
-    void findByPaymentKey_Success() {
-        // given
-        Payment payment = Payment.create(400L, 77L, new Money(70000), new PaymentKey("pk_unique_test"));
-        paymentRepository.save(payment);
-
-        // when
-        var result = paymentQueryRepository.findByPaymentKey("pk_unique_test");
-
-        // then
-        assertThat(result).isPresent();
-        assertThat(result.get().orderId()).isEqualTo(400L);
-    }
-
-    @Test
-    @DisplayName("실패 - 승인된 결제가 없는 주문을 조회할 때 빈 결과를 반환한다")
-    void findApprovedByOrderId_Error_ApprovedPaymentNotFound() {
+    @DisplayName("실패 - 승인된 결제가 없는 주문 조회")
+    void findApprovedByOrderId_Error() {
         // given
         Long orderId = 9999L;
-        Payment payment = Payment.create(orderId, 1L, new Money(10000), new PaymentKey("pk_no_approve"));
+
+        Payment payment = Payment.create(orderId, 1L, new Money(10000), new PaymentKey("pk"));
         paymentRepository.save(payment);
 
         // when

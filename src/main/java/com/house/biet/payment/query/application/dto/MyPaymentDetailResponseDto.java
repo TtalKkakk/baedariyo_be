@@ -6,6 +6,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record MyPaymentDetailResponseDto(
+
+        Long paymentId,
+        String storePublicId,
+        Long orderId,
+
         String storeName,
         PaymentStatus paymentStatus,
         Integer rating,
@@ -14,6 +19,7 @@ public record MyPaymentDetailResponseDto(
         List<String> storeImages,
         Integer amount,
         LocalDateTime createdAt
+
 ) {
 
     public record OrderMenuResponse(

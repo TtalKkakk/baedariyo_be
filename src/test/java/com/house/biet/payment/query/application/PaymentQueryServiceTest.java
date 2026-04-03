@@ -177,11 +177,28 @@ class PaymentQueryServiceTest {
         // given
         Long userId = 1L;
         MyPaymentSearchCondition condition = new MyPaymentSearchCondition(userId, null);
-        MyPaymentDetailResponseDto dto = new MyPaymentDetailResponseDto("store1", PaymentStatus.READY, null, List.of(), null, List.of(), 10000, null);
-        given(paymentQueryRepository.findMyPaymentDetailList(condition)).willReturn(List.of(dto));
+
+        MyPaymentDetailResponseDto dto =
+                new MyPaymentDetailResponseDto(
+                        1L,
+                        "store-1",
+                        100L,
+                        "store1",
+                        PaymentStatus.READY,
+                        null,
+                        List.of(),
+                        null,
+                        List.of(),
+                        10000,
+                        null
+                );
+
+        given(paymentQueryRepository.findMyPaymentDetailList(condition))
+                .willReturn(List.of(dto));
 
         // when
-        List<MyPaymentDetailResponseDto> result = paymentQueryService.findMyPaymentDetailList(condition);
+        List<MyPaymentDetailResponseDto> result =
+                paymentQueryService.findMyPaymentDetailList(condition);
 
         // then
         assertThat(result).hasSize(1);
@@ -193,12 +210,30 @@ class PaymentQueryServiceTest {
     void findMyPaymentDetailList_Success_WhenStatusExists() {
         // given
         Long userId = 2L;
-        MyPaymentSearchCondition condition = new MyPaymentSearchCondition(userId, PaymentStatus.APPROVED);
-        MyPaymentDetailResponseDto dto = new MyPaymentDetailResponseDto("store2", PaymentStatus.APPROVED, 5, List.of(), "good", List.of("img1"), 20000, null);
-        given(paymentQueryRepository.findMyPaymentDetailList(condition)).willReturn(List.of(dto));
+        MyPaymentSearchCondition condition =
+                new MyPaymentSearchCondition(userId, PaymentStatus.APPROVED);
+
+        MyPaymentDetailResponseDto dto =
+                new MyPaymentDetailResponseDto(
+                        2L,
+                        "store-2",
+                        200L,
+                        "store2",
+                        PaymentStatus.APPROVED,
+                        5,
+                        List.of(),
+                        "good",
+                        List.of("img1"),
+                        20000,
+                        null
+                );
+
+        given(paymentQueryRepository.findMyPaymentDetailList(condition))
+                .willReturn(List.of(dto));
 
         // when
-        List<MyPaymentDetailResponseDto> result = paymentQueryService.findMyPaymentDetailList(condition);
+        List<MyPaymentDetailResponseDto> result =
+                paymentQueryService.findMyPaymentDetailList(condition);
 
         // then
         assertThat(result).hasSize(1);
