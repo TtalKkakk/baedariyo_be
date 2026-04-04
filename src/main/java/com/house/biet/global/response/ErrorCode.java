@@ -87,6 +87,7 @@ public enum ErrorCode {
     DELIVERY_NOT_FOUND(40409, HttpStatus.NOT_FOUND, "배달을 찾을 수 없습니다."),
     DELIVERY_LOCATION_NOT_FOUND(40410, HttpStatus.NOT_FOUND, "위치 정보를 찾을 수 없습니다."),
     DELIVERY_ADDRESS_NOT_FOUND(40411, HttpStatus.NOT_FOUND, "배달 주소를 찾을 수 없습니다."),
+    PAYMENT_METHOD_NOT_FOUND(40412, HttpStatus.NOT_FOUND, "결제수단을 찾을 수 없습니다."),
     NOT_FOUND(40400, HttpStatus.NOT_FOUND, "찾을 수 없습니다."),
 
     // 409 Conflict

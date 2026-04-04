@@ -27,6 +27,10 @@ public enum SuccessCode {
     USER_ADDRESS_REMOVE_SUCCESS(22005, "배송지가 삭제되었습니다."),
     USER_ADDRESS_LIST_SUCCESS(22006, "모든 배송지가 조회되었습니다."),
     USER_ADDRESS_ALIAS_CHANGE_SUCCESS(22007, "배송지 별명이 변경되었습니다."),
+    USER_PAYMENT_METHOD_LIST_SUCCESS(22008, "결제수단 목록이 조회되었습니다."),
+    USER_PAYMENT_METHOD_ADD_SUCCESS(22009, "결제수단이 등록되었습니다."),
+    USER_PAYMENT_METHOD_DELETE_SUCCESS(22010, "결제수단이 삭제되었습니다."),
+    USER_PAYMENT_METHOD_START_SUCCESS(22011, "카드 등록이 시작되었습니다."),
 
     // Order
     ORDER_CREATE_SUCCESS(20300, "주문이 생성되었습니다."),

@@ -3,6 +3,7 @@ package com.house.biet.api;
 import com.house.biet.auth.infrastructure.security.AuthPrincipal;
 import com.house.biet.global.response.CustomApiResponse;
 import com.house.biet.global.response.SuccessCode;
+import com.house.biet.user.command.application.PaymentMethodService;
 import com.house.biet.user.command.application.UserCommandFacade;
 import com.house.biet.user.command.dto.*;
 import com.house.biet.user.query.application.UserAddressQueryFacade;
@@ -42,6 +43,7 @@ public class UserController {
     private final UserCommandFacade userCommandFacade;
     private final UserAddressQueryFacade userAddressQueryFacade;
     private final UserQueryService userQueryService;
+    private final PaymentMethodService paymentMethodService;
 
     /**
      * 사용자 전체 정보 API
@@ -214,6 +216,90 @@ public class UserController {
 
         return ResponseEntity.ok(
                 CustomApiResponse.success(SuccessCode.USER_ADDRESS_ALIAS_CHANGE_SUCCESS)
+        );
+    }
+
+    /**
+     * 사용자 결제수단 목록 조회 API
+     *
+     * @param principal 인증된 사용자 정보
+     * @return 결제수단 목록
+     */
+    @GetMapping("/payment-methods")
+    public ResponseEntity<CustomApiResponse<List<PaymentMethodResponseDto>>> getPaymentMethods(
+            @AuthenticationPrincipal AuthPrincipal principal
+    ) {
+        Long accountId = principal.accountId();
+
+        List<PaymentMethodResponseDto> responseDto = paymentMethodService.getPaymentMethods(accountId);
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.USER_PAYMENT_METHOD_LIST_SUCCESS, responseDto)
+        );
+    }
+
+    /**
+     * 카드 등록 시작 API
+     *
+     * @param principal 인증된 사용자 정보
+     * @return UUID 토큰
+     */
+    @PostMapping("/payment-methods/start")
+    public ResponseEntity<CustomApiResponse<StartRegistrationResponseDto>> startRegistration(
+            @AuthenticationPrincipal AuthPrincipal principal
+    ) {
+        Long accountId = principal.accountId();
+
+        StartRegistrationResponseDto responseDto = paymentMethodService.startRegistration(accountId);
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.USER_PAYMENT_METHOD_START_SUCCESS, responseDto)
+        );
+    }
+
+    /**
+     * 결제수단 등록 API
+     *
+     * @param principal  인증된 사용자 정보
+     * @param requestDto 등록할 결제수단 정보
+     * @return 등록된 결제수단 정보
+     */
+    @PostMapping("/payment-methods")
+    public ResponseEntity<CustomApiResponse<PaymentMethodResponseDto>> addPaymentMethod(
+            @AuthenticationPrincipal AuthPrincipal principal,
+            @RequestBody AddPaymentMethodRequestDto requestDto
+    ) {
+        Long accountId = principal.accountId();
+
+        PaymentMethodResponseDto responseDto = paymentMethodService.addPaymentMethod(
+                accountId,
+                requestDto.billingKey(),
+                requestDto.cardNumber()
+        );
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.USER_PAYMENT_METHOD_ADD_SUCCESS, responseDto)
+        );
+    }
+
+    /**
+     * 결제수단 삭제 API
+     *
+     * @param principal       인증된 사용자 정보
+     * @param paymentMethodId 삭제할 결제수단 식별자
+     * @return 성공 응답
+     */
+    @DeleteMapping("/payment-methods/{paymentMethodId}")
+    public ResponseEntity<CustomApiResponse<Void>> deletePaymentMethod(
+            @AuthenticationPrincipal AuthPrincipal principal,
+            @PathVariable Long paymentMethodId
+    ) {
+        Long accountId = principal.accountId();
+
+        paymentMethodService.deletePaymentMethod(accountId, paymentMethodId);
+
+        return ResponseEntity.ok(
+                CustomApiResponse.success(SuccessCode.USER_PAYMENT_METHOD_DELETE_SUCCESS)
         );
     }
 }
