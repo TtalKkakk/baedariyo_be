@@ -108,7 +108,7 @@ public class JwtProvider {
         return new Date();
     }
 
-    private Date expireAfter(long millis) {
-        return new Date(System.currentTimeMillis() + millis);
+    private Date expireAfter(long seconds) {
+        return new Date(System.currentTimeMillis() + seconds * 1000L);
     }
 }
