@@ -54,7 +54,7 @@ class OrderQueryRepositoryTest {
         Store store = StoreFixture.createStore();
         em.persist(store);
 
-        Order order = OrderFixtures.order(store.getId());
+        Order order = OrderFixtures.order(store.getId(), 1L);
         order.markPaid();
         order.assignRider(riderId);
 
@@ -89,7 +89,7 @@ class OrderQueryRepositoryTest {
         Store store = StoreFixture.createStore();
         em.persist(store);
 
-        Order order = OrderFixtures.order(store.getId());
+        Order order = OrderFixtures.order(store.getId(), 1L);
         Order savedOrder = orderRepository.save(order);
 
         em.flush();
@@ -112,13 +112,13 @@ class OrderQueryRepositoryTest {
         Store store = StoreFixture.createStore();
         em.persist(store);
 
-        Order paid1 = OrderFixtures.order(store.getId());
+        Order paid1 = OrderFixtures.order(store.getId(), 1L);
         paid1.markPaid();
 
-        Order paid2 = OrderFixtures.order(store.getId());
+        Order paid2 = OrderFixtures.order(store.getId(), 2L);
         paid2.markPaid();
 
-        Order notPaid = OrderFixtures.order(store.getId());
+        Order notPaid = OrderFixtures.order(store.getId(), 3L);
 
         em.persist(paid1);
         em.persist(paid2);
@@ -142,7 +142,7 @@ class OrderQueryRepositoryTest {
         Store store = StoreFixture.createStore();
         em.persist(store);
 
-        Order order = OrderFixtures.order(store.getId());
+        Order order = OrderFixtures.order(store.getId(), 1L);
         em.persist(order);
 
         em.flush();
@@ -163,10 +163,10 @@ class OrderQueryRepositoryTest {
         Store store = StoreFixture.createStore();
         em.persist(store);
 
-        Order order1 = OrderFixtures.order(store.getId());
+        Order order1 = OrderFixtures.order(store.getId(), 1L);
         order1.markPaid();
 
-        Order order2 = OrderFixtures.order(store.getId());
+        Order order2 = OrderFixtures.order(store.getId(), 2L);
         order2.markPaid();
 
         em.persist(order1);
@@ -192,7 +192,7 @@ class OrderQueryRepositoryTest {
         Store store = StoreFixture.createStore();
         em.persist(store);
 
-        Order order = OrderFixtures.order(store.getId());
+        Order order = OrderFixtures.order(store.getId(), 1L);
         order.markPaid();
         em.persist(order);
 
@@ -206,6 +206,8 @@ class OrderQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.get(0).storeName()).isNotNull();
-        assertThat(result.get(0).storePublicId()).isNotNull();
+        assertThat(result.get(0).storeAddress()).isNotBlank();
+        assertThat(result.get(0).customerAddress()).isNotBlank();
+        assertThat(result.get(0).fee()).isPositive();
     }
 }

@@ -1,7 +1,7 @@
 package com.house.biet.order.query.application;
 
 import com.house.biet.common.domain.enums.OrderStatus;
-import com.house.biet.order.query.repository.dto.OrderSummaryQueryDto;
+import com.house.biet.order.query.application.dto.OrderSummaryResponseDto;
 
 import java.util.List;
 
@@ -24,5 +24,5 @@ public interface OrderQueryService {
      */
     boolean isRiderOfOrder(Long orderId, Long riderId);
 
-    List<OrderSummaryQueryDto> findOrderSummariesByOrderStatus(OrderStatus orderStatus);
+    List<OrderSummaryResponseDto> findOrderSummariesByOrderStatus(OrderStatus orderStatus);
 }

@@ -45,16 +45,19 @@ public class OrderQueryRepositoryJpaAdapter implements OrderQueryRepository {
                 .select(Projections.constructor(
                         OrderSummaryQueryDto.class,
                         order.id,
-                        store.publicId,
                         store.storeName.value,
+                        store.storeAddress.roadAddress,
+                        order.deliveryAddress.roadAddress,
+                        store.deliveryFee.amount,
                         store.storeGeoLocation.latitude,
                         store.storeGeoLocation.longitude,
-                        order.createdAt
+                        order.deliveryLocation.latitude,
+                        order.deliveryLocation.longitude
                 ))
                 .from(order)
                 .join(store).on(order.storeId.eq(store.id))
                 .where(order.status.eq(orderStatus))
-                .orderBy(order.createdAt.desc())
+                .orderBy(order.createdAt.desc(), order.id.desc())
                 .fetch();
     }
 }
