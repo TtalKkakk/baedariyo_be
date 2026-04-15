@@ -1,5 +1,10 @@
 package com.house.biet.order.query.application;
 
+import com.house.biet.common.domain.enums.OrderStatus;
+import com.house.biet.order.query.repository.dto.OrderSummaryQueryDto;
+
+import java.util.List;
+
 /**
  * Order 조회 전용 서비스.
  *
@@ -18,4 +23,6 @@ public interface OrderQueryService {
      * @return true면 해당 주문의 배달원
      */
     boolean isRiderOfOrder(Long orderId, Long riderId);
+
+    List<OrderSummaryQueryDto> findOrderSummariesByOrderStatus(OrderStatus orderStatus);
 }
