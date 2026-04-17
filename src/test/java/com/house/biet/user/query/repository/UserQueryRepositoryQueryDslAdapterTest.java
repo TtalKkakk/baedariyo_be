@@ -5,10 +5,9 @@ import com.house.biet.common.domain.vo.Address;
 import com.house.biet.fixtures.AccountFixtures;
 import com.house.biet.member.command.domain.entity.Account;
 import com.house.biet.store.command.domain.vo.GeoLocation;
-import com.house.biet.support.config.QueryDslTestConfig;
+import com.house.biet.global.config.QuerydslConfig;
 import com.house.biet.user.command.domain.aggregate.User;
 import com.house.biet.user.command.domain.vo.AddressAlias;
-import com.house.biet.user.query.UserQueryRepository;
 import com.house.biet.user.query.application.dto.UserProfileResponseDto;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
@@ -23,12 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @Import({
         UserQueryRepositoryQueryDslAdapter.class,
-        QueryDslTestConfig.class
+        QuerydslConfig.class
 })
 class UserQueryRepositoryQueryDslAdapterTest {
 
     @Autowired
-    private UserQueryRepository userQueryRepository;
+    private UserQueryRepositoryQueryDslAdapter userQueryRepository;
 
     @Autowired
     private EntityManager em;

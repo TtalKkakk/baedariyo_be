@@ -16,13 +16,12 @@ import com.house.biet.payment.command.domain.aggregate.Payment;
 import com.house.biet.payment.command.domain.vo.PaymentKey;
 import com.house.biet.payment.command.domain.vo.TransactionId;
 import com.house.biet.payment.command.repository.PaymentRepositoryJpaAdapter;
-import com.house.biet.payment.query.PaymentQueryRepository;
 import com.house.biet.payment.query.application.dto.MyPaymentDetailResponseDto;
 import com.house.biet.payment.query.application.dto.MyPaymentSearchCondition;
 import com.house.biet.store.command.StoreRepository;
 import com.house.biet.store.command.domain.aggregate.Store;
 import com.house.biet.store.command.repository.StoreRepositoryJpaAdapter;
-import com.house.biet.support.config.QueryDslTestConfig;
+import com.house.biet.global.config.QuerydslConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         PaymentRepositoryJpaAdapter.class,
         PaymentQueryRepositoryJpaAdapter.class,
         PaymentQueryRepositoryQuerydsl.class,
-        QueryDslTestConfig.class
+        QuerydslConfig.class
 })
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -60,7 +59,7 @@ class PaymentQueryRepositoryQuerydslTest {
     private PaymentRepository paymentRepository;
 
     @Autowired
-    private PaymentQueryRepository paymentQueryRepository;
+    private PaymentQueryRepositoryQuerydsl paymentQueryRepository;
 
     Long userId;
     Payment ready;
